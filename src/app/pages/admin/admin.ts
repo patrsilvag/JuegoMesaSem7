@@ -5,7 +5,7 @@ import { AdminService, UsuarioAdmin } from './admin.service';
 import { Json } from '../../services/json';
 
 /**
- * @description
+ *
  * Panel de administración para gestionar usuarios (listar, filtrar, activar/desactivar)
  * y mostrar las ventas por categoría cargadas desde un JSON externo publicado en GitHub Pages.
  *

@@ -1,0 +1,18 @@
+{
+  "amigos": {
+    "titulo": "Juegos para Amigos",
+    "subtitulo": "¡Dibuja, adivina y tiembla! La diversión se apila."
+  },
+  "cartas": {
+    "titulo": "Juegos de Cartas",
+    "subtitulo": "Barajas y juegos rápidos para todos"
+  },
+  "estrategia": {
+    "titulo": "Juegos de Estrategia",
+    "subtitulo": "Planifica, conquista y desafía tu mente"
+  },
+  "infantiles": {
+    "titulo": "Juegos Infantiles",
+    "subtitulo": "Aprendizaje y diversión para los más pequeños"
+  }
+}

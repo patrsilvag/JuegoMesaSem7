@@ -109,7 +109,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Injectables</li>
-  <li class="breadcrumb-item" >AdminService</li>
+  <li class="breadcrumb-item" >Json</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -133,7 +133,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/app/pages/admin/admin.service.ts</code>
+            <code>src/app/services/json.ts</code>
         </p>
 
 
@@ -141,18 +141,22 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Servicio de administración de usuarios para el panel de control.
-Centraliza la lógica de:</p>
+                <p>Servicio centralizado para el consumo de datos JSON en la aplicación.
+Permite obtener:</p>
 <ul>
-<li><p>Carga de usuarios desde el repositorio.</p>
+<li><p>JSON local desde <code>assets/data/</code> (categorías y productos).</p>
 </li>
-<li><p>Filtrado por campos dinámicos.</p>
+<li><p>JSON externo publicado en GitHub Pages (ventas).</p>
 </li>
-<li><p>Cambio de estado (activo/inactivo) con persistencia.</p>
+<li><p>API real externa (tipo de cambio USD → CLP).</p>
 </li>
-<li><p>Utilizado por el componente <code>AdminComponent</code>.</p>
+<li><p>Este servicio es <code>providedIn: &#39;root&#39;</code>, por lo que Angular crea una única instancia global.</p>
 </li>
-<li><p>El modelo usado en la vista es <code>UsuarioAdmin</code>, no el original <code>Usuario</code>.</p>
+<li><p>Todos los métodos retornan <code>Observable</code>, por lo que deben consumirse con <code>.subscribe()</code>
+o mediante pipes RxJS.</p>
+</li>
+<li><p>Requiere que <code>HttpClient</code> esté provisto en aplicaciones standalone
+usando <code>provideHttpClient()</code> en <code>main.ts</code>.</p>
 </li>
 </ul>
 
@@ -174,13 +178,16 @@ Centraliza la lógica de:</p>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#cargarUsuarios" >cargarUsuarios</a>
+                                <a href="#getCambioDolar" >getCambioDolar</a>
                             </li>
                             <li>
-                                <a href="#filtrarUsuarios" >filtrarUsuarios</a>
+                                <a href="#getCategorias" >getCategorias</a>
                             </li>
                             <li>
-                                <a href="#toggleEstado" >toggleEstado</a>
+                                <a href="#getProductos" >getProductos</a>
+                            </li>
+                            <li>
+                                <a href="#getVentas" >getVentas</a>
                             </li>
                         </ul>
                     </td>
@@ -200,18 +207,18 @@ Centraliza la lógica de:</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(repo: <a href="../injectables/AuthRepository.html" target="_self">AuthRepository</a>)</code>
+<code>constructor(http: HttpClient)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/app/pages/admin/admin.service.ts:18</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/services/json.ts:21</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Inyecta el repositorio de usuarios como fuente de datos central.</p>
+                            <div class="io-description"><p>Inyecta el cliente HTTP de Angular para realizar peticiones GET.</p>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -226,10 +233,10 @@ Centraliza la lógica de:</p>
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>repo</td>
+                                                        <td>http</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/AuthRepository.html" target="_self" >AuthRepository</a></code>
+                                                                    <code>HttpClient</code>
                                                         </td>
                                                   
                                                     <td>
@@ -237,7 +244,7 @@ Centraliza la lógica de:</p>
                                                     </td>
                                                     
                                                         <td>
-                                                                <p>Repositorio con métodos para listar y actualizar usuarios.</p>
+                                                                <p>Cliente HTTP provisto por Angular.</p>
 
                                                         </td>
                                                 </tr>
@@ -259,40 +266,43 @@ Centraliza la lógica de:</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="cargarUsuarios"></a>
+                    <a name="getCambioDolar"></a>
                     <span class="name">
-                        <span ><b>cargarUsuarios</b></span>
-                        <a href="#cargarUsuarios"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getCambioDolar</b></span>
+                        <a href="#getCambioDolar"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>cargarUsuarios()</code>
+<code>getCambioDolar()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="31"
-                                    class="link-to-prism">src/app/pages/admin/admin.service.ts:31</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="36"
+                                    class="link-to-prism">src/app/services/json.ts:36</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Carga todos los usuarios desde el repositorio y los transforma
-al modelo <code>UsuarioAdmin</code>, usado en el panel de administración.</p>
+                        <div class="io-description"><p>Obtiene el tipo de cambio actual desde una API real externa.
+API: <a href="https://api.exchangerate-api.com/v4/latest/USD">https://api.exchangerate-api.com/v4/latest/USD</a></p>
+<p>Observable con la respuesta completa del endpoint.
+La conversión a CLP se obtiene desde <code>data.rates.CLP</code>.</p>
 </div>
 
                         <div class="io-description">
-                            <b>Returns : </b>    <code>UsuarioAdmin[]</code>
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
 
                         </div>
                             <div class="io-description">
-                                <p>Lista de usuarios con datos relevantes para la vista.</p>
+                                <p>Observable con la respuesta completa del endpoint.
+La conversión a CLP se obtiene desde <code>data.rates.CLP</code>.</p>
 
                             </div>
                 </td>
@@ -303,87 +313,43 @@ al modelo <code>UsuarioAdmin</code>, usado en el panel de administración.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="filtrarUsuarios"></a>
+                    <a name="getCategorias"></a>
                     <span class="name">
-                        <span ><b>filtrarUsuarios</b></span>
-                        <a href="#filtrarUsuarios"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getCategorias</b></span>
+                        <a href="#getCategorias"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>filtrarUsuarios(lista: UsuarioAdmin[], filtros: <a href="../interfaces/FiltroAdmin.html" target="_self">FiltroAdmin</a>)</code>
+<code>getCategorias()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="53"
-                                    class="link-to-prism">src/app/pages/admin/admin.service.ts:53</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="60"
+                                    class="link-to-prism">src/app/services/json.ts:60</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Filtra usuarios según los criterios de búsqueda del formulario.</p>
+                        <div class="io-description"><p>Obtiene el catálogo de categorías desde JSON local
+ubicado en <code>src/assets/data/categorias.json</code>.</p>
+<p>Observable con un objeto cuyas claves son los slugs
+y valores contienen título/subtítulo.</p>
 </div>
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                                <td>Description</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>lista</td>
-                                            <td>
-                                                        <code>UsuarioAdmin[]</code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                            <td>
-                                                    <p>Lista completa de usuarios (<code>UsuarioAdmin[]</code>) sin filtrar.</p>
-
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                                <td>filtros</td>
-                                            <td>
-                                                            <code><a href="../interfaces/FiltroAdmin.html" target="_self" >FiltroAdmin</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                            <td>
-                                                    <p>Objeto con posibles filtros: <code>correo</code>, <code>rol</code>, <code>estado</code>.</p>
-
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
                         <div class="io-description">
-                            <b>Returns : </b>    <code>UsuarioAdmin[]</code>
+                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
 
                         </div>
                             <div class="io-description">
-                                <p>Lista filtrada según los criterios activos.</p>
+                                <p>Observable con un objeto cuyas claves son los slugs
+y valores contienen título/subtítulo.</p>
 
                             </div>
                 </td>
@@ -394,72 +360,88 @@ al modelo <code>UsuarioAdmin</code>, usado en el panel de administración.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="toggleEstado"></a>
+                    <a name="getProductos"></a>
                     <span class="name">
-                        <span ><b>toggleEstado</b></span>
-                        <a href="#toggleEstado"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getProductos</b></span>
+                        <a href="#getProductos"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>toggleEstado(usuario: <a href="../interfaces/UsuarioAdmin.html" target="_self">UsuarioAdmin</a>)</code>
+<code>getProductos()</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="85"
-                                    class="link-to-prism">src/app/pages/admin/admin.service.ts:85</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="71"
+                                    class="link-to-prism">src/app/services/json.ts:71</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Cambia el estado de un usuario entre <code>active</code> e <code>inactive</code>.
-Persiste el cambio en el repositorio y actualiza el modelo en memoria.</p>
+                        <div class="io-description"><p>Obtiene el catálogo completo de productos desde JSON local
+ubicado en <code>src/assets/data/productos.json</code>.</p>
+<p>Observable con un arreglo de productos.</p>
 </div>
 
-                            <div class="io-description">
-                                <b>Parameters :</b>
-                                
-                                <table class="params">
-                                    <thead>
-                                        <tr>
-                                            <td>Name</td>
-                                                <td>Type</td>
-                                            <td>Optional</td>
-                                                <td>Description</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                                <td>usuario</td>
-                                            <td>
-                                                            <code><a href="../interfaces/UsuarioAdmin.html" target="_self" >UsuarioAdmin</a></code>
-                                            </td>
-
-                                            <td>
-                                                    No
-                                            </td>
-
-
-                                            <td>
-                                                    <p>Usuario visual del panel cuyo estado se quiere alternar.</p>
-
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
                         <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                            <b>Returns : </b>    <code>Observable&lt;any[]&gt;</code>
 
                         </div>
                             <div class="io-description">
-                                <p><code>true</code> si el cambio fue exitoso, <code>false</code> si falló.</p>
+                                <p>Observable con un arreglo de productos.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getVentas"></a>
+                    <span class="name">
+                        <span ><b>getVentas</b></span>
+                        <a href="#getVentas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getVentas()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="48"
+                                    class="link-to-prism">src/app/services/json.ts:48</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Obtiene las ventas por categoría desde un JSON externo
+publicado en GitHub Pages.</p>
+<p>Observable con un arreglo de objetos del tipo:
+<code>{ categoria: string, ventas: number }</code>.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Observable&lt;any[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Observable con un arreglo de objetos del tipo:
+<code>{ categoria: string, ventas: number }</code>.</p>
 
                             </div>
                 </td>
@@ -472,165 +454,80 @@ Persiste el cambio en el repositorio y actualiza el modelo en memoria.</p>
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@angular/core&#x27;;
-import { Usuario } from &#x27;../../core/auth&#x27;;
-import { AuthRepository } from &#x27;../../core/auth.repository&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient } from &#x27;@angular/common/http&#x27;;
+import { Injectable } from &#x27;@angular/core&#x27;;
+import { Observable } from &#x27;rxjs&#x27;;
 
 /**
- *
- * Servicio de administración de usuarios para el panel de control.
- * Centraliza la lógica de:
- * - Carga de usuarios desde el repositorio.
- * - Filtrado por campos dinámicos.
- * - Cambio de estado (activo/inactivo) con persistencia.
+ * @description
+ * Servicio centralizado para el consumo de datos JSON en la aplicación.
+ * Permite obtener:
+ * - JSON local desde &#x60;assets/data/&#x60; (categorías y productos).
+ * - JSON externo publicado en GitHub Pages (ventas).
+ * - API real externa (tipo de cambio USD → CLP).
  *
  * @usageNotes
- * - Utilizado por el componente &#x60;AdminComponent&#x60;.
- * - El modelo usado en la vista es &#x60;UsuarioAdmin&#x60;, no el original &#x60;Usuario&#x60;.
+ * - Este servicio es &#x60;providedIn: &#x27;root&#x27;&#x60;, por lo que Angular crea una única instancia global.
+ * - Todos los métodos retornan &#x60;Observable&#x60;, por lo que deben consumirse con &#x60;.subscribe()&#x60;
+ *   o mediante pipes RxJS.
+ * - Requiere que &#x60;HttpClient&#x60; esté provisto en aplicaciones standalone
+ *   usando &#x60;provideHttpClient()&#x60; en &#x60;main.ts&#x60;.
  */
 @Injectable({ providedIn: &#x27;root&#x27; })
-export class AdminService {
+export class Json {
   /**
-   * Inyecta el repositorio de usuarios como fuente de datos central.
-   * @param repo Repositorio con métodos para listar y actualizar usuarios.
+   * Inyecta el cliente HTTP de Angular para realizar peticiones GET.
+   * @param http Cliente HTTP provisto por Angular.
    */
-  constructor(private repo: AuthRepository) {}
+  constructor(private http: HttpClient) {}
 
   /**
-   * Carga todos los usuarios desde el repositorio y los transforma
-   * al modelo &#x60;UsuarioAdmin&#x60;, usado en el panel de administración.
+   * Obtiene el tipo de cambio actual desde una API real externa.
+   * API: https://api.exchangerate-api.com/v4/latest/USD
    *
-   * @returns {UsuarioAdmin[]} Lista de usuarios con datos relevantes para la vista.
+   * @returns {Observable&lt;any&gt;}
+   * Observable con la respuesta completa del endpoint.
+   * La conversión a CLP se obtiene desde &#x60;data.rates.CLP&#x60;.
    */
-  cargarUsuarios(): UsuarioAdmin[] {
-    /**
-     * Lista completa de usuarios cargada desde el repositorio.
-     * Se utiliza como base para mapear al modelo &#x60;UsuarioAdmin&#x60;.
-     */
-    const lista: Usuario[] &#x3D; this.repo.listarUsuarios();
-
-    return lista.map((u) &#x3D;&gt; ({
-      correo: u.correo,
-      usuario: u.usuario,
-      rol: u.rol,
-      status: u.status ?? &#x27;active&#x27;,
-    }));
+  getCambioDolar(): Observable&lt;any&gt; {
+    return this.http.get&lt;any&gt;(&#x27;https://api.exchangerate-api.com/v4/latest/USD&#x27;);
   }
 
   /**
-   * Filtra usuarios según los criterios de búsqueda del formulario.
+   * Obtiene las ventas por categoría desde un JSON externo
+   * publicado en GitHub Pages.
    *
-   * @param lista Lista completa de usuarios (&#x60;UsuarioAdmin[]&#x60;) sin filtrar.
-   * @param filtros Objeto con posibles filtros: &#x60;correo&#x60;, &#x60;rol&#x60;, &#x60;estado&#x60;.
-   * @returns {UsuarioAdmin[]} Lista filtrada según los criterios activos.
+   * @returns {Observable&lt;any[]&gt;}
+   * Observable con un arreglo de objetos del tipo:
+   * &#x60;{ categoria: string, ventas: number }&#x60;.
    */
-  filtrarUsuarios(lista: UsuarioAdmin[], filtros: FiltroAdmin): UsuarioAdmin[] {
-    /**
-     * Valor del filtro por correo electrónico, normalizado en minúsculas.
-     * Se aplica con coincidencia parcial (&#x60;includes()&#x60;).
-     */
-    const correoFiltro &#x3D; (filtros.correo ?? &#x27;&#x27;).trim().toLowerCase();
-    /**
-     * Valor del filtro por rol (&#x60;admin&#x60; o &#x60;cliente&#x60;).
-     * Si no se especifica, se considera vacío (sin filtrar).
-     */
-    const rolFiltro &#x3D; filtros.rol ?? &#x27;&#x27;;
-    /**
-     * Valor del filtro por estado (&#x60;active&#x60; o &#x60;inactive&#x60;).
-     * Si no se especifica, se omite el filtro.
-     */
-    const estadoFiltro &#x3D; filtros.estado ?? &#x27;&#x27;;
-
-    return lista.filter((u) &#x3D;&gt; {
-      const coincideCorreo &#x3D; correoFiltro ? u.correo.toLowerCase().includes(correoFiltro) : true;
-      const coincideRol &#x3D; rolFiltro ? u.rol &#x3D;&#x3D;&#x3D; rolFiltro : true;
-      const coincideEstado &#x3D; estadoFiltro ? u.status &#x3D;&#x3D;&#x3D; estadoFiltro : true;
-      return coincideCorreo &amp;&amp; coincideRol &amp;&amp; coincideEstado;
-    });
+  getVentas(): Observable&lt;any[]&gt; {
+    return this.http.get&lt;any[]&gt;(&#x27;https://patrsilvag.github.io/api-ventas/ventas.json&#x27;);
   }
 
   /**
-   * Cambia el estado de un usuario entre &#x60;active&#x60; e &#x60;inactive&#x60;.
-   * Persiste el cambio en el repositorio y actualiza el modelo en memoria.
+   * Obtiene el catálogo de categorías desde JSON local
+   * ubicado en &#x60;src/assets/data/categorias.json&#x60;.
    *
-   * @param usuario Usuario visual del panel cuyo estado se quiere alternar.
-   * @returns {boolean} &#x60;true&#x60; si el cambio fue exitoso, &#x60;false&#x60; si falló.
+   * @returns {Observable&lt;any&gt;}
+   * Observable con un objeto cuyas claves son los slugs
+   * y valores contienen título/subtítulo.
    */
-  toggleEstado(usuario: UsuarioAdmin): boolean {
-    /**
-     * Determina el nuevo estado a aplicar al usuario.
-     * Si está activo, lo cambia a inactivo, y viceversa.
-     */
-    const nuevoEstado: &#x27;active&#x27; | &#x27;inactive&#x27; &#x3D; usuario.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27; ? &#x27;inactive&#x27; : &#x27;active&#x27;;
-    /**
-     * Resultado de la operación de actualización de estado en el repositorio.
-     * &#x60;true&#x60; si el cambio se aplicó correctamente; &#x60;false&#x60; si falló.
-     */
-    const ok &#x3D; this.repo.actualizarEstado(usuario.correo, nuevoEstado);
+  getCategorias(): Observable&lt;any&gt; {
+    return this.http.get(&#x27;assets/data/categorias.json&#x27;);
+  }
 
-    if (ok) {
-      usuario.status &#x3D; nuevoEstado;
-    }
-
-    return ok;
+  /**
+   * Obtiene el catálogo completo de productos desde JSON local
+   * ubicado en &#x60;src/assets/data/productos.json&#x60;.
+   *
+   * @returns {Observable&lt;any[]&gt;}
+   * Observable con un arreglo de productos.
+   */
+  getProductos(): Observable&lt;any[]&gt; {
+    return this.http.get&lt;any[]&gt;(&#x27;assets/data/productos.json&#x27;);
   }
 }
-
-/**
- * @description
- * Modelo simplificado de usuario para mostrar en el panel de administración.
- * Contiene solo los campos necesarios para la grilla.
- */
-export interface UsuarioAdmin {
-  /**
-   * Correo electrónico del usuario.
-   * @type {string}
-   */
-  correo: string;
-
-  /**
-   * Nombre de usuario o alias visible.
-   * @type {string}
-   */
-  usuario: string;
-
-  /**
-   * Rol asignado al usuario (admin o cliente).
-   * @type {&#x27;admin&#x27; | &#x27;cliente&#x27;}
-   */
-  rol: &#x27;admin&#x27; | &#x27;cliente&#x27;;
-
-  /**
-   * Estado actual del usuario (activo o inactivo).
-   * @type {&#x27;active&#x27; | &#x27;inactive&#x27;}
-   */
-  status: &#x27;active&#x27; | &#x27;inactive&#x27;;
-}
-
-/**
- * @description
- * Estructura de los filtros usados en la vista administrativa.
- */
-export interface FiltroAdmin {
-  /**
-   * Filtro por correo parcial o completo.
-   * @type {string}
-   */
-  correo?: string;
-
-  /**
-   * Filtro por rol exacto (admin o cliente).
-   * @type {string}
-   */
-  rol?: string;
-
-  /**
-   * Filtro por estado exacto (active o inactive).
-   * @type {string}
-   */
-  estado?: string;
-}
-
 </code></pre>
     </div>
 
@@ -674,7 +571,7 @@ export interface FiltroAdmin {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'injectable';
-            var COMPODOC_CURRENT_PAGE_URL = 'AdminService.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'Json.html';
             var MAX_SEARCH_RESULTS = 15;
        </script>
 

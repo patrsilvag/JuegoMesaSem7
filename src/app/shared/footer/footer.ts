@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Json } from '../../services/json'; // ajusta ruta si es distinta
+import { Json } from '../../services/json';
 
 /**
- * @description
+ * 
  * Componente de pie de página. Muestra contenido estático del sitio como créditos
  * y derechos reservados, además de información dinámica como el tipo de cambio
  * de dólar estadounidense (USD) a peso chileno (CLP).
@@ -31,10 +31,26 @@ import { Json } from '../../services/json'; // ajusta ruta si es distinta
   styleUrls: ['./footer.scss'],
 })
 export class FooterComponent implements OnInit {
+  /**
+   * Valor actual del tipo de cambio de USD a CLP.
+   * Se obtiene dinámicamente desde la API externa al inicializar el componente.
+   * Es `null` mientras no se haya cargado o si ocurre un error.
+   * @type {number | null}
+   */
   valorDolar: number | null = null;
 
+  /**
+   * Crea una instancia del componente e inyecta el servicio `Json`.
+   *
+   * @param jsonService Servicio inyectado que maneja la llamada HTTP a la API real.
+   */
   constructor(private jsonService: Json) {}
-
+  /**
+   * Inicializa el componente y solicita el tipo de cambio desde la API externa.
+   * El valor se guarda en `valorDolar`. Si ocurre un error, se asigna `null`.
+   *
+   * @returns {void}
+   */
   ngOnInit(): void {
     this.jsonService.getCambioDolar().subscribe({
       next: (data) => {

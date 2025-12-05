@@ -146,12 +146,13 @@
         <h3>Description</h3>
     </p>
     <p class="comment">
-        <p>  Página de listado de productos por categoría. Escucha el parámetro
-<code>slug</code> de la ruta, obtiene los textos de <code>categoriasData</code> y filtra <code>productos</code>
-para mostrar solo los de esa categoría.</p>
+        <p>Página de listado de productos por categoría. Carga metadatos de categoría y productos
+desde archivos JSON locales, y los filtra dinámicamente según el <code>slug</code> en la ruta.</p>
 <ul>
-<li>Se accede típicamente por ruta <code>/categorias/:slug</code>.</li>
-<li>Usa <code>Cart</code> para añadir productos al carrito con cantidad 1.</li>
+<li>Se accede por rutas como <code>/categorias/:slug</code>.</li>
+<li>Muestra el título y subtítulo según la categoría.</li>
+<li>Carga datos desde <code>categorias.json</code> y <code>productos.json</code> usando el servicio <code>Json</code>.</li>
+<li>Usa <code>Cart</code> para añadir productos con cantidad 1.</li>
 </ul>
 
     </p>
@@ -262,6 +263,9 @@ para mostrar solo los de esa categoría.</p>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#actualizarVista" >actualizarVista</a>
+                            </li>
+                            <li>
                                 <a href="#agregarProducto" >agregarProducto</a>
                             </li>
                             <li>
@@ -285,19 +289,18 @@ para mostrar solo los de esa categoría.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(route: ActivatedRoute, cart: <a href="../injectables/Cart.html" target="_self">Cart</a>)</code>
+<code>constructor(route: ActivatedRoute, cart: <a href="../injectables/Cart.html" target="_self">Cart</a>, jsonSrv: <a href="../injectables/Json.html" target="_self">Json</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="195" class="link-to-prism">src/app/pages/categoria/categoria.ts:195</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/pages/categoria/categoria.ts:56</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>  Inyecta la ruta activada para leer el parámetro <code>slug</code>
-y el servicio de carrito para añadir productos.</p>
+                            <div class="io-description"><p>Inyecta dependencias necesarias.</p>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -323,7 +326,7 @@ y el servicio de carrito para añadir productos.</p>
                                                     </td>
                                                     
                                                         <td>
-                                                                <p>Ruta activada con acceso a <code>params</code>.</p>
+                                                                <p>Ruta activada, usada para extraer el <code>slug</code>.</p>
 
                                                         </td>
                                                 </tr>
@@ -339,7 +342,23 @@ y el servicio de carrito para añadir productos.</p>
                                                     </td>
                                                     
                                                         <td>
-                                                                <p>Servicio de carrito.</p>
+                                                                <p>Servicio de carrito para agregar productos.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>jsonSrv</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/Json.html" target="_self" >Json</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Servicio para consumir archivos JSON locales.</p>
 
                                                         </td>
                                                 </tr>
@@ -365,6 +384,45 @@ y el servicio de carrito para añadir productos.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="actualizarVista"></a>
+                    <span class="name">
+                        <span ><b>actualizarVista</b></span>
+                        <a href="#actualizarVista"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>actualizarVista()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="105"
+                                    class="link-to-prism">src/app/pages/categoria/categoria.ts:105</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calcula los productos filtrados y la categoría activa.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="agregarProducto"></a>
                     <span class="name">
                         <span ><b>agregarProducto</b></span>
@@ -381,15 +439,15 @@ y el servicio de carrito para añadir productos.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="229"
-                                    class="link-to-prism">src/app/pages/categoria/categoria.ts:229</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="114"
+                                    class="link-to-prism">src/app/pages/categoria/categoria.ts:114</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>  Añade un producto al carrito con cantidad 1 usando <code>Cart.agregar</code>.</p>
+                        <div class="io-description"><p>Agrega un producto al carrito con cantidad 1.</p>
 </div>
 
                             <div class="io-description">
@@ -417,7 +475,7 @@ y el servicio de carrito para añadir productos.</p>
 
 
                                             <td>
-                                                    <p>Objeto de producto tal y como está definido en <code>productos</code>.</p>
+                                                    <p>Producto a agregar al carrito.</p>
 
                                             </td>
                                         </tr>
@@ -429,8 +487,7 @@ y el servicio de carrito para añadir productos.</p>
 
                         </div>
                             <div class="io-description">
-                                <p>Nada (<code>void</code>).</p>
-
+                                
                             </div>
                 </td>
             </tr>
@@ -456,19 +513,18 @@ y el servicio de carrito para añadir productos.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="212"
-                                    class="link-to-prism">src/app/pages/categoria/categoria.ts:212</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="72"
+                                    class="link-to-prism">src/app/pages/categoria/categoria.ts:72</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>  Se suscribe a los parámetros de la ruta para:</p>
+                        <div class="io-description"><p>Inicializa el componente:</p>
 <ul>
-<li>Actualizar <code>slug</code>.</li>
-<li>Calcular <code>categoriaActual</code> a partir de <code>categoriasData</code>.</li>
-<li>Filtrar <code>productos</code> por categoría y quedarse con los 3 primeros.</li>
+<li>Carga <code>categoriasData</code> y <code>productos</code> desde JSON local.</li>
+<li>Escucha el <code>slug</code> de la ruta para calcular <code>categoriaActual</code> y productos asociados.</li>
 </ul>
 </div>
 
@@ -477,8 +533,7 @@ y el servicio de carrito para añadir productos.</p>
 
                         </div>
                             <div class="io-description">
-                                <p>Nada (<code>void</code>).</p>
-
+                                
                             </div>
                 </td>
             </tr>
@@ -514,14 +569,13 @@ y el servicio de carrito para añadir productos.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/pages/categoria/categoria.ts:31</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/app/pages/categoria/categoria.ts:49</a></div>
                         </td>
                     </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Metadatos de la categoría actual (título y subtítulo) tomados
-desde <code>categoriasData</code>. Es <code>null</code> si el <code>slug</code> no existe.</p>
+                    <div class="io-description"><p>Categoría actualmente activa según <code>slug</code>. Es <code>null</code> si no coincide con <code>categoriasData</code>.</p>
 </div>
                 </td>
             </tr>
@@ -547,37 +601,18 @@ desde <code>categoriasData</code>. Es <code>null</code> si el <code>slug</code> 
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>{
-    amigos: {
-      titulo: &#x27;Juegos para Amigos&#x27;,
-      subtitulo: &#x27;¡Dibuja, adivina y tiembla! La diversión se apila.&#x27;,
-    },
-    cartas: {
-      titulo: &#x27;Juegos de Cartas&#x27;,
-      subtitulo: &#x27;Barajas y juegos rápidos para todos&#x27;,
-    },
-    estrategia: {
-      titulo: &#x27;Juegos de Estrategia&#x27;,
-      subtitulo: &#x27;Planifica, conquista y desafía tu mente&#x27;,
-    },
-    infantiles: {
-      titulo: &#x27;Juegos Infantiles&#x27;,
-      subtitulo: &#x27;Aprendizaje y diversión para los más pequeños&#x27;,
-    },
-  }</code>
+                        <i>Default value : </i><code>{}</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/pages/categoria/categoria.ts:43</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/pages/categoria/categoria.ts:37</a></div>
                         </td>
                     </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Diccionario estático de metadatos por categoría. La clave es el <code>slug</code>
-de la ruta (por ejemplo: <code>&#39;amigos&#39;</code>, <code>&#39;cartas&#39;</code>, <code>&#39;estrategia&#39;</code>, <code>&#39;infantiles&#39;</code>)
-y el valor contiene el título y subtítulo que se muestran en la vista.</p>
+                    <div class="io-description"><p>Metadatos de todas las categorías, cargados desde <code>categorias.json</code>.</p>
 </div>
                 </td>
             </tr>
@@ -597,155 +632,24 @@ y el valor contiene el título y subtítulo que se muestran en la vista.</p>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>[]</code>
+                        <i>Type : </i>    <code>any[]</code>
 
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>[
-    // Estrategia
-    {
-      id: &#x27;sku-catan&#x27;,
-      nombre: &#x27;Catan&#x27;,
-      categoria: &#x27;estrategia&#x27;,
-      precio: 29990,
-      descuento: true,
-      imagen: &#x27;assets/img/catan.webp&#x27;,
-      alt: &#x27;Tablero Catan&#x27;,
-      desc: &#x27;Coloniza la isla y comercia recursos.&#x27;,
-    },
-    {
-      id: &#x27;sku-risk&#x27;,
-      nombre: &#x27;Risk&#x27;,
-      categoria: &#x27;estrategia&#x27;,
-      precio: 24990,
-      descuento: false,
-      imagen: &#x27;assets/img/risk.webp&#x27;,
-      alt: &#x27;Tablero Risk&#x27;,
-      desc: &#x27;Conquista el mundo con estrategia.&#x27;,
-    },
-    {
-      id: &#x27;sku-ajed&#x27;,
-      nombre: &#x27;Ajedrez Clásico&#x27;,
-      categoria: &#x27;estrategia&#x27;,
-      precio: 14990,
-      descuento: true,
-      imagen: &#x27;assets/img/ajedrez.webp&#x27;,
-      alt: &#x27;Ajedrez&#x27;,
-      desc: &#x27;Clásico de estrategia.&#x27;,
-    },
-
-    // Cartas
-    {
-      id: &#x27;sku-ek&#x27;,
-      nombre: &#x27;Exploding Kittens&#x27;,
-      categoria: &#x27;cartas&#x27;,
-      precio: 16990,
-      descuento: true,
-      imagen: &#x27;assets/img/exploding_kittens.webp&#x27;,
-      alt: &#x27;Exploding Kittens&#x27;,
-      desc: &#x27;Evita explotar con cartas de defensa.&#x27;,
-    },
-    {
-      id: &#x27;sku-dob&#x27;,
-      nombre: &#x27;Dobble&#x27;,
-      categoria: &#x27;cartas&#x27;,
-      precio: 10990,
-      descuento: false,
-      imagen: &#x27;assets/img/dobble.webp&#x27;,
-      alt: &#x27;Dobble&#x27;,
-      desc: &#x27;Encuentra el símbolo común.&#x27;,
-    },
-    {
-      id: &#x27;sku-poker&#x27;,
-      nombre: &#x27;Set Póker Clásico&#x27;,
-      categoria: &#x27;cartas&#x27;,
-      precio: 19990,
-      descuento: true,
-      imagen: &#x27;assets/img/cartas_poker.webp&#x27;,
-      alt: &#x27;Poker&#x27;,
-      desc: &#x27;Baraja y fichas clásicas.&#x27;,
-    },
-
-    // Amigos
-    {
-      id: &#x27;sku-pict&#x27;,
-      nombre: &#x27;Pictionary&#x27;,
-      categoria: &#x27;amigos&#x27;,
-      precio: 18990,
-      descuento: true,
-      imagen: &#x27;assets/img/pictionary.webp&#x27;,
-      alt: &#x27;Pictionary&#x27;,
-      desc: &#x27;Dibuja y adivina.&#x27;,
-    },
-    {
-      id: &#x27;sku-jenga&#x27;,
-      nombre: &#x27;Jenga&#x27;,
-      categoria: &#x27;amigos&#x27;,
-      precio: 13990,
-      descuento: false,
-      imagen: &#x27;assets/img/jenga.webp&#x27;,
-      alt: &#x27;Jenga&#x27;,
-      desc: &#x27;Pulso firme para no botar la torre.&#x27;,
-    },
-    {
-      id: &#x27;sku-uno&#x27;,
-      nombre: &#x27;UNO&#x27;,
-      categoria: &#x27;amigos&#x27;,
-      precio: 8990,
-      descuento: true,
-      imagen: &#x27;assets/img/uno.webp&#x27;,
-      alt: &#x27;UNO&#x27;,
-      desc: &#x27;Clásico rápido y divertido.&#x27;,
-    },
-
-    // Infantiles
-    {
-      id: &#x27;sku-candy&#x27;,
-      nombre: &#x27;Candy Land&#x27;,
-      categoria: &#x27;infantiles&#x27;,
-      precio: 12990,
-      descuento: true,
-      imagen: &#x27;assets/img/candyland.webp&#x27;,
-      alt: &#x27;Candy Land&#x27;,
-      desc: &#x27;Aprenden colores y turnos.&#x27;,
-    },
-    {
-      id: &#x27;sku-serp&#x27;,
-      nombre: &#x27;Serpientes y Escaleras&#x27;,
-      categoria: &#x27;infantiles&#x27;,
-      precio: 9990,
-      descuento: false,
-      imagen: &#x27;assets/img/serpientes.webp&#x27;,
-      alt: &#x27;Serpientes y Escaleras&#x27;,
-      desc: &#x27;Azar y diversión.&#x27;,
-    },
-    {
-      id: &#x27;sku-memo&#x27;,
-      nombre: &#x27;Memoria Animales&#x27;,
-      categoria: &#x27;infantiles&#x27;,
-      precio: 7990,
-      descuento: true,
-      imagen: &#x27;assets/img/memoria.webp&#x27;,
-      alt: &#x27;Memoria&#x27;,
-      desc: &#x27;Mejora la concentración.&#x27;,
-    },
-  ]</code>
+                        <i>Default value : </i><code>[]</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/pages/categoria/categoria.ts:67</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/pages/categoria/categoria.ts:43</a></div>
                         </td>
                     </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Catálogo estático de productos disponibles en la tienda, incluyendo
-su id, nombre, categoría, precio, si tiene descuento y metadatos
-de imagen y descripción. Se filtra por <code>categoria</code> según el <code>slug</code>
-de la ruta.</p>
+                    <div class="io-description"><p>Lista completa de productos, cargada desde <code>productos.json</code>.</p>
 </div>
                 </td>
             </tr>
@@ -776,14 +680,14 @@ de la ruta.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/pages/categoria/categoria.ts:37</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/pages/categoria/categoria.ts:56</a></div>
                         </td>
                     </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Lista de productos filtrados por la categoría actual. Normalmente
-contiene como máximo los 3 primeros productos de esa categoría.</p>
+                    <div class="io-description"><p>Lista de productos que pertenecen a la categoría actual.
+Se limita a 3 productos como máximo.</p>
 </div>
                 </td>
             </tr>
@@ -809,14 +713,14 @@ contiene como máximo los 3 primeros productos de esa categoría.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/pages/categoria/categoria.ts:25</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/pages/categoria/categoria.ts:31</a></div>
                         </td>
                     </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Identificador de la categoría actual obtenido desde el parámetro
-<code>slug</code> de la ruta (por ejemplo: <code>&#39;amigos&#39;</code>, <code>&#39;cartas&#39;</code>, etc.).</p>
+                    <div class="io-description"><p>Slug de la categoría extraído desde la URL.
+Ejemplo: &#39;estrategia&#39;, &#39;infantiles&#39;.</p>
 </div>
                 </td>
             </tr>
@@ -833,13 +737,18 @@ contiene como máximo los 3 primeros productos de esa categoría.</p>
 import { ActivatedRoute, RouterLink } from &#x27;@angular/router&#x27;;
 import { CommonModule } from &#x27;@angular/common&#x27;;
 import { Cart } from &#x27;../../core/cart&#x27;;
+import { Json } from &#x27;../../services/json&#x27;;
+
 /**
- *   Página de listado de productos por categoría. Escucha el parámetro
- * &#x60;slug&#x60; de la ruta, obtiene los textos de &#x60;categoriasData&#x60; y filtra &#x60;productos&#x60;
- * para mostrar solo los de esa categoría.
+ * @description
+ * Página de listado de productos por categoría. Carga metadatos de categoría y productos
+ * desde archivos JSON locales, y los filtra dinámicamente según el &#x60;slug&#x60; en la ruta.
+ *
  * @usageNotes
- * - Se accede típicamente por ruta &#x60;/categorias/:slug&#x60;.
- * - Usa &#x60;Cart&#x60; para añadir productos al carrito con cantidad 1.
+ * - Se accede por rutas como &#x60;/categorias/:slug&#x60;.
+ * - Muestra el título y subtítulo según la categoría.
+ * - Carga datos desde &#x60;categorias.json&#x60; y &#x60;productos.json&#x60; usando el servicio &#x60;Json&#x60;.
+ * - Usa &#x60;Cart&#x60; para añadir productos con cantidad 1.
  */
 @Component({
   selector: &#x27;app-categoria&#x27;,
@@ -850,214 +759,94 @@ import { Cart } from &#x27;../../core/cart&#x27;;
 })
 export class CategoriaComponent implements OnInit {
   /**
-   * Identificador de la categoría actual obtenido desde el parámetro
-   * &#x60;slug&#x60; de la ruta (por ejemplo: &#x60;&#x27;amigos&#x27;&#x60;, &#x60;&#x27;cartas&#x27;&#x60;, etc.).
+   * Slug de la categoría extraído desde la URL.
+   * Ejemplo: &#x27;estrategia&#x27;, &#x27;infantiles&#x27;.
+   * @type {string}
    */
   slug!: string;
 
   /**
-   * Metadatos de la categoría actual (título y subtítulo) tomados
-   * desde &#x60;categoriasData&#x60;. Es &#x60;null&#x60; si el &#x60;slug&#x60; no existe.
+   * Metadatos de todas las categorías, cargados desde &#x60;categorias.json&#x60;.
+   * @type {{ [key: string]: { titulo: string, subtitulo: string } }}
+   */
+  categoriasData: any &#x3D; {};
+
+  /**
+   * Lista completa de productos, cargada desde &#x60;productos.json&#x60;.
+   * @type {any[]}
+   */
+  productos: any[] &#x3D; [];
+
+  /**
+   * Categoría actualmente activa según &#x60;slug&#x60;. Es &#x60;null&#x60; si no coincide con &#x60;categoriasData&#x60;.
+   * @type {{ titulo: string, subtitulo: string } | null}
    */
   categoriaActual: any &#x3D; null;
 
   /**
-   * Lista de productos filtrados por la categoría actual. Normalmente
-   * contiene como máximo los 3 primeros productos de esa categoría.
+   * Lista de productos que pertenecen a la categoría actual.
+   * Se limita a 3 productos como máximo.
+   * @type {any[]}
    */
   productosFiltrados: any[] &#x3D; [];
+
   /**
-   * Diccionario estático de metadatos por categoría. La clave es el &#x60;slug&#x60;
-   * de la ruta (por ejemplo: &#x60;&#x27;amigos&#x27;&#x60;, &#x60;&#x27;cartas&#x27;&#x60;, &#x60;&#x27;estrategia&#x27;&#x60;, &#x60;&#x27;infantiles&#x27;&#x60;)
-   * y el valor contiene el título y subtítulo que se muestran en la vista.
+   * Inyecta dependencias necesarias.
+   * @param route Ruta activada, usada para extraer el &#x60;slug&#x60;.
+   * @param cart Servicio de carrito para agregar productos.
+   * @param jsonSrv Servicio para consumir archivos JSON locales.
    */
-  categoriasData: any &#x3D; {
-    amigos: {
-      titulo: &#x27;Juegos para Amigos&#x27;,
-      subtitulo: &#x27;¡Dibuja, adivina y tiembla! La diversión se apila.&#x27;,
-    },
-    cartas: {
-      titulo: &#x27;Juegos de Cartas&#x27;,
-      subtitulo: &#x27;Barajas y juegos rápidos para todos&#x27;,
-    },
-    estrategia: {
-      titulo: &#x27;Juegos de Estrategia&#x27;,
-      subtitulo: &#x27;Planifica, conquista y desafía tu mente&#x27;,
-    },
-    infantiles: {
-      titulo: &#x27;Juegos Infantiles&#x27;,
-      subtitulo: &#x27;Aprendizaje y diversión para los más pequeños&#x27;,
-    },
-  };
-  /**
-   * Catálogo estático de productos disponibles en la tienda, incluyendo
-   * su id, nombre, categoría, precio, si tiene descuento y metadatos
-   * de imagen y descripción. Se filtra por &#x60;categoria&#x60; según el &#x60;slug&#x60;
-   * de la ruta.
-   */
-  productos &#x3D; [
-    // Estrategia
-    {
-      id: &#x27;sku-catan&#x27;,
-      nombre: &#x27;Catan&#x27;,
-      categoria: &#x27;estrategia&#x27;,
-      precio: 29990,
-      descuento: true,
-      imagen: &#x27;assets/img/catan.webp&#x27;,
-      alt: &#x27;Tablero Catan&#x27;,
-      desc: &#x27;Coloniza la isla y comercia recursos.&#x27;,
-    },
-    {
-      id: &#x27;sku-risk&#x27;,
-      nombre: &#x27;Risk&#x27;,
-      categoria: &#x27;estrategia&#x27;,
-      precio: 24990,
-      descuento: false,
-      imagen: &#x27;assets/img/risk.webp&#x27;,
-      alt: &#x27;Tablero Risk&#x27;,
-      desc: &#x27;Conquista el mundo con estrategia.&#x27;,
-    },
-    {
-      id: &#x27;sku-ajed&#x27;,
-      nombre: &#x27;Ajedrez Clásico&#x27;,
-      categoria: &#x27;estrategia&#x27;,
-      precio: 14990,
-      descuento: true,
-      imagen: &#x27;assets/img/ajedrez.webp&#x27;,
-      alt: &#x27;Ajedrez&#x27;,
-      desc: &#x27;Clásico de estrategia.&#x27;,
-    },
-
-    // Cartas
-    {
-      id: &#x27;sku-ek&#x27;,
-      nombre: &#x27;Exploding Kittens&#x27;,
-      categoria: &#x27;cartas&#x27;,
-      precio: 16990,
-      descuento: true,
-      imagen: &#x27;assets/img/exploding_kittens.webp&#x27;,
-      alt: &#x27;Exploding Kittens&#x27;,
-      desc: &#x27;Evita explotar con cartas de defensa.&#x27;,
-    },
-    {
-      id: &#x27;sku-dob&#x27;,
-      nombre: &#x27;Dobble&#x27;,
-      categoria: &#x27;cartas&#x27;,
-      precio: 10990,
-      descuento: false,
-      imagen: &#x27;assets/img/dobble.webp&#x27;,
-      alt: &#x27;Dobble&#x27;,
-      desc: &#x27;Encuentra el símbolo común.&#x27;,
-    },
-    {
-      id: &#x27;sku-poker&#x27;,
-      nombre: &#x27;Set Póker Clásico&#x27;,
-      categoria: &#x27;cartas&#x27;,
-      precio: 19990,
-      descuento: true,
-      imagen: &#x27;assets/img/cartas_poker.webp&#x27;,
-      alt: &#x27;Poker&#x27;,
-      desc: &#x27;Baraja y fichas clásicas.&#x27;,
-    },
-
-    // Amigos
-    {
-      id: &#x27;sku-pict&#x27;,
-      nombre: &#x27;Pictionary&#x27;,
-      categoria: &#x27;amigos&#x27;,
-      precio: 18990,
-      descuento: true,
-      imagen: &#x27;assets/img/pictionary.webp&#x27;,
-      alt: &#x27;Pictionary&#x27;,
-      desc: &#x27;Dibuja y adivina.&#x27;,
-    },
-    {
-      id: &#x27;sku-jenga&#x27;,
-      nombre: &#x27;Jenga&#x27;,
-      categoria: &#x27;amigos&#x27;,
-      precio: 13990,
-      descuento: false,
-      imagen: &#x27;assets/img/jenga.webp&#x27;,
-      alt: &#x27;Jenga&#x27;,
-      desc: &#x27;Pulso firme para no botar la torre.&#x27;,
-    },
-    {
-      id: &#x27;sku-uno&#x27;,
-      nombre: &#x27;UNO&#x27;,
-      categoria: &#x27;amigos&#x27;,
-      precio: 8990,
-      descuento: true,
-      imagen: &#x27;assets/img/uno.webp&#x27;,
-      alt: &#x27;UNO&#x27;,
-      desc: &#x27;Clásico rápido y divertido.&#x27;,
-    },
-
-    // Infantiles
-    {
-      id: &#x27;sku-candy&#x27;,
-      nombre: &#x27;Candy Land&#x27;,
-      categoria: &#x27;infantiles&#x27;,
-      precio: 12990,
-      descuento: true,
-      imagen: &#x27;assets/img/candyland.webp&#x27;,
-      alt: &#x27;Candy Land&#x27;,
-      desc: &#x27;Aprenden colores y turnos.&#x27;,
-    },
-    {
-      id: &#x27;sku-serp&#x27;,
-      nombre: &#x27;Serpientes y Escaleras&#x27;,
-      categoria: &#x27;infantiles&#x27;,
-      precio: 9990,
-      descuento: false,
-      imagen: &#x27;assets/img/serpientes.webp&#x27;,
-      alt: &#x27;Serpientes y Escaleras&#x27;,
-      desc: &#x27;Azar y diversión.&#x27;,
-    },
-    {
-      id: &#x27;sku-memo&#x27;,
-      nombre: &#x27;Memoria Animales&#x27;,
-      categoria: &#x27;infantiles&#x27;,
-      precio: 7990,
-      descuento: true,
-      imagen: &#x27;assets/img/memoria.webp&#x27;,
-      alt: &#x27;Memoria&#x27;,
-      desc: &#x27;Mejora la concentración.&#x27;,
-    },
-  ];
+  constructor(private route: ActivatedRoute, private cart: Cart, private jsonSrv: Json) {}
 
   /**
-   *   Inyecta la ruta activada para leer el parámetro &#x60;slug&#x60;
-   * y el servicio de carrito para añadir productos.
-   * @param route Ruta activada con acceso a &#x60;params&#x60;.
-   * @param cart Servicio de carrito.
-   */
-  constructor(private route: ActivatedRoute, private cart: Cart) {}
-
-  /**
-   *   Se suscribe a los parámetros de la ruta para:
-   * - Actualizar &#x60;slug&#x60;.
-   * - Calcular &#x60;categoriaActual&#x60; a partir de &#x60;categoriasData&#x60;.
-   * - Filtrar &#x60;productos&#x60; por categoría y quedarse con los 3 primeros.
-   * @returns Nada (&#x60;void&#x60;).
+   * Inicializa el componente:
+   * - Carga &#x60;categoriasData&#x60; y &#x60;productos&#x60; desde JSON local.
+   * - Escucha el &#x60;slug&#x60; de la ruta para calcular &#x60;categoriaActual&#x60; y productos asociados.
+   * @returns {void}
    */
   ngOnInit(): void {
-    // 🔥 escuchar SIEMPRE los cambios de categoría
+    let categoriasListas &#x3D; false;
+    let productosListos &#x3D; false;
+
+    this.jsonSrv.getCategorias().subscribe({
+      next: (data) &#x3D;&gt; {
+        this.categoriasData &#x3D; data;
+        categoriasListas &#x3D; true;
+        if (this.slug) this.actualizarVista();
+      },
+      error: () &#x3D;&gt; console.error(&#x27;Error cargando categorias.json&#x27;),
+    });
+
+    this.jsonSrv.getProductos().subscribe({
+      next: (data) &#x3D;&gt; {
+        this.productos &#x3D; data;
+        productosListos &#x3D; true;
+        if (this.slug) this.actualizarVista();
+      },
+      error: () &#x3D;&gt; console.error(&#x27;Error cargando productos.json&#x27;),
+    });
+
     this.route.params.subscribe((params) &#x3D;&gt; {
       this.slug &#x3D; params[&#x27;slug&#x27;];
-
-      this.categoriaActual &#x3D; this.categoriasData[this.slug] ?? null;
-
-      // Filtrar productos y mostrar solo los 3 primeros
-      this.productosFiltrados &#x3D; this.productos.filter((p) &#x3D;&gt; p.categoria &#x3D;&#x3D;&#x3D; this.slug).slice(0, 3);
+      if (categoriasListas &amp;&amp; productosListos) {
+        this.actualizarVista();
+      }
     });
   }
 
   /**
-   *   Añade un producto al carrito con cantidad 1 usando &#x60;Cart.agregar&#x60;.
-   * @param p Objeto de producto tal y como está definido en &#x60;productos&#x60;.
-   * @returns Nada (&#x60;void&#x60;).
+   * Calcula los productos filtrados y la categoría activa.
    */
-  agregarProducto(p: any) {
+  actualizarVista(): void {
+    this.categoriaActual &#x3D; this.categoriasData[this.slug] ?? null;
+    this.productosFiltrados &#x3D; this.productos.filter((p) &#x3D;&gt; p.categoria &#x3D;&#x3D;&#x3D; this.slug).slice(0, 3);
+  }
+  /**
+   * Agrega un producto al carrito con cantidad 1.
+   * @param p Producto a agregar al carrito.
+   * @returns {void}
+   */
+  agregarProducto(p: any): void {
     this.cart.agregar({
       id: p.id,
       nombre: p.nombre,
@@ -1227,7 +1016,7 @@ export class CategoriaComponent implements OnInit {
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><section class="bg-light border-bottom py-3">  <div class="container">    <h1 class="h4 mb-0">      {{ categoriaActual?.titulo }}    </h1>  </div></section><main class="container my-5">  <h2 class="text-center mb-4">{{ categoriaActual?.subtitulo }}</h2>  <!-- LISTA DE PRODUCTOS -->  <div class="row g-4 justify-content-center">    @for (p of productosFiltrados; track p.id) {      <div class="col-12 col-sm-6 col-md-4 col-lg-3">        <div class="producto-card h-100 shadow-sm">          <!-- Imagen -->          <img             [src]="p.imagen"             [alt]="p.alt"             loading="lazy"           />          <!-- Contenido -->          <div class="contenido text-center p-3">            <h3 class="fw-bold fs-6">{{ p.nombre }}</h3>            <p class="descripcion mb-2">              {{ p.desc }}            </p>            <p class="precio fw-bold text-primary mb-1">              Precio: $ {{ p.precio | number }}            </p>            @if (p.descuento) {              <p class="descuento text-success fw-bold mb-2">Descuento disponible</p>            }            <button               class="btn btn-primary btn-sm w-100"              (click)="agregarProducto(p)"            >              Agregar            </button>          </div> <!-- /contenido -->        </div> <!-- /producto-card -->      </div>    }  </div>  <div class="text-center mt-5">    <a class="btn btn-primary" routerLink="/">← Volver al inicio</a>  </div></main></div>'
-    var COMPONENTS = [{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'CarritoComponent', 'selector': 'app-carrito'},{'name': 'CategoriaComponent', 'selector': 'app-categoria'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'PerfilComponent', 'selector': 'app-perfil'},{'name': 'RecuperarComponent', 'selector': 'app-recuperar'},{'name': 'RegistroComponent', 'selector': 'app-registro'},{'name': 'TemplatePlaygroundComponent', 'selector': 'template-playground-root'},{'name': 'ToastComponent', 'selector': 'app-toast'}];
+    var COMPONENTS = [{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'CarritoComponent', 'selector': 'app-carrito'},{'name': 'CategoriaComponent', 'selector': 'app-categoria'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'PerfilComponent', 'selector': 'app-perfil'},{'name': 'RecuperarComponent', 'selector': 'app-recuperar'},{'name': 'RegistroComponent', 'selector': 'app-registro'},{'name': 'ToastComponent', 'selector': 'app-toast'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'CategoriaComponent'};
 </script>

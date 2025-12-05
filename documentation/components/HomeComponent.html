@@ -227,6 +227,20 @@ al menos <code>nombre</code>, <code>slug</code> (usado en <code>/categorias/:slu
                     </td>
                 </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
 
 
@@ -236,12 +250,114 @@ al menos <code>nombre</code>, <code>slug</code> (usado en <code>/categorias/:slu
     </table>
 </section>
 
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(jsonSrv: <a href="../injectables/Json.html" target="_self">Json</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/pages/home/home.ts:24</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Inyecta el servicio JSON para cargar datos de assets.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>jsonSrv</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/Json.html" target="_self" >Json</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Servicio de acceso a archivos JSON locales.</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
 
 
 
 
 
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
 
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="36"
+                                    class="link-to-prism">src/app/pages/home/home.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Carga las categorías desde el archivo <code>categorias.json</code>.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
     <section data-compodoc="block-properties">
     
     <h3 id="inputs">
@@ -260,39 +376,18 @@ al menos <code>nombre</code>, <code>slug</code> (usado en <code>/categorias/:slu
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>[]</code>
+                        <i>Type : </i>    <code>any[]</code>
 
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>[
-    {
-      nombre: &#x27;Estrategia&#x27;,
-      slug: &#x27;estrategia&#x27;,
-      imagen: &#x27;assets/img/categorias/estrategia.webp&#x27;,
-    },
-    {
-      nombre: &#x27;Infantiles&#x27;,
-      slug: &#x27;infantiles&#x27;,
-      imagen: &#x27;assets/img/categorias/infantiles.webp&#x27;,
-    },
-    {
-      nombre: &#x27;Amigos&#x27;,
-      slug: &#x27;amigos&#x27;,
-      imagen: &#x27;assets/img/categorias/amigos.webp&#x27;,
-    },
-    {
-      nombre: &#x27;Cartas&#x27;,
-      slug: &#x27;cartas&#x27;,
-      imagen: &#x27;assets/img/categorias/cartas.webp&#x27;,
-    },
-  ]</code>
+                        <i>Default value : </i><code>[]</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/app/pages/home/home.ts:23</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/pages/home/home.ts:24</a></div>
                         </td>
                     </tr>
 
@@ -314,6 +409,7 @@ necesarios para construir las tarjetas de navegación.</p>
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
 import { RouterLink } from &#x27;@angular/router&#x27;;
+import { Json } from &#x27;../../services/json&#x27;;
 /**
  * Página de inicio. Muestra el listado de categorías disponibles
  * y enlaza a las rutas de detalle de categoría.
@@ -328,34 +424,37 @@ import { RouterLink } from &#x27;@angular/router&#x27;;
   templateUrl: &#x27;./home.html&#x27;,
   styleUrl: &#x27;./home.scss&#x27;,
 })
-
 export class HomeComponent {
   /**
    * Listado de categorías visibles en la portada con los datos
    * necesarios para construir las tarjetas de navegación.
+   * @type {{ nombre: string, slug: string, imagen: string }[]}
    */
-  categorias &#x3D; [
-    {
-      nombre: &#x27;Estrategia&#x27;,
-      slug: &#x27;estrategia&#x27;,
-      imagen: &#x27;assets/img/categorias/estrategia.webp&#x27;,
-    },
-    {
-      nombre: &#x27;Infantiles&#x27;,
-      slug: &#x27;infantiles&#x27;,
-      imagen: &#x27;assets/img/categorias/infantiles.webp&#x27;,
-    },
-    {
-      nombre: &#x27;Amigos&#x27;,
-      slug: &#x27;amigos&#x27;,
-      imagen: &#x27;assets/img/categorias/amigos.webp&#x27;,
-    },
-    {
-      nombre: &#x27;Cartas&#x27;,
-      slug: &#x27;cartas&#x27;,
-      imagen: &#x27;assets/img/categorias/cartas.webp&#x27;,
-    },
-  ];
+  categorias: any[] &#x3D; [];
+
+  /**
+   * Inyecta el servicio JSON para cargar datos de assets.
+   * @param jsonSrv Servicio de acceso a archivos JSON locales.
+   */
+  constructor(private jsonSrv: Json) {}
+
+  /**
+   * Carga las categorías desde el archivo &#x60;categorias.json&#x60;.
+   * @returns {void}
+   */
+  ngOnInit(): void {
+    this.jsonSrv.getCategorias().subscribe({
+      next: (data) &#x3D;&gt; {
+        // Convertir el objeto en array con clave como slug
+        this.categorias &#x3D; Object.entries(data).map(([slug, info]: [string, any]) &#x3D;&gt; ({
+          nombre: info.titulo,
+          slug,
+          imagen: &#x60;assets/img/categorias/${slug}.webp&#x60;,
+        }));
+      },
+      error: () &#x3D;&gt; console.error(&#x27;No se pudo cargar categorias.json&#x27;),
+    });
+  }
 }
 </code></pre>
     </div>
@@ -419,7 +518,7 @@ export class HomeComponent {
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><section class="hero bg-white text-center">  <div class="container">    <h1 class="hero-title">Juegos de Mesa Cuatro Esquinas</h1>    <h2 class="hero-subtitle">Descubre diversión sin límites para toda la familia</h2>  </div></section><section class="categorias-wrapper container">  <h2 class="text-center fw-bold mb-4">Categorías disponibles</h2>  <div class="row g-4 justify-content-center">    @for (c of categorias; track c) {    <div class="col-12 col-sm-6 col-md-4 col-lg-3">      <a [routerLink]="[\'/categorias\', c.slug]" class="categoria-link">        <div class="card-categoria h-100">          <img [src]="c.imagen" [alt]="c.nombre" loading="eager" />          <div class="card-body text-center">            <span class="categoria-name">{{ c.nombre }}</span>          </div>        </div>      </a>    </div>    }  </div></section></div>'
-    var COMPONENTS = [{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'CarritoComponent', 'selector': 'app-carrito'},{'name': 'CategoriaComponent', 'selector': 'app-categoria'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'PerfilComponent', 'selector': 'app-perfil'},{'name': 'RecuperarComponent', 'selector': 'app-recuperar'},{'name': 'RegistroComponent', 'selector': 'app-registro'},{'name': 'TemplatePlaygroundComponent', 'selector': 'template-playground-root'},{'name': 'ToastComponent', 'selector': 'app-toast'}];
+    var COMPONENTS = [{'name': 'AdminComponent', 'selector': 'app-admin'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'CarritoComponent', 'selector': 'app-carrito'},{'name': 'CategoriaComponent', 'selector': 'app-categoria'},{'name': 'FooterComponent', 'selector': 'app-footer'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'PerfilComponent', 'selector': 'app-perfil'},{'name': 'RecuperarComponent', 'selector': 'app-recuperar'},{'name': 'RegistroComponent', 'selector': 'app-registro'},{'name': 'ToastComponent', 'selector': 'app-toast'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'HomeComponent'};
 </script>

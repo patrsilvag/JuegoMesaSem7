@@ -148,7 +148,7 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Tipo de filtros aplicables en el panel de administración.</p>
+                <p>Estructura de los filtros usados en la vista administrativa.</p>
 
             </p>
 
@@ -233,6 +233,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Filtro por correo parcial o completo.</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -271,6 +277,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Filtro por estado exacto (active o inactive).</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <table class="table table-sm table-bordered">
@@ -309,6 +321,12 @@
 
 
 
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Filtro por rol exacto (admin o cliente).</p>
+</div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
             </section>
@@ -321,49 +339,36 @@ import { Usuario } from &#x27;../../core/auth&#x27;;
 import { AuthRepository } from &#x27;../../core/auth.repository&#x27;;
 
 /**
- * Modelo simplificado para el panel de administración.
- * Solo contiene los campos que realmente se muestran en la grilla.
- */
-export interface UsuarioAdmin {
-  correo: string;
-  usuario: string;
-  rol: &#x27;admin&#x27; | &#x27;cliente&#x27;;
-  status: &#x27;active&#x27; | &#x27;inactive&#x27;;
-}
-
-/**
- * Tipo de filtros aplicables en el panel de administración.
- */
-export interface FiltroAdmin {
-  correo?: string;
-  rol?: string;
-  estado?: string;
-}
-
-/**
- * Servicio de administración de usuarios.
  *
- * Encapsula:
+ * Servicio de administración de usuarios para el panel de control.
+ * Centraliza la lógica de:
  * - Carga de usuarios desde el repositorio.
- * - Filtrado por correo, rol y estado.
- * - Cambio de estado activo/inactivo con persistencia en &#x60;AuthRepository&#x60;.
+ * - Filtrado por campos dinámicos.
+ * - Cambio de estado (activo/inactivo) con persistencia.
+ *
+ * @usageNotes
+ * - Utilizado por el componente &#x60;AdminComponent&#x60;.
+ * - El modelo usado en la vista es &#x60;UsuarioAdmin&#x60;, no el original &#x60;Usuario&#x60;.
  */
 @Injectable({ providedIn: &#x27;root&#x27; })
 export class AdminService {
   /**
-   * Inyecta el repositorio de usuarios para trabajar
-   * siempre contra la misma fuente de verdad.
-   * @param repo Repositorio de usuarios.
+   * Inyecta el repositorio de usuarios como fuente de datos central.
+   * @param repo Repositorio con métodos para listar y actualizar usuarios.
    */
   constructor(private repo: AuthRepository) {}
 
   /**
-   * Carga la lista completa de usuarios administrables
-   * y la mapea al modelo &#x60;UsuarioAdmin&#x60; usado en la vista.
+   * Carga todos los usuarios desde el repositorio y los transforma
+   * al modelo &#x60;UsuarioAdmin&#x60;, usado en el panel de administración.
    *
-   * @returns Lista de usuarios para el panel de administración.
+   * @returns {UsuarioAdmin[]} Lista de usuarios con datos relevantes para la vista.
    */
   cargarUsuarios(): UsuarioAdmin[] {
+    /**
+     * Lista completa de usuarios cargada desde el repositorio.
+     * Se utiliza como base para mapear al modelo &#x60;UsuarioAdmin&#x60;.
+     */
     const lista: Usuario[] &#x3D; this.repo.listarUsuarios();
 
     return lista.map((u) &#x3D;&gt; ({
@@ -375,47 +380,119 @@ export class AdminService {
   }
 
   /**
-   * Aplica filtros sobre la lista de usuarios del panel.
+   * Filtra usuarios según los criterios de búsqueda del formulario.
    *
-   * @param lista Lista base de usuarios.
-   * @param filtros Objeto con &#x60;correo&#x60;, &#x60;rol&#x60; y &#x60;estado&#x60; opcionales.
-   * @returns Lista filtrada.
+   * @param lista Lista completa de usuarios (&#x60;UsuarioAdmin[]&#x60;) sin filtrar.
+   * @param filtros Objeto con posibles filtros: &#x60;correo&#x60;, &#x60;rol&#x60;, &#x60;estado&#x60;.
+   * @returns {UsuarioAdmin[]} Lista filtrada según los criterios activos.
    */
   filtrarUsuarios(lista: UsuarioAdmin[], filtros: FiltroAdmin): UsuarioAdmin[] {
+    /**
+     * Valor del filtro por correo electrónico, normalizado en minúsculas.
+     * Se aplica con coincidencia parcial (&#x60;includes()&#x60;).
+     */
     const correoFiltro &#x3D; (filtros.correo ?? &#x27;&#x27;).trim().toLowerCase();
+    /**
+     * Valor del filtro por rol (&#x60;admin&#x60; o &#x60;cliente&#x60;).
+     * Si no se especifica, se considera vacío (sin filtrar).
+     */
     const rolFiltro &#x3D; filtros.rol ?? &#x27;&#x27;;
+    /**
+     * Valor del filtro por estado (&#x60;active&#x60; o &#x60;inactive&#x60;).
+     * Si no se especifica, se omite el filtro.
+     */
     const estadoFiltro &#x3D; filtros.estado ?? &#x27;&#x27;;
 
     return lista.filter((u) &#x3D;&gt; {
       const coincideCorreo &#x3D; correoFiltro ? u.correo.toLowerCase().includes(correoFiltro) : true;
-
       const coincideRol &#x3D; rolFiltro ? u.rol &#x3D;&#x3D;&#x3D; rolFiltro : true;
       const coincideEstado &#x3D; estadoFiltro ? u.status &#x3D;&#x3D;&#x3D; estadoFiltro : true;
-
       return coincideCorreo &amp;&amp; coincideRol &amp;&amp; coincideEstado;
     });
   }
 
   /**
-   * Alterna el estado de un usuario entre &#x60;&#x27;active&#x27;&#x60; e &#x60;&#x27;inactive&#x27;&#x60;
-   * y persiste el cambio en el repositorio.
+   * Cambia el estado de un usuario entre &#x60;active&#x60; e &#x60;inactive&#x60;.
+   * Persiste el cambio en el repositorio y actualiza el modelo en memoria.
    *
-   * @param usuario Usuario del panel cuyo estado se quiere cambiar.
-   * @returns &#x60;true&#x60; si se pudo actualizar en el repositorio, &#x60;false&#x60; en caso contrario.
+   * @param usuario Usuario visual del panel cuyo estado se quiere alternar.
+   * @returns {boolean} &#x60;true&#x60; si el cambio fue exitoso, &#x60;false&#x60; si falló.
    */
   toggleEstado(usuario: UsuarioAdmin): boolean {
+    /**
+     * Determina el nuevo estado a aplicar al usuario.
+     * Si está activo, lo cambia a inactivo, y viceversa.
+     */
     const nuevoEstado: &#x27;active&#x27; | &#x27;inactive&#x27; &#x3D; usuario.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27; ? &#x27;inactive&#x27; : &#x27;active&#x27;;
-
+    /**
+     * Resultado de la operación de actualización de estado en el repositorio.
+     * &#x60;true&#x60; si el cambio se aplicó correctamente; &#x60;false&#x60; si falló.
+     */
     const ok &#x3D; this.repo.actualizarEstado(usuario.correo, nuevoEstado);
 
     if (ok) {
-      // Si se guardó bien en el repositorio, actualizamos también el modelo en memoria.
       usuario.status &#x3D; nuevoEstado;
     }
 
     return ok;
   }
 }
+
+/**
+ * @description
+ * Modelo simplificado de usuario para mostrar en el panel de administración.
+ * Contiene solo los campos necesarios para la grilla.
+ */
+export interface UsuarioAdmin {
+  /**
+   * Correo electrónico del usuario.
+   * @type {string}
+   */
+  correo: string;
+
+  /**
+   * Nombre de usuario o alias visible.
+   * @type {string}
+   */
+  usuario: string;
+
+  /**
+   * Rol asignado al usuario (admin o cliente).
+   * @type {&#x27;admin&#x27; | &#x27;cliente&#x27;}
+   */
+  rol: &#x27;admin&#x27; | &#x27;cliente&#x27;;
+
+  /**
+   * Estado actual del usuario (activo o inactivo).
+   * @type {&#x27;active&#x27; | &#x27;inactive&#x27;}
+   */
+  status: &#x27;active&#x27; | &#x27;inactive&#x27;;
+}
+
+/**
+ * @description
+ * Estructura de los filtros usados en la vista administrativa.
+ */
+export interface FiltroAdmin {
+  /**
+   * Filtro por correo parcial o completo.
+   * @type {string}
+   */
+  correo?: string;
+
+  /**
+   * Filtro por rol exacto (admin o cliente).
+   * @type {string}
+   */
+  rol?: string;
+
+  /**
+   * Filtro por estado exacto (active o inactive).
+   * @type {string}
+   */
+  estado?: string;
+}
+
 </code></pre>
     </div>
 </div>

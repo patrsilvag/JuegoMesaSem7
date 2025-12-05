@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Json } from '../../services/json';
 /**
  * Página de inicio. Muestra el listado de categorías disponibles
  * y enlaza a las rutas de detalle de categoría.
@@ -14,32 +15,35 @@ import { RouterLink } from '@angular/router';
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
-
 export class HomeComponent {
   /**
    * Listado de categorías visibles en la portada con los datos
    * necesarios para construir las tarjetas de navegación.
+   * @type {{ nombre: string, slug: string, imagen: string }[]}
    */
-  categorias = [
-    {
-      nombre: 'Estrategia',
-      slug: 'estrategia',
-      imagen: 'assets/img/categorias/estrategia.webp',
-    },
-    {
-      nombre: 'Infantiles',
-      slug: 'infantiles',
-      imagen: 'assets/img/categorias/infantiles.webp',
-    },
-    {
-      nombre: 'Amigos',
-      slug: 'amigos',
-      imagen: 'assets/img/categorias/amigos.webp',
-    },
-    {
-      nombre: 'Cartas',
-      slug: 'cartas',
-      imagen: 'assets/img/categorias/cartas.webp',
-    },
-  ];
+  categorias: any[] = [];
+
+  /**
+   * Inyecta el servicio JSON para cargar datos de assets.
+   * @param jsonSrv Servicio de acceso a archivos JSON locales.
+   */
+  constructor(private jsonSrv: Json) {}
+
+  /**
+   * Carga las categorías desde el archivo `categorias.json`.
+   * @returns {void}
+   */
+  ngOnInit(): void {
+    this.jsonSrv.getCategorias().subscribe({
+      next: (data) => {
+        // Convertir el objeto en array con clave como slug
+        this.categorias = Object.entries(data).map(([slug, info]: [string, any]) => ({
+          nombre: info.titulo,
+          slug,
+          imagen: `assets/img/categorias/${slug}.webp`,
+        }));
+      },
+      error: () => console.error('No se pudo cargar categorias.json'),
+    });
+  }
 }
