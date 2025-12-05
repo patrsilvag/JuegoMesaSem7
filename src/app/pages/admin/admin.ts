@@ -2,12 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AdminService, UsuarioAdmin } from './admin.service';
+import { Json } from '../../services/json';
+
 /**
- * Panel de administración para listar y filtrar usuarios,
- * así como cambiar su estado activo/inactivo.
+ * @description
+ * Panel de administración para gestionar usuarios (listar, filtrar, activar/desactivar)
+ * y mostrar las ventas por categoría cargadas desde un JSON externo publicado en GitHub Pages.
+ *
  * @usageNotes
- * - Se apoya en AdminService para cargar, filtrar y actualizar usuarios.
- * - Usa un formulario reactivo filtroForm con campos correo, rol y estado.
+ * - Usa `AdminService` para la lógica de usuarios y `Json` para consumo de API externa.
+ * - El formulario de filtro es reactivo y responde a cambios automáticamente.
+ * - Los datos de ventas se muestran como una segunda grilla en la vista.
+ *
+ * @example
+ * <app-admin></app-admin>
  */
 @Component({
   selector: 'app-admin',
@@ -18,46 +26,60 @@ import { AdminService, UsuarioAdmin } from './admin.service';
 })
 export class AdminComponent implements OnInit {
   /**
-   *  Formulario reactivo que contiene los campos de filtrado:
-   * `correo`, `rol` y `estado`.
-   *  @type {FormGroup}
+   * Formulario reactivo con campos `correo`, `rol` y `estado` para filtrar usuarios.
+   * @type {FormGroup}
    */
   filtroForm!: FormGroup;
+
   /**
-   * Lista completa de usuarios cargados desde `AdminService`
-   * antes de aplicar cualquier filtro.
+   * Lista completa de usuarios sin filtrar.
+   * @type {UsuarioAdmin[]}
    */
   usuarios: UsuarioAdmin[] = [];
+
   /**
-   * Lista de usuarios resultante de aplicar los filtros del
-   * formulario sobre `usuarios`.
+   * Lista filtrada de usuarios mostrados en la tabla.
+   * @type {UsuarioAdmin[]}
    */
   usuariosFiltrados: UsuarioAdmin[] = [];
+
   /**
-   * Mensaje de error a mostrar en la vista cuando ocurre
-   * algún problema al cargar o filtrar usuarios. `null` si no hay error.
+   * Lista de ventas por categoría obtenida desde JSON externo.
+   * @type {{ categoria: string, ventas: number }[]}
+   */
+  ventas: any[] = [];
+
+  /**
+   * Mensaje de error para ventas.
+   * @type {string | null}
+   */
+  ventasError: string | null = null;
+
+  /**
+   * Mensaje de error para errores generales.
+   * @type {string | null}
    */
   error: string | null = null;
+
   /**
-   * Bandera interna para habilitar/deshabilitar información
-   * de depuración en la plantilla.
+   * Bandera de depuración.
+   * @type {boolean}
    */
   debug = false;
 
   /**
-   * Inyecta el `FormBuilder` y el servicio de administración.
-   * @param fb Factoría para construir el formulario de filtros.
-   * @param adminSrv Servicio que encapsula la lógica sobre usuarios administrables.
+   * Inyecta dependencias necesarias para el componente.
+   * @param fb Creador de formularios reactivos.
+   * @param adminSrv Servicio que gestiona lógica de usuarios.
+   * @param jsonSrv Servicio para obtener datos JSON externos.
    */
-  constructor(private fb: FormBuilder, private adminSrv: AdminService) {}
+  constructor(private fb: FormBuilder, private adminSrv: AdminService, private jsonSrv: Json) {}
 
   /**
-   * Inicializa el formulario de filtros, carga la lista de usuarios
-   * desde `AdminService` y configura una suscripción a `valueChanges` para
-   * filtrar automáticamente.
-   * @returns Nada (`void`).
+   * Inicializa formulario, carga usuarios y ventas desde servicios correspondientes.
+   * @returns {void}
    */
-  ngOnInit() {
+  ngOnInit(): void {
     // Formulario reactivo
     this.filtroForm = this.fb.group({
       correo: ['', [Validators.email]],
@@ -65,40 +87,47 @@ export class AdminComponent implements OnInit {
       estado: [''],
     });
 
-    // Cargar datos desde el servicio
+    // Cargar usuarios
     this.usuarios = this.adminSrv.cargarUsuarios();
     this.usuariosFiltrados = [...this.usuarios];
 
-    // Filtrar automáticamente cuando cambian los campos del formulario
+    // Suscribirse a filtros
     this.filtroForm.valueChanges.subscribe(() => this.filtrar());
+
+    // Cargar ventas desde JSON externo
+    this.jsonSrv.getVentas().subscribe({
+      next: (data) => {
+        this.ventas = data;
+      },
+      error: (err) => {
+        this.ventasError = 'No se pudieron cargar las ventas.';
+        console.error(err);
+      },
+    });
   }
 
   /**
-   * Aplica los filtros actuales del formulario sobre la lista
-   * de usuarios, usando `AdminService.filtrarUsuarios`.
-   * @returns Nada (`void`).
+   * Aplica filtros del formulario a la lista de usuarios.
+   * @returns {void}
    */
-  filtrar() {
+  filtrar(): void {
     this.usuariosFiltrados = this.adminSrv.filtrarUsuarios(this.usuarios, this.filtroForm.value);
   }
 
   /**
-   * Resetea todos los campos del formulario de filtrado.
-   * @returns Nada (`void`).
+   * Restablece el formulario de filtros.
+   * @returns {void}
    */
-  resetFiltro() {
+  resetFiltro(): void {
     this.filtroForm.reset();
   }
 
   /**
-   * Alterna el estado de un usuario entre `active` e `inactive`
-   * delegando la actualización persistente en `AdminService.toggleEstado`
-   * y, si la operación tiene éxito, vuelve a aplicar los filtros para
-   * refrescar la tabla mostrada.
-   * @param usuario Instancia de `UsuarioAdmin` obtenida desde `AdminService`.
-   * @returns Nada (`void`).
+   * Alterna el estado activo/inactivo de un usuario y actualiza la vista.
+   * @param usuario Usuario sobre el que se desea cambiar estado
+   * @returns {void}
    */
-  toggleEstado(usuario: UsuarioAdmin) {
+  toggleEstado(usuario: UsuarioAdmin): void {
     const ok = this.adminSrv.toggleEstado(usuario);
     if (!ok) {
       this.error = 'No se pudo actualizar el estado del usuario.';

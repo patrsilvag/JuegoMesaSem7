@@ -8,6 +8,9 @@ export class Json {
   getCambioDolar(): Observable<any> {
     return this.http.get<any>('https://api.exchangerate-api.com/v4/latest/USD');
   }
+  getVentas(): Observable<any[]> {
+    return this.http.get<any[]>('https://patrsilvag.github.io/api-ventas/ventas.json');
+  }
 }
 
 

@@ -19,10 +19,7 @@
         />
         <small
           class="text-danger"
-          *ngIf="
-            filtroForm.get('correo')?.invalid &&
-            filtroForm.get('correo')?.touched
-          "
+          *ngIf="filtroForm.get('correo')?.invalid && filtroForm.get('correo')?.touched"
         >
           Formato de correo inválido
         </small>
@@ -48,11 +45,7 @@
 
       <!-- LIMPIAR: usa tu método EXISTENTE resetFiltro() -->
       <div class="col-12 col-md-2">
-        <button
-          type="button"
-          class="btn btn-secondary w-100"
-          (click)="resetFiltro()"
-        >
+        <button type="button" class="btn btn-secondary w-100" (click)="resetFiltro()">
           Limpiar
         </button>
       </div>
@@ -109,12 +102,35 @@
         </div>
       </div>
     </div>
+    <!-- SECCIÓN DE VENTAS POR CATEGORÍA -->
+    <div class="card shadow-sm mt-5">
+      <div class="card-header bg-success text-white">Ventas por categoría</div>
+      <div class="card-body p-0">
+        <div class="table-responsive-mobile">
+          <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>Categoría</th>
+                <th>Ventas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let v of ventas">
+                <td data-label="Categoría">
+                  {{ v.categoria }}
+                </td>
+                <td data-label="Ventas">
+                  {{ v.ventas }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
     <!-- SIN RESULTADOS -->
-    <div
-      *ngIf="usuariosFiltrados.length === 0"
-      class="alert alert-info text-center"
-    >
+    <div *ngIf="usuariosFiltrados.length === 0" class="alert alert-info text-center">
       No hay usuarios que coincidan con el filtro.
     </div>
   </section>
