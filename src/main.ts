@@ -1,10 +1,13 @@
 import { bootstrapApplication } from '@angular/platform-browser';
+import { provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
+
 import { AppComponent } from './app/app';
-import { appConfig } from './app/app.config';
-/**
- * @description Punto de entrada de la aplicación. Realiza el bootstrap de Angular
- * con el componente raíz y la configuración global.
- * @usageNotes
- * Normalmente no se modifica salvo para añadir providers globales.
- */
-bootstrapApplication(AppComponent, appConfig).catch((err) => console.error(err));
+import { routes } from './app/app.routes'; 
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideHttpClient(),
+    provideRouter(routes), 
+  ],
+}).catch((err) => console.error(err));

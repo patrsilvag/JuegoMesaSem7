@@ -1,16 +1,49 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Json } from '../../services/json'; // ajusta ruta si es distinta
+
 /**
- * @description Componente de pie de página. Contiene el contenido estático
- * del footer de la aplicación (enlaces, créditos, etc.).
+ * @description
+ * Componente de pie de página. Muestra contenido estático del sitio como créditos
+ * y derechos reservados, además de información dinámica como el tipo de cambio
+ * de dólar estadounidense (USD) a peso chileno (CLP).
+ *
  * @usageNotes
- * Normalmente se incluye una sola vez en el layout principal (por ejemplo,
- * en `AppComponent`).
+ * Este componente es standalone, por lo que debe importar `CommonModule`
+ * para usar directivas como `*ngIf` y `*ngFor`.
+ * Obtiene el tipo de cambio desde una API externa usando el servicio `Json`.
+ *
+ * API usada:
+ * https://api.exchangerate-api.com/v4/latest/USD
+ *
+ * Se recomienda incluirlo una sola vez en la plantilla principal.
+ *
+ * Ejemplo:
+ * `<app-footer></app-footer>`
+ *
+ * @param jsonService Servicio inyectado que maneja la llamada HTTP a la API real.
  */
 @Component({
   selector: 'app-footer',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './footer.html',
   styleUrls: ['./footer.scss'],
 })
+export class FooterComponent implements OnInit {
+  valorDolar: number | null = null;
 
-export class FooterComponent {}
+  constructor(private jsonService: Json) {}
+
+  ngOnInit(): void {
+    this.jsonService.getCambioDolar().subscribe({
+      next: (data) => {
+        this.valorDolar = data?.rates?.CLP ?? null;
+      },
+      error: (err) => {
+        console.error('Error al obtener tipo de cambio', err);
+        this.valorDolar = null;
+      },
+    });
+  }
+}

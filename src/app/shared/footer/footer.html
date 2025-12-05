@@ -3,7 +3,12 @@
   role="contentinfo"
   aria-label="Pie de página del sitio"
 >
-  <p class="mb-0">
-    © 2025 Juegos de Mesa Cuatro Esquinas. Todos los derechos reservados.
+  <p class="mb-0">© 2025 Juegos de Mesa Cuatro Esquinas. Todos los derechos reservados.</p>
+  <p class="mt-2" *ngIf="valorDolar !== null; else cargando">
+    Tipo de cambio USD → CLP: {{ valorDolar }}
   </p>
+
+  <ng-template #cargando>
+    <p class="mt-2">Cargando tipo de cambio...</p>
+  </ng-template>
 </footer>
