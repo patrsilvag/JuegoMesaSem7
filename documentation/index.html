@@ -1,0 +1,338 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>juegomesa documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	   <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="./" class="navbar-brand">juegomesa documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content readme">
+                   <div class="content-data">
+
+
+<h1>Juegos de Mesa – Cuatro Esquinas</h1>
+<h2>Aplicación web desarrollada con <strong>Angular</strong> y <strong>TypeScript</strong> para la exploración y compra de juegos de mesa familiares.
+El proyecto fue generado con <strong>Angular CLI 20.3.9</strong>. </h2>
+<h2>Tabla de Contenidos</h2>
+<ol>
+<li><a href="#descripci%C3%B3n-general">Descripción General</a></li>
+<li><a href="#caracter%C3%ADsticas-principales">Características Principales</a></li>
+<li><a href="#tecnolog%C3%ADas-utilizadas">Tecnologías Utilizadas</a></li>
+<li><a href="#requisitos-previos">Requisitos Previos</a></li>
+<li><a href="#instalaci%C3%B3n-y-puesta-en-marcha">Instalación y Puesta en Marcha</a></li>
+<li><a href="#estructura-del-proyecto">Estructura del Proyecto</a></li>
+<li><a href="#pruebas">Pruebas</a></li>
+</ol>
+<hr>
+<h2>Descripción General</h2>
+<p><strong>Juegos de Mesa – Cuatro Esquinas</strong> es una SPA (Single Page Application) que simula una tienda de juegos de mesa.<br>Permite a los usuarios:</p>
+<ul>
+<li>Explorar categorías de juegos.</li>
+<li>Ver el detalle de los productos.</li>
+<li>Agregar ítems a un carrito de compras.</li>
+<li>Registrarse, iniciar sesión y gestionar su perfil.</li>
+<li>(Opcional) Acceder a un panel de administración protegido por rol.</li>
+</ul>
+<h2>La aplicación está diseñada con una arquitectura modular, separando responsabilidades entre <strong>componentes</strong>, <strong>servicios</strong>, <strong>guards</strong> y <strong>módulos</strong> para favorecer la escalabilidad y el mantenimiento.</h2>
+<h2>Características Principales</h2>
+<ul>
+<li><p><strong>Catálogo de juegos de mesa</strong></p>
+<ul>
+<li>Listado de categorías.</li>
+<li>Vistas de productos por categoría.</li>
+<li>Detalle básico de cada juego (imagen, título, precio, etc.).</li>
+</ul>
+</li>
+<li><p><strong>Carrito de compras</strong></p>
+<ul>
+<li>Agregar / eliminar productos.</li>
+<li>Actualizar cantidades.</li>
+<li>Cálculo automático de subtotal, costo de envío y total.</li>
+<li>Soporte para cupones de descuento (lógica encapsulada en servicios).</li>
+</ul>
+</li>
+<li><p><strong>Autenticación de usuarios</strong></p>
+<ul>
+<li>Registro de nuevos usuarios con formularios reactivos.</li>
+<li>Inicio de sesión con validaciones de credenciales.</li>
+<li>Gestión de sesión a nivel de frontend.</li>
+</ul>
+</li>
+<li><p><strong>Perfil de usuario</strong></p>
+<ul>
+<li>Visualización de datos básicos del usuario autenticado.</li>
+<li>Actualización de información y cambio de contraseña.</li>
+</ul>
+</li>
+<li><p><strong>Panel de administración (si aplica)</strong></p>
+<ul>
+<li>Acceso protegido mediante <strong>guards</strong> por rol.</li>
+<li>Listado de usuarios y cambio de estado (activo/inactivo).</li>
+</ul>
+</li>
+<li><p><strong>Diseño responsivo</strong></p>
+<ul>
+<li>Maquetación con <strong>Bootstrap</strong> y estilos personalizados en <strong>SCSS</strong>.</li>
+<li>Adaptación automática a distintos tamaños de pantalla (desktop, tablet, móvil).</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2>Tecnologías Utilizadas</h2>
+<ul>
+<li><strong>Framework Frontend:</strong> Angular  </li>
+<li><strong>Lenguaje:</strong> TypeScript  </li>
+<li><strong>CLI:</strong> Angular CLI 20.3.9 :contentReference[oaicite:1]{index=1}  </li>
+<li><strong>Estilos y UI:</strong><ul>
+<li>Bootstrap (sistema de grillas, componentes básicos).</li>
+<li>SCSS para estilos personalizados.</li>
+</ul>
+</li>
+<li><strong>Pruebas:</strong><ul>
+<li>Karma + Jasmine para pruebas unitarias. :contentReference[oaicite:2]{index=2}</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2>Requisitos Previos</h2>
+<p>Antes de clonar y ejecutar el proyecto, asegúrate de tener instalado:</p>
+<ul>
+<li><a href="https://nodejs.org/">Node.js</a> (versión LTS recomendada).</li>
+<li><a href="https://www.npmjs.com/">npm</a> (incluido con Node.js).</li>
+<li>Angular CLI:</li>
+</ul>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm install -g &#64;angular/cli
+
+
+
+## Estructura del Proyecto
+
+La aplicación sigue una arquitectura modular organizada principalmente en **páginas** (vistas) y **componentes compartidos**. A continuación se detalla el contenido de los directorios principales dentro de `src/app`:
+
+- **`core/`**: Contiene la lógica esencial y de única instancia, como los **guards** para proteger rutas (admin, usuarios).
+- **`pages/`**: Aquí se encuentran los componentes que actúan como &quot;vistas&quot; o páginas completas de la aplicación:
+  - **`admin/`**: Panel de gestión.
+  - **`home/`**: Página de inicio (Landing page).
+  - **`carrito/`**: Vista del resumen de compra.
+  - **`login/`, `registro/`, `recuperar/`**: Vistas de autenticación.
+  - **`categoria/`**: Exploración de productos.
+- **`shared/`**: Componentes visuales reutilizables que aparecen en múltiples partes de la app, como el  **navbar**, el **footer** y las notificaciones tipo **toast**.
+- **`assets/`**: Recursos estáticos, incluyendo las imágenes de las categorías de juegos.
+
+### Árbol de Directorios
+
+```text
++---app
+|   +---core
+|   |   \---guards
+|   +---pages
+|   |   +---admin
+|   |   +---carrito
+|   |   +---categoria
+|   |   +---home
+|   |   +---login
+|   |   +---perfil
+|   |   +---recuperar
+|   |   \---registro
+|   +---shared
+|   |   +---footer
+|   |   +---navbar
+|   |   \---toast
+|   \---styles
+\---assets
+    \---img
+        \---categorias
+
+## Pruebas
+
+Las pruebas unitarias se implementan en los archivos con extensión `*.spec.ts` y cubren principalmente:
+
+- **Creación básica** de componentes y servicios.
+- **Validaciones simples** de formularios reactivos.
+- **Comportamiento esperado** de métodos de lógica de negocio.
+
+Para ejecutar las pruebas, utiliza el comando:
+
+```bash
+ng test</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'readme';
+            var COMPODOC_CURRENT_PAGE_URL = 'index.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+
+       <script src="./js/menu-wc.js" defer></script>
+       <script nomodule src="./js/menu-wc_es5.js" defer></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
