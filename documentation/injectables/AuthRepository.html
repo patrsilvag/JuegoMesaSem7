@@ -141,11 +141,13 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p> Repositorio de usuarios. Encapsula el acceso a <code>localStorage</code>
-y las operaciones CRUD sobre la entidad <code>Usuario</code>.</p>
+                <p>Repositorio de usuarios que encapsula el acceso a <code>localStorage</code>.
+Se encarga de todas las operaciones CRUD sobre la entidad <code>Usuario</code>
+dentro del navegador.</p>
 <ul>
-<li>No interactúes con <code>localStorage</code> directamente para usuarios.</li>
-<li>Usa este servicio desde otros servicios de dominio (p. ej. <code>AuthService</code>, <code>UserService</code>).</li>
+<li>No acceder directamente a <code>localStorage</code> desde componentes.</li>
+<li>Todos los servicios de dominio deben usar este repositorio.</li>
+<li>Está preparado para evitar errores en entornos SSR.</li>
 </ul>
 
             </p>
@@ -190,8 +192,17 @@ y las operaciones CRUD sobre la entidad <code>Usuario</code>.</p>
                                 <a href="#cambiarClave" >cambiarClave</a>
                             </li>
                             <li>
-                                    <span class="modifier">Private</span>
+                                <a href="#eliminarUsuario" >eliminarUsuario</a>
+                            </li>
+                            <li>
                                 <a href="#guardarUsuarios" >guardarUsuarios</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#guardarUsuariosPrivado" >guardarUsuariosPrivado</a>
+                            </li>
+                            <li>
+                                <a href="#hayUsuarios" >hayUsuarios</a>
                             </li>
                             <li>
                                 <a href="#listarUsuarios" >listarUsuarios</a>
@@ -205,10 +216,6 @@ y las operaciones CRUD sobre la entidad <code>Usuario</code>.</p>
                             </li>
                             <li>
                                 <a href="#registrar" >registrar</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#seedAdmin" >seedAdmin</a>
                             </li>
                         </ul>
                     </td>
@@ -233,14 +240,17 @@ y las operaciones CRUD sobre la entidad <code>Usuario</code>.</p>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/core/auth.repository.ts:17</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/core/auth.repository.ts:22</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>  Detecta si el código corre en navegador y, en ese caso,
-inicializa un usuario administrador por defecto.</p>
+                            <div class="io-description"><p>Constructor del repositorio.</p>
+<ul>
+<li>Detecta si la aplicación se ejecuta en navegador.</li>
+<li>No ejecuta lógica de negocio ni inicialización de datos.</li>
+</ul>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -266,7 +276,7 @@ inicializa un usuario administrador por defecto.</p>
                                                     </td>
                                                     
                                                         <td>
-                                                                <p>Token interno de Angular para identificar la plataforma.</p>
+                                                                <p>Token de Angular que indica la plataforma actual.</p>
 
                                                         </td>
                                                 </tr>
@@ -304,15 +314,16 @@ inicializa un usuario administrador por defecto.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="140"
-                                    class="link-to-prism">src/app/core/auth.repository.ts:140</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="129"
+                                    class="link-to-prism">src/app/core/auth.repository.ts:129</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>  Actualiza los datos de un usuario existente.</p>
+                        <div class="io-description"><p>Actualiza los datos de un usuario existente.</p>
+<p><code>false</code> si no se encontró.</p>
 </div>
 
                             <div class="io-description">
@@ -340,7 +351,7 @@ inicializa un usuario administrador por defecto.</p>
 
 
                                             <td>
-                                                    <p>Objeto usuario con la información actualizada.</p>
+                                                    <p>Usuario con los datos actualizados.</p>
 
                                             </td>
                                         </tr>
@@ -352,7 +363,8 @@ inicializa un usuario administrador por defecto.</p>
 
                         </div>
                             <div class="io-description">
-                                <p><code>true</code> si se encontró y actualizó el usuario, <code>false</code> si no existe.</p>
+                                <p><code>true</code> si el usuario fue actualizado,
+<code>false</code> si no se encontró.</p>
 
                             </div>
                 </td>
@@ -379,15 +391,16 @@ inicializa un usuario administrador por defecto.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="93"
-                                    class="link-to-prism">src/app/core/auth.repository.ts:93</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="163"
+                                    class="link-to-prism">src/app/core/auth.repository.ts:163</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>  Cambia el estado (<code>active</code> / <code>inactive</code>) de un usuario.</p>
+                        <div class="io-description"><p>Actualiza el estado de un usuario (<code>active</code> / <code>inactive</code>).</p>
+<p><code>false</code> si el usuario no existe.</p>
 </div>
 
                             <div class="io-description">
@@ -415,7 +428,7 @@ inicializa un usuario administrador por defecto.</p>
 
 
                                             <td>
-                                                    <p>Correo del usuario cuyo estado se actualizará.</p>
+                                                    <p>Correo del usuario.</p>
 
                                             </td>
                                         </tr>
@@ -431,7 +444,7 @@ inicializa un usuario administrador por defecto.</p>
 
 
                                             <td>
-                                                    <p>Nuevo estado a aplicar.</p>
+                                                    <p>Nuevo estado a asignar.</p>
 
                                             </td>
                                         </tr>
@@ -443,7 +456,8 @@ inicializa un usuario administrador por defecto.</p>
 
                         </div>
                             <div class="io-description">
-                                <p><code>true</code> si se actualizó correctamente, <code>false</code> si el usuario no existe.</p>
+                                <p><code>true</code> si el estado fue actualizado,
+<code>false</code> si el usuario no existe.</p>
 
                             </div>
                 </td>
@@ -470,15 +484,16 @@ inicializa un usuario administrador por defecto.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="156"
-                                    class="link-to-prism">src/app/core/auth.repository.ts:156</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="146"
+                                    class="link-to-prism">src/app/core/auth.repository.ts:146</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>  Cambia la contraseña de un usuario.</p>
+                        <div class="io-description"><p>Cambia la contraseña de un usuario.</p>
+<p><code>false</code> si el usuario no existe.</p>
 </div>
 
                             <div class="io-description">
@@ -506,7 +521,7 @@ inicializa un usuario administrador por defecto.</p>
 
 
                                             <td>
-                                                    <p>Correo del usuario a modificar.</p>
+                                                    <p>Correo del usuario.</p>
 
                                             </td>
                                         </tr>
@@ -522,7 +537,7 @@ inicializa un usuario administrador por defecto.</p>
 
 
                                             <td>
-                                                    <p>Nueva contraseña a establecer.</p>
+                                                    <p>Nueva contraseña.</p>
 
                                             </td>
                                         </tr>
@@ -534,7 +549,89 @@ inicializa un usuario administrador por defecto.</p>
 
                         </div>
                             <div class="io-description">
-                                <p><code>true</code> si se pudo actualizar la clave, <code>false</code> si el usuario no existe.</p>
+                                <p><code>true</code> si la contraseña fue actualizada,
+<code>false</code> si el usuario no existe.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eliminarUsuario"></a>
+                    <span class="name">
+                        <span ><b>eliminarUsuario</b></span>
+                        <a href="#eliminarUsuario"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>eliminarUsuario(correo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="183"
+                                    class="link-to-prism">src/app/core/auth.repository.ts:183</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Elimina un usuario del sistema por su correo electrónico.</p>
+<p><code>false</code> si no existía.</p>
+<ul>
+<li>No cierra sesión automáticamente.</li>
+<li>La lógica de logout debe manejarse desde <code>AuthService</code>.</li>
+</ul>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>correo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Correo del usuario a eliminar.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p><code>true</code> si el usuario fue eliminado correctamente,
+<code>false</code> si no existía.</p>
 
                             </div>
                 </td>
@@ -547,7 +644,6 @@ inicializa un usuario administrador por defecto.</p>
                 <td class="col-md-4">
                     <a name="guardarUsuarios"></a>
                     <span class="name">
-                            <span class="modifier">Private</span>
                         <span ><b>guardarUsuarios</b></span>
                         <a href="#guardarUsuarios"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -555,24 +651,100 @@ inicializa un usuario administrador por defecto.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>guardarUsuarios(lista: <a href="../interfaces/Usuario.html" target="_self">Usuario[]</a>)</code>
+<code>guardarUsuarios(lista: <a href="../interfaces/Usuario.html" target="_self">Usuario[]</a>)</code>
                 </td>
             </tr>
 
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="71"
-                                    class="link-to-prism">src/app/core/auth.repository.ts:71</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="80"
+                                    class="link-to-prism">src/app/core/auth.repository.ts:80</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Persiste en <code>localStorage</code> la lista de usuarios proporcionada.
-Si la plataforma no es navegador, no realiza ninguna operación.</p>
+                        <div class="io-description"><p>Guarda una lista completa de usuarios.</p>
+<p>Usado principalmente para inicialización desde JSON remoto.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>lista</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Usuario.html" target="_self" >Usuario[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Lista de usuarios a persistir.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardarUsuariosPrivado"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>guardarUsuariosPrivado</b></span>
+                        <a href="#guardarUsuariosPrivado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>guardarUsuariosPrivado(lista: <a href="../interfaces/Usuario.html" target="_self">Usuario[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="58"
+                                    class="link-to-prism">src/app/core/auth.repository.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Persiste la lista completa de usuarios en <code>localStorage</code>.</p>
+<p>Método privado. Toda persistencia debe pasar por aquí.</p>
 </div>
 
                             <div class="io-description">
@@ -622,6 +794,51 @@ Si la plataforma no es navegador, no realiza ninguna operación.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="hayUsuarios"></a>
+                    <span class="name">
+                        <span ><b>hayUsuarios</b></span>
+                        <a href="#hayUsuarios"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>hayUsuarios()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="90"
+                                    class="link-to-prism">src/app/core/auth.repository.ts:90</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Indica si existen usuarios registrados en el sistema.</p>
+<p><code>false</code> si está vacío.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p><code>true</code> si hay usuarios en almacenamiento,
+<code>false</code> si está vacío.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="listarUsuarios"></a>
                     <span class="name">
                         <span ><b>listarUsuarios</b></span>
@@ -638,15 +855,15 @@ Si la plataforma no es navegador, no realiza ninguna operación.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="83"
-                                    class="link-to-prism">src/app/core/auth.repository.ts:83</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="68"
+                                    class="link-to-prism">src/app/core/auth.repository.ts:68</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>  Devuelve la lista completa de usuarios almacenados.</p>
+                        <div class="io-description"><p>Devuelve todos los usuarios almacenados.</p>
 </div>
 
                         <div class="io-description">
@@ -654,7 +871,7 @@ Si la plataforma no es navegador, no realiza ninguna operación.</p>
 
                         </div>
                             <div class="io-description">
-                                <p>Arreglo de usuarios leídos desde almacenamiento.</p>
+                                <p>Arreglo de usuarios persistidos.</p>
 
                             </div>
                 </td>
@@ -683,16 +900,17 @@ Si la plataforma no es navegador, no realiza ninguna operación.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="62"
-                                    class="link-to-prism">src/app/core/auth.repository.ts:62</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/app/core/auth.repository.ts:45</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Lee la lista completa de usuarios desde <code>localStorage</code>.
-Si la plataforma no es navegador, devuelve un arreglo vacío.</p>
+                        <div class="io-description"><p>Lista todos los usuarios desde localStorage.</p>
+<p>Método privado usado internamente por el repositorio.
+Devuelve un arreglo vacío si no está en entorno navegador.</p>
 </div>
 
                         <div class="io-description">
@@ -700,7 +918,7 @@ Si la plataforma no es navegador, devuelve un arreglo vacío.</p>
 
                         </div>
                             <div class="io-description">
-                                <p>Arreglo de usuarios persistidos.</p>
+                                <p>Arreglo de usuarios.</p>
 
                             </div>
                 </td>
@@ -727,16 +945,15 @@ Si la plataforma no es navegador, devuelve un arreglo vacío.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="129"
-                                    class="link-to-prism">src/app/core/auth.repository.ts:129</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="116"
+                                    class="link-to-prism">src/app/core/auth.repository.ts:116</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>  Realiza el login verificando correo y clave contra la lista de usuarios.
-Normalmente no se usa directamente desde componentes, sino a través de <code>AuthService</code>.</p>
+                        <div class="io-description"><p>Autentica un usuario mediante correo y contraseña.</p>
 </div>
 
                             <div class="io-description">
@@ -764,7 +981,7 @@ Normalmente no se usa directamente desde componentes, sino a través de <code>Au
 
 
                                             <td>
-                                                    <p>Correo electrónico utilizado para autenticar.</p>
+                                                    <p>Correo electrónico del usuario.</p>
 
                                             </td>
                                         </tr>
@@ -780,7 +997,7 @@ Normalmente no se usa directamente desde componentes, sino a través de <code>Au
 
 
                                             <td>
-                                                    <p>Contraseña en texto plano introducida por el usuario.</p>
+                                                    <p>Contraseña en texto plano.</p>
 
                                             </td>
                                         </tr>
@@ -819,15 +1036,16 @@ Normalmente no se usa directamente desde componentes, sino a través de <code>Au
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="112"
-                                    class="link-to-prism">src/app/core/auth.repository.ts:112</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="101"
+                                    class="link-to-prism">src/app/core/auth.repository.ts:101</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>  Registra un nuevo usuario en el sistema.</p>
+                        <div class="io-description"><p>Registra un nuevo usuario en el sistema.</p>
+<p><code>false</code> si ya existía un usuario con el mismo correo.</p>
 </div>
 
                             <div class="io-description">
@@ -855,7 +1073,7 @@ Normalmente no se usa directamente desde componentes, sino a través de <code>Au
 
 
                                             <td>
-                                                    <p>Datos completos del usuario a registrar.</p>
+                                                    <p>Usuario a registrar.</p>
 
                                             </td>
                                         </tr>
@@ -867,51 +1085,10 @@ Normalmente no se usa directamente desde componentes, sino a través de <code>Au
 
                         </div>
                             <div class="io-description">
-                                <p><code>true</code> si se insertó, <code>false</code> si ya existía un usuario con el mismo correo.</p>
+                                <p><code>true</code> si el usuario fue registrado correctamente,
+<code>false</code> si ya existía un usuario con el mismo correo.</p>
 
                             </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="seedAdmin"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>seedAdmin</b></span>
-                        <a href="#seedAdmin"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>seedAdmin()</code>
-                </td>
-            </tr>
-
-
-                    <tr>
-                        <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="36"
-                                    class="link-to-prism">src/app/core/auth.repository.ts:36</a></div>
-                        </td>
-                    </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-description"><p>Inicializa un usuario administrador por defecto en <code>localStorage</code>
-si aún no existe ningún usuario registrado.</p>
-</div>
-
-                        <div class="io-description">
-                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                        </div>
                 </td>
             </tr>
         </tbody>
@@ -942,14 +1119,14 @@ si aún no existe ningún usuario registrado.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/core/auth.repository.ts:17</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/core/auth.repository.ts:22</a></div>
                         </td>
                     </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Indica si el código se está ejecutando en un entorno de navegador.
-Se usa para evitar accesos a <code>localStorage</code> cuando la plataforma no es browser.</p>
+                    <div class="io-description"><p>Indica si el código corre en entorno navegador.
+Se utiliza para prevenir accesos a <code>localStorage</code> fuera del browser</p>
 </div>
                 </td>
             </tr>
@@ -965,130 +1142,117 @@ Se usa para evitar accesos a <code>localStorage</code> cuando la plataforma no e
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, Inject, PLATFORM_ID } from &#x27;@angular/core&#x27;;
 import { isPlatformBrowser } from &#x27;@angular/common&#x27;;
 import { Usuario } from &#x27;./auth&#x27;;
+
+
 /**
- *  Repositorio de usuarios. Encapsula el acceso a &#x60;localStorage&#x60;
- * y las operaciones CRUD sobre la entidad &#x60;Usuario&#x60;.
+* Repositorio de usuarios que encapsula el acceso a &#x60;localStorage&#x60;.
+ * Se encarga de todas las operaciones CRUD sobre la entidad &#x60;Usuario&#x60;
+ * dentro del navegador.
+ *
  * @usageNotes
- * - No interactúes con &#x60;localStorage&#x60; directamente para usuarios.
- * - Usa este servicio desde otros servicios de dominio (p. ej. &#x60;AuthService&#x60;, &#x60;UserService&#x60;).
+ * - No acceder directamente a &#x60;localStorage&#x60; desde componentes.
+ * - Todos los servicios de dominio deben usar este repositorio.
+ * - Está preparado para evitar errores en entornos SSR.
  */
 @Injectable({ providedIn: &#x27;root&#x27; })
 export class AuthRepository {
   /**
-   * Indica si el código se está ejecutando en un entorno de navegador.
-   * Se usa para evitar accesos a &#x60;localStorage&#x60; cuando la plataforma no es browser.
+   * Indica si el código corre en entorno navegador.
+   * Se utiliza para prevenir accesos a &#x60;localStorage&#x60; fuera del browser
    */
   private isBrowser: boolean;
 
   /**
-   *   Detecta si el código corre en navegador y, en ese caso,
-   * inicializa un usuario administrador por defecto.
-   * @param platformId Token interno de Angular para identificar la plataforma.
+   * Constructor del repositorio.
+   *
+   * @param platformId Token de Angular que indica la plataforma actual.
+   *
+   * @usageNotes
+   * - Detecta si la aplicación se ejecuta en navegador.
+   * - No ejecuta lógica de negocio ni inicialización de datos.
    */
   constructor(@Inject(PLATFORM_ID) platformId: any) {
     this.isBrowser &#x3D; isPlatformBrowser(platformId);
-    if (this.isBrowser) this.seedAdmin();
   }
 
-  // &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
-  // CREAR ADMIN POR DEFECTO
-  // &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
   /**
-   * Inicializa un usuario administrador por defecto en &#x60;localStorage&#x60;
-   * si aún no existe ningún usuario registrado.
-   */
-  private seedAdmin() {
-    const lista &#x3D; this.listarUsuariosPrivado();
-    if (lista.length &gt; 0) return;
-
-    const admin: Usuario &#x3D; {
-      nombre: &#x27;Administrador&#x27;,
-      usuario: &#x27;admin&#x27;,
-      correo: &#x27;admin@local.com&#x27;,
-      fechaNacimiento: &#x27;1990-01-01&#x27;,
-      direccion: &#x27;&#x27;,
-      clave: &#x27;Admin123!&#x27;,
-      rol: &#x27;admin&#x27;,
-      status: &#x27;active&#x27;,
-    };
-    lista.push(admin);
-    this.guardarUsuarios(lista);
-  }
-
-  // &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
-  // LOCALSTORAGE CRUD (privados)
-  // &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
-  /**
-   * Lee la lista completa de usuarios desde &#x60;localStorage&#x60;.
-   * Si la plataforma no es navegador, devuelve un arreglo vacío.
-   * @returns Arreglo de usuarios persistidos.
+   * Lista todos los usuarios desde localStorage.
+   * @returns Arreglo de usuarios.
+   *
+   * @remarks
+   * Método privado usado internamente por el repositorio.
+   * Devuelve un arreglo vacío si no está en entorno navegador.
    */
   private listarUsuariosPrivado(): Usuario[] {
     if (!this.isBrowser) return [];
     return JSON.parse(localStorage.getItem(&#x27;usuarios&#x27;) ?? &#x27;[]&#x27;);
   }
+
   /**
-   * Persiste en &#x60;localStorage&#x60; la lista de usuarios proporcionada.
-   * Si la plataforma no es navegador, no realiza ninguna operación.
+   * Persiste la lista completa de usuarios en &#x60;localStorage&#x60;.
+   *
    * @param lista Lista completa de usuarios a guardar.
+   *
+   * @remarks
+   * Método privado. Toda persistencia debe pasar por aquí.
    */
-  private guardarUsuarios(lista: Usuario[]) {
+  private guardarUsuariosPrivado(lista: Usuario[]): void {
     if (!this.isBrowser) return;
     localStorage.setItem(&#x27;usuarios&#x27;, JSON.stringify(lista));
   }
 
-  // &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
-  // MÉTODOS PÚBLICOS AGREGADOS
-  // &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
   /**
-   *   Devuelve la lista completa de usuarios almacenados.
-   * @returns Arreglo de usuarios leídos desde almacenamiento.
+   * Devuelve todos los usuarios almacenados.
+   *
+   * @returns Arreglo de usuarios persistidos.
    */
   listarUsuarios(): Usuario[] {
     return this.listarUsuariosPrivado();
   }
 
   /**
-   *   Cambia el estado (&#x60;active&#x60; / &#x60;inactive&#x60;) de un usuario.
-   * @param correo Correo del usuario cuyo estado se actualizará.
-   * @param estado Nuevo estado a aplicar.
-   * @returns &#x60;true&#x60; si se actualizó correctamente, &#x60;false&#x60; si el usuario no existe.
+   * Guarda una lista completa de usuarios.
+   *
+   * @param lista Lista de usuarios a persistir.
+   *
+   * @usageNotes
+   * Usado principalmente para inicialización desde JSON remoto.
    */
-  actualizarEstado(correo: string, estado: &#x27;active&#x27; | &#x27;inactive&#x27;): boolean {
-    const lista &#x3D; this.listarUsuariosPrivado();
-    const index &#x3D; lista.findIndex((u) &#x3D;&gt; u.correo &#x3D;&#x3D;&#x3D; correo);
-    if (index &#x3D;&#x3D;&#x3D; -1) return false;
-
-    lista[index].status &#x3D; estado;
-    this.guardarUsuarios(lista);
-    return true;
+  guardarUsuarios(lista: Usuario[]): void {
+    this.guardarUsuariosPrivado(lista);
   }
 
-  // &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
-  // RESTO DE MÉTODOS EXISTENTES (sin cambios)
-  // &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
   /**
-   *   Registra un nuevo usuario en el sistema.
-   * @param user Datos completos del usuario a registrar.
-   * @returns &#x60;true&#x60; si se insertó, &#x60;false&#x60; si ya existía un usuario con el mismo correo.
+   * Indica si existen usuarios registrados en el sistema.
+   *
+   * @returns &#x60;true&#x60; si hay usuarios en almacenamiento,
+   * &#x60;false&#x60; si está vacío.
    */
+  hayUsuarios(): boolean {
+    return this.listarUsuarios().length &gt; 0;
+  }
 
+  /**
+   * Registra un nuevo usuario en el sistema.
+   *
+   * @param user Usuario a registrar.
+   * @returns &#x60;true&#x60; si el usuario fue registrado correctamente,
+   * &#x60;false&#x60; si ya existía un usuario con el mismo correo.
+   */
   registrar(user: Usuario): boolean {
     const lista &#x3D; this.listarUsuariosPrivado();
     if (lista.some((u) &#x3D;&gt; u.correo &#x3D;&#x3D;&#x3D; user.correo)) return false;
-
     lista.push(user);
-    this.guardarUsuarios(lista);
+    this.guardarUsuariosPrivado(lista);
     return true;
   }
 
   /**
-   *   Realiza el login verificando correo y clave contra la lista de usuarios.
-   * @param correo Correo electrónico utilizado para autenticar.
-   * @param clave Contraseña en texto plano introducida por el usuario.
+   * Autentica un usuario mediante correo y contraseña.
+   *
+   * @param correo Correo electrónico del usuario.
+   * @param clave Contraseña en texto plano.
    * @returns El usuario autenticado o &#x60;null&#x60; si las credenciales no son válidas.
-   * @usageNotes
-   * Normalmente no se usa directamente desde componentes, sino a través de &#x60;AuthService&#x60;.
    */
   login(correo: string, clave: string): Usuario | null {
     return (
@@ -1097,37 +1261,78 @@ export class AuthRepository {
   }
 
   /**
-   *   Actualiza los datos de un usuario existente.
-   * @param data Objeto usuario con la información actualizada.
-   * @returns &#x60;true&#x60; si se encontró y actualizó el usuario, &#x60;false&#x60; si no existe.
+   * Actualiza los datos de un usuario existente.
+   *
+   * @param data Usuario con los datos actualizados.
+   * @returns &#x60;true&#x60; si el usuario fue actualizado,
+   * &#x60;false&#x60; si no se encontró.
    */
   actualizar(data: Usuario): boolean {
     const lista &#x3D; this.listarUsuariosPrivado();
     const index &#x3D; lista.findIndex((u) &#x3D;&gt; u.correo &#x3D;&#x3D;&#x3D; data.correo);
     if (index &#x3D;&#x3D;&#x3D; -1) return false;
-
     lista[index] &#x3D; { ...lista[index], ...data, correo: lista[index].correo };
-    this.guardarUsuarios(lista);
+    this.guardarUsuariosPrivado(lista);
     return true;
   }
 
   /**
-   *   Cambia la contraseña de un usuario.
-   * @param correo Correo del usuario a modificar.
-   * @param nueva Nueva contraseña a establecer.
-   * @returns &#x60;true&#x60; si se pudo actualizar la clave, &#x60;false&#x60; si el usuario no existe.
+   * Cambia la contraseña de un usuario.
+   *
+   * @param correo Correo del usuario.
+   * @param nueva Nueva contraseña.
+   * @returns &#x60;true&#x60; si la contraseña fue actualizada,
+   * &#x60;false&#x60; si el usuario no existe.
    */
   cambiarClave(correo: string, nueva: string): boolean {
     const lista &#x3D; this.listarUsuariosPrivado();
     const index &#x3D; lista.findIndex((u) &#x3D;&gt; u.correo &#x3D;&#x3D;&#x3D; correo);
     if (index &#x3D;&#x3D;&#x3D; -1) return false;
-
     lista[index].clave &#x3D; nueva;
-    this.guardarUsuarios(lista);
+    this.guardarUsuariosPrivado(lista);
     return true;
   }
-}
-</code></pre>
+
+  /**
+   * Actualiza el estado de un usuario (&#x60;active&#x60; / &#x60;inactive&#x60;).
+   *
+   * @param correo Correo del usuario.
+   * @param estado Nuevo estado a asignar.
+   * @returns &#x60;true&#x60; si el estado fue actualizado,
+   * &#x60;false&#x60; si el usuario no existe.
+   */
+  actualizarEstado(correo: string, estado: &#x27;active&#x27; | &#x27;inactive&#x27;): boolean {
+    const lista &#x3D; this.listarUsuariosPrivado();
+    const index &#x3D; lista.findIndex((u) &#x3D;&gt; u.correo &#x3D;&#x3D;&#x3D; correo);
+    if (index &#x3D;&#x3D;&#x3D; -1) return false;
+    lista[index].status &#x3D; estado;
+    this.guardarUsuariosPrivado(lista);
+    return true;
+  }
+
+  /**
+   * Elimina un usuario del sistema por su correo electrónico.
+   *
+   * @param correo Correo del usuario a eliminar.
+   * @returns &#x60;true&#x60; si el usuario fue eliminado correctamente,
+   * &#x60;false&#x60; si no existía.
+   *
+   * @usageNotes
+   * - No cierra sesión automáticamente.
+   * - La lógica de logout debe manejarse desde &#x60;AuthService&#x60;.
+   */
+  eliminarUsuario(correo: string): boolean {
+    const lista &#x3D; this.listarUsuarios();
+    const nuevaLista &#x3D; lista.filter((u) &#x3D;&gt; u.correo !&#x3D;&#x3D; correo);
+    const fueEliminado &#x3D; lista.length !&#x3D;&#x3D; nuevaLista.length;
+
+    if (fueEliminado) {
+      this.guardarUsuarios(nuevaLista);
+    }
+
+    return fueEliminado;
+  }
+}</code></pre>
     </div>
 
 </div>

@@ -141,11 +141,8 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>(registro, actualización de perfil y cambio de contraseña) utilizando
-<code>AuthRepository</code> como fuente de datos y un caché en memoria cargado desde <code>localStorage</code>.
-Inyéctalo en componentes que necesiten manipular datos de usuario
-fuera del flujo de login (por ejemplo, formularios de registro, perfil o cambio de contraseña).
-Evita acceder directamente a <code>localStorage</code>; usa este servicio o <code>AuthService</code>.</p>
+                <p>Servicio de dominio para manipulación de usuarios (registro, edición, etc.).
+Funciona sobre la base del repositorio de usuarios y el servicio de sesión.</p>
 
             </p>
 
@@ -217,15 +214,12 @@ Evita acceder directamente a <code>localStorage</code>; usa este servicio o <cod
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/core/user.service.ts:21</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/core/user.service.ts:14</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>para poder delegar operaciones de persistencia y actualización de sesión.
-               cuando se actualiza el perfil o la contraseña.</p>
-</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -234,7 +228,6 @@ Evita acceder directamente a <code>localStorage</code>; usa este servicio o <cod
                                                 <td>Name</td>
                                                     <td>Type</td>
                                                 <td>Optional</td>
-                                                    <td>Description</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -249,10 +242,6 @@ Evita acceder directamente a <code>localStorage</code>; usa este servicio o <cod
                                                             No
                                                     </td>
                                                     
-                                                        <td>
-                                                                <p>Repositorio de usuarios que encapsula el acceso a <code>localStorage</code>.</p>
-
-                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>authSrv</td>
@@ -265,11 +254,6 @@ Evita acceder directamente a <code>localStorage</code>; usa este servicio o <cod
                                                             No
                                                     </td>
                                                     
-                                                        <td>
-                                                                <p>Servicio de autenticación usado para sincronizar la sesión
-cuando se actualiza el perfil o la contraseña.</p>
-
-                                                        </td>
                                                 </tr>
                                         </tbody>
                                     </table>
@@ -305,18 +289,15 @@ cuando se actualiza el perfil o la contraseña.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="64"
-                                    class="link-to-prism">src/app/core/user.service.ts:64</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="31"
+                                    class="link-to-prism">src/app/core/user.service.ts:31</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>y, si la actualización es exitosa, también refresca la sesión actual en <code>AuthService</code>.
-o la actualización falló en el repositorio.
-Úsalo desde formularios de edición de perfil.
-Asume que <code>data</code> contiene un usuario válido y coherente con el ya almacenado.</p>
+                        <div class="io-description"><p>  Actualiza el perfil del usuario actual y sincroniza sesión.</p>
 </div>
 
                             <div class="io-description">
@@ -328,7 +309,6 @@ Asume que <code>data</code> contiene un usuario válido y coherente con el ya al
                                             <td>Name</td>
                                                 <td>Type</td>
                                             <td>Optional</td>
-                                                <td>Description</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -343,10 +323,6 @@ Asume que <code>data</code> contiene un usuario válido y coherente con el ya al
                                             </td>
 
 
-                                            <td>
-                                                    <p>Objeto <code>Usuario</code> con los datos actualizados que se desean persistir.</p>
-
-                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -356,9 +332,7 @@ Asume que <code>data</code> contiene un usuario válido y coherente con el ya al
 
                         </div>
                             <div class="io-description">
-                                <p><code>true</code> si se actualizó un usuario existente; <code>false</code> si no se encontró el usuario
-o la actualización falló en el repositorio.</p>
-
+                                
                             </div>
                 </td>
             </tr>
@@ -384,17 +358,15 @@ o la actualización falló en el repositorio.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="125"
-                                    class="link-to-prism">src/app/core/user.service.ts:125</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="60"
+                                    class="link-to-prism">src/app/core/user.service.ts:60</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Método pensado para lecturas rápidas desde memoria.
-Si el caché no está sincronizado con el almacenamiento persistente,
-el resultado puede no reflejar el último estado guardado.</p>
+                        <div class="io-description"><p>  Busca un usuario en caché por correo.</p>
 </div>
 
                             <div class="io-description">
@@ -406,7 +378,6 @@ el resultado puede no reflejar el último estado guardado.</p>
                                             <td>Name</td>
                                                 <td>Type</td>
                                             <td>Optional</td>
-                                                <td>Description</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -421,10 +392,6 @@ el resultado puede no reflejar el último estado guardado.</p>
                                             </td>
 
 
-                                            <td>
-                                                    <p>Correo electrónico del usuario que se quiere localizar.</p>
-
-                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -434,8 +401,7 @@ el resultado puede no reflejar el último estado guardado.</p>
 
                         </div>
                             <div class="io-description">
-                                <p>El objeto <code>Usuario</code> si se encuentra en el caché; <code>null</code> si no existe.</p>
-
+                                
                             </div>
                 </td>
             </tr>
@@ -461,21 +427,15 @@ el resultado puede no reflejar el último estado guardado.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="85"
-                                    class="link-to-prism">src/app/core/user.service.ts:85</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="40"
+                                    class="link-to-prism">src/app/core/user.service.ts:40</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>y sincroniza la nueva contraseña en el caché en memoria.
-<code>false</code> si no se encontró el usuario o la operación falló.
-Normalmente se combina con validaciones en el formulario:</p>
-<ul>
-<li><code>validarClaveActual</code> para comprobar la clave actual.</li>
-<li>Un validador de coincidencia para la repetición de la nueva clave.</li>
-</ul>
+                        <div class="io-description"><p>  Cambia la contraseña de un usuario y sincroniza el caché.</p>
 </div>
 
                             <div class="io-description">
@@ -487,7 +447,6 @@ Normalmente se combina con validaciones en el formulario:</p>
                                             <td>Name</td>
                                                 <td>Type</td>
                                             <td>Optional</td>
-                                                <td>Description</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -502,10 +461,6 @@ Normalmente se combina con validaciones en el formulario:</p>
                                             </td>
 
 
-                                            <td>
-                                                    <p>Correo del usuario cuya contraseña se va a actualizar.</p>
-
-                                            </td>
                                         </tr>
                                         <tr>
                                                 <td>nueva</td>
@@ -518,10 +473,6 @@ Normalmente se combina con validaciones en el formulario:</p>
                                             </td>
 
 
-                                            <td>
-                                                    <p>Nueva contraseña en texto plano que se almacenará.</p>
-
-                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -531,9 +482,7 @@ Normalmente se combina con validaciones en el formulario:</p>
 
                         </div>
                             <div class="io-description">
-                                <p><code>true</code> si la contraseña se actualizó correctamente;
-<code>false</code> si no se encontró el usuario o la operación falló.</p>
-
+                                
                             </div>
                 </td>
             </tr>
@@ -559,19 +508,15 @@ Normalmente se combina con validaciones en el formulario:</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="45"
-                                    class="link-to-prism">src/app/core/user.service.ts:45</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="22"
+                                    class="link-to-prism">src/app/core/user.service.ts:22</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>y, si la operación tiene éxito, sincroniza también el caché en memoria.
-<code>false</code> si ya existía un usuario con el mismo correo u ocurrió un error en el repositorio.
-Pensado para ser llamado desde el formulario de registro.
-Este método solo registra; no inicia sesión automáticamente.
-Para iniciar sesión después del registro, usa <code>AuthService.login</code>.</p>
+                        <div class="io-description"><p>  Registra un nuevo usuario si no existe previamente.</p>
 </div>
 
                             <div class="io-description">
@@ -583,7 +528,6 @@ Para iniciar sesión después del registro, usa <code>AuthService.login</code>.<
                                             <td>Name</td>
                                                 <td>Type</td>
                                             <td>Optional</td>
-                                                <td>Description</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -598,10 +542,6 @@ Para iniciar sesión después del registro, usa <code>AuthService.login</code>.<
                                             </td>
 
 
-                                            <td>
-                                                    <p>Objeto <code>Usuario</code> con todos los datos que se van a persistir.</p>
-
-                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -611,8 +551,7 @@ Para iniciar sesión después del registro, usa <code>AuthService.login</code>.<
 
                         </div>
                             <div class="io-description">
-                                <p><code>true</code> si el usuario se registró correctamente;
-<code>false</code> si ya existía un usuario con el mismo correo u ocurrió un error en el repositorio.</p>
+                                <p><code>true</code> si fue exitoso, <code>false</code> si ya existía.</p>
 
                             </div>
                 </td>
@@ -639,18 +578,15 @@ Para iniciar sesión después del registro, usa <code>AuthService.login</code>.<
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="109"
-                                    class="link-to-prism">src/app/core/user.service.ts:109</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="52"
+                                    class="link-to-prism">src/app/core/user.service.ts:52</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>tiene el usuario en el caché de memoria.
-<code>false</code> si no coincide o no existe un usuario con ese correo.
-Úsalo en formularios de &quot;cambiar contraseña&quot; para validar la clave actual
-antes de permitir el cambio.</p>
+                        <div class="io-description"><p>  Valida que la contraseña actual coincida con la ingresada.</p>
 </div>
 
                             <div class="io-description">
@@ -662,7 +598,6 @@ antes de permitir el cambio.</p>
                                             <td>Name</td>
                                                 <td>Type</td>
                                             <td>Optional</td>
-                                                <td>Description</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -677,10 +612,6 @@ antes de permitir el cambio.</p>
                                             </td>
 
 
-                                            <td>
-                                                    <p>Correo del usuario cuya contraseña se quiere validar.</p>
-
-                                            </td>
                                         </tr>
                                         <tr>
                                                 <td>clave</td>
@@ -693,10 +624,6 @@ antes de permitir el cambio.</p>
                                             </td>
 
 
-                                            <td>
-                                                    <p>Contraseña actual introducida por el usuario.</p>
-
-                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -706,9 +633,7 @@ antes de permitir el cambio.</p>
 
                         </div>
                             <div class="io-description">
-                                <p><code>true</code> si la contraseña coincide con la almacenada;
-<code>false</code> si no coincide o no existe un usuario con ese correo.</p>
-
+                                
                             </div>
                 </td>
             </tr>
@@ -745,13 +670,13 @@ antes de permitir el cambio.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="21" class="link-to-prism">src/app/core/user.service.ts:21</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/app/core/user.service.ts:14</a></div>
                         </td>
                     </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>cargado inicialmente desde <code>localStorage</code>.</p>
+                    <div class="io-description"><p>Lista de usuarios en caché cargada desde localStorage.</p>
 </div>
                 </td>
             </tr>
@@ -768,132 +693,65 @@ antes de permitir el cambio.</p>
 import { Usuario } from &#x27;./auth&#x27;;
 import { AuthRepository } from &#x27;./auth.repository&#x27;;
 import { AuthService } from &#x27;./auth.service&#x27;;
+
+
 /**
- * @description Servicio de dominio para operaciones sobre usuarios
- * (registro, actualización de perfil y cambio de contraseña) utilizando
- * &#x60;AuthRepository&#x60; como fuente de datos y un caché en memoria cargado desde &#x60;localStorage&#x60;.
- * @usageNotes
- * Inyéctalo en componentes que necesiten manipular datos de usuario
- * fuera del flujo de login (por ejemplo, formularios de registro, perfil o cambio de contraseña).
- * Evita acceder directamente a &#x60;localStorage&#x60;; usa este servicio o &#x60;AuthService&#x60;.
- */
+* Servicio de dominio para manipulación de usuarios (registro, edición, etc.).
+* Funciona sobre la base del repositorio de usuarios y el servicio de sesión.
+*/
 @Injectable({ providedIn: &#x27;root&#x27; })
 export class UserService {
-  // 1. CACHE EN MEMORIA: Se carga una sola vez
-  /**
-   * @description Caché en memoria de todos los usuarios registrados,
-   * cargado inicialmente desde &#x60;localStorage&#x60;.
-   */
+  /**   Lista de usuarios en caché cargada desde localStorage. */
   private usuariosLista: Usuario[] &#x3D; JSON.parse(localStorage.getItem(&#x27;usuarios&#x27;) ?? &#x27;[]&#x27;);
 
-  /**
-   * @description Inyecta el repositorio de usuarios y el servicio de autenticación
-   * para poder delegar operaciones de persistencia y actualización de sesión.
-   * @param repo Repositorio de usuarios que encapsula el acceso a &#x60;localStorage&#x60;.
-   * @param authSrv Servicio de autenticación usado para sincronizar la sesión
-   *                cuando se actualiza el perfil o la contraseña.
-   */
   constructor(private repo: AuthRepository, private authSrv: AuthService) {}
 
   /**
-   * @description Registra un nuevo usuario en el sistema a través del repositorio
-   * y, si la operación tiene éxito, sincroniza también el caché en memoria.
-   * @param data Objeto &#x60;Usuario&#x60; con todos los datos que se van a persistir.
-   * @returns &#x60;true&#x60; si el usuario se registró correctamente;
-   * &#x60;false&#x60; si ya existía un usuario con el mismo correo u ocurrió un error en el repositorio.
-   * @usageNotes
-   * Pensado para ser llamado desde el formulario de registro.
-   * Este método solo registra; no inicia sesión automáticamente.
-   * Para iniciar sesión después del registro, usa &#x60;AuthService.login&#x60;.
+   *   Registra un nuevo usuario si no existe previamente.
+   * @returns &#x60;true&#x60; si fue exitoso, &#x60;false&#x60; si ya existía.
    */
-
-  // ACTUALIZACIÓN: Debe sincronizar el CACHÉ
   registrarUsuario(data: Usuario): boolean {
     const ok &#x3D; this.repo.registrar(data);
-    if (ok) {
-      // Si el registro fue exitoso, agregamos el nuevo usuario al caché
-      this.usuariosLista.push(data);
-    }
+    if (ok) this.usuariosLista.push(data);
     return ok;
   }
 
   /**
-   * @description Actualiza los datos de perfil de un usuario existente en el repositorio
-   * y, si la actualización es exitosa, también refresca la sesión actual en &#x60;AuthService&#x60;.
-   * @param data Objeto &#x60;Usuario&#x60; con los datos actualizados que se desean persistir.
-   * @returns &#x60;true&#x60; si se actualizó un usuario existente; &#x60;false&#x60; si no se encontró el usuario
-   * o la actualización falló en el repositorio.
-   * @usageNotes
-   * Úsalo desde formularios de edición de perfil.
-   * Asume que &#x60;data&#x60; contiene un usuario válido y coherente con el ya almacenado.
+   *   Actualiza el perfil del usuario actual y sincroniza sesión.
    */
   actualizarPerfil(data: Usuario): boolean {
     const ok &#x3D; this.repo.actualizar(data);
-    if (ok) {
-      this.authSrv[&#x27;guardarSesion&#x27;](data);
-    }
+    if (ok) this.authSrv[&#x27;guardarSesion&#x27;](data);
     return ok;
   }
 
   /**
-   * @description Cambia la contraseña de un usuario en el repositorio
-   * y sincroniza la nueva contraseña en el caché en memoria.
-   * @param correo Correo del usuario cuya contraseña se va a actualizar.
-   * @param nueva Nueva contraseña en texto plano que se almacenará.
-   * @returns &#x60;true&#x60; si la contraseña se actualizó correctamente;
-   * &#x60;false&#x60; si no se encontró el usuario o la operación falló.
-   * @usageNotes
-   * Normalmente se combina con validaciones en el formulario:
-   * - &#x60;validarClaveActual&#x60; para comprobar la clave actual.
-   * - Un validador de coincidencia para la repetición de la nueva clave.
+   *   Cambia la contraseña de un usuario y sincroniza el caché.
    */
-  // ACTUALIZACIÓN: Debe sincronizar el CACHÉ
   cambiarClave(correo: string, nueva: string): boolean {
     const ok &#x3D; this.repo.cambiarClave(correo, nueva);
     if (ok) {
-      // Si el cambio de clave fue exitoso, actualizamos la clave en el caché
       const user &#x3D; this.usuariosLista.find((u) &#x3D;&gt; u.correo &#x3D;&#x3D;&#x3D; correo);
-      if (user) {
-        user.clave &#x3D; nueva;
-      }
+      if (user) user.clave &#x3D; nueva;
     }
     return ok;
   }
 
   /**
-   * @description Verifica que la contraseña proporcionada coincida con la que
-   * tiene el usuario en el caché de memoria.
-   * @param correo Correo del usuario cuya contraseña se quiere validar.
-   * @param clave Contraseña actual introducida por el usuario.
-   * @returns &#x60;true&#x60; si la contraseña coincide con la almacenada;
-   * &#x60;false&#x60; si no coincide o no existe un usuario con ese correo.
-   * @usageNotes
-   * Úsalo en formularios de &quot;cambiar contraseña&quot; para validar la clave actual
-   * antes de permitir el cambio.
+   *   Valida que la contraseña actual coincida con la ingresada.
    */
-  // REFACTORIZADO: Usa el caché en memoria
   validarClaveActual(correo: string, clave: string): boolean {
-    // Usa this.usuariosLista en lugar de leer localStorage
-    const user &#x3D; this.usuariosLista.find((u: Usuario) &#x3D;&gt; u.correo &#x3D;&#x3D;&#x3D; correo);
+    const user &#x3D; this.usuariosLista.find((u) &#x3D;&gt; u.correo &#x3D;&#x3D;&#x3D; correo);
     return user?.clave &#x3D;&#x3D;&#x3D; clave;
   }
 
   /**
-   * @description Busca un usuario en el caché en memoria por su correo electrónico.
-   * @param correo Correo electrónico del usuario que se quiere localizar.
-   * @returns El objeto &#x60;Usuario&#x60; si se encuentra en el caché; &#x60;null&#x60; si no existe.
-   * @usageNotes
-   * Método pensado para lecturas rápidas desde memoria.
-   * Si el caché no está sincronizado con el almacenamiento persistente,
-   * el resultado puede no reflejar el último estado guardado.
+   *   Busca un usuario en caché por correo.
    */
-  // REFACTORIZADO: Usa el caché en memoria
   buscarPorCorreo(correo: string): Usuario | null {
-    // Usa this.usuariosLista en lugar de leer localStorage
-    return this.usuariosLista.find((u: Usuario) &#x3D;&gt; u.correo &#x3D;&#x3D;&#x3D; correo) ?? null;
+    return this.usuariosLista.find((u) &#x3D;&gt; u.correo &#x3D;&#x3D;&#x3D; correo) ?? null;
   }
-}
-</code></pre>
+}</code></pre>
     </div>
 
 </div>

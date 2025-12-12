@@ -141,12 +141,8 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Servicio de alto nivel para autenticación de usuarios.
-Gestiona el estado de sesión en memoria y en <code>localStorage</code>.</p>
-<ul>
-<li>Inyéctalo en guards y componentes que necesiten saber quién está logueado.</li>
-<li>Usa <code>usuarioActual$</code> para reaccionar a cambios de sesión.</li>
-</ul>
+                <p>Servicio de autenticación de usuarios.
+Maneja login, logout, estado de sesión y carga inicial desde GitHub Pages.</p>
 
             </p>
 
@@ -188,11 +184,17 @@ Gestiona el estado de sesión en memoria y en <code>localStorage</code>.</p>
                                 <a href="#cargarUsuarioActual" >cargarUsuarioActual</a>
                             </li>
                             <li>
+                                <a href="#eliminarUsuario" >eliminarUsuario</a>
+                            </li>
+                            <li>
                                 <a href="#getUsuarioActual" >getUsuarioActual</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
                                 <a href="#guardarSesion" >guardarSesion</a>
+                            </li>
+                            <li>
+                                <a href="#initUsuarios" >initUsuarios</a>
                             </li>
                             <li>
                                 <a href="#login" >login</a>
@@ -218,18 +220,18 @@ Gestiona el estado de sesión en memoria y en <code>localStorage</code>.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(repo: <a href="../injectables/AuthRepository.html" target="_self">AuthRepository</a>, err: <a href="../injectables/AuthErrorService.html" target="_self">AuthErrorService</a>)</code>
+<code>constructor(repo: <a href="../injectables/AuthRepository.html" target="_self">AuthRepository</a>, err: <a href="../injectables/AuthErrorService.html" target="_self">AuthErrorService</a>, jsonService: <a href="../injectables/JsonService.html" target="_self">JsonService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/core/auth.service.ts:32</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/core/auth.service.ts:33</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Inicializa el servicio cargando el usuario persistido (si existe).</p>
+                            <div class="io-description"><p>Constructor del servicio.</p>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -255,7 +257,7 @@ Gestiona el estado de sesión en memoria y en <code>localStorage</code>.</p>
                                                     </td>
                                                     
                                                         <td>
-                                                                <p>Repositorio de usuarios (acceso a almacenamiento).</p>
+                                                                <p>Repositorio de usuarios en localStorage.</p>
 
                                                         </td>
                                                 </tr>
@@ -271,7 +273,23 @@ Gestiona el estado de sesión en memoria y en <code>localStorage</code>.</p>
                                                     </td>
                                                     
                                                         <td>
-                                                                <p>Servicio de mensajes de error para autenticación.</p>
+                                                                <p>Servicio de mensajes de error.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>jsonService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/JsonService.html" target="_self" >JsonService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Servicio para cargar usuarios remotos desde JSON.</p>
 
                                                         </td>
                                                 </tr>
@@ -311,24 +329,94 @@ Gestiona el estado de sesión en memoria y en <code>localStorage</code>.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="49"
-                                    class="link-to-prism">src/app/core/auth.service.ts:49</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="71"
+                                    class="link-to-prism">src/app/core/auth.service.ts:71</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Carga el usuario actual desde <code>localStorage</code> y actualiza el <code>BehaviorSubject</code>.
-Normalmente solo se invoca desde el constructor.</p>
+                        <div class="io-description"><p>Carga el usuario actual desde localStorage y actualiza el estado.</p>
 </div>
 
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                         </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eliminarUsuario"></a>
+                    <span class="name">
+                        <span ><b>eliminarUsuario</b></span>
+                        <a href="#eliminarUsuario"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>eliminarUsuario(correo: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="127"
+                                    class="link-to-prism">src/app/core/auth.service.ts:127</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Elimina al usuario actual del sistema.</p>
+</div>
+
                             <div class="io-description">
-                                <p>Nada (<code>void</code>).</p>
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>correo</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Correo del usuario a eliminar.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p><code>true</code> si fue eliminado, <code>false</code> si no existía.</p>
 
                             </div>
                 </td>
@@ -355,16 +443,15 @@ Normalmente solo se invoca desde el constructor.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="75"
-                                    class="link-to-prism">src/app/core/auth.service.ts:75</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="93"
+                                    class="link-to-prism">src/app/core/auth.service.ts:93</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Devuelve el usuario actualmente autenticado.
-Para observar cambios en tiempo real, usa mejor <code>usuarioActual$</code>.</p>
+                        <div class="io-description"><p>Devuelve el usuario actualmente autenticado.</p>
 </div>
 
                         <div class="io-description">
@@ -372,7 +459,7 @@ Para observar cambios en tiempo real, usa mejor <code>usuarioActual$</code>.</p>
 
                         </div>
                             <div class="io-description">
-                                <p>El usuario actual o <code>null</code> si no hay sesión.</p>
+                                <p>Usuario autenticado o <code>null</code> si no hay sesión.</p>
 
                             </div>
                 </td>
@@ -401,16 +488,15 @@ Para observar cambios en tiempo real, usa mejor <code>usuarioActual$</code>.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="60"
-                                    class="link-to-prism">src/app/core/auth.service.ts:60</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="80"
+                                    class="link-to-prism">src/app/core/auth.service.ts:80</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Persiste o limpia la sesión de usuario en <code>localStorage</code>
-y actualiza el estado observable.</p>
+                        <div class="io-description"><p>Guarda o limpia la sesión de usuario en localStorage.</p>
 </div>
 
                             <div class="io-description">
@@ -450,9 +536,48 @@ y actualiza el estado observable.</p>
 
                         </div>
                             <div class="io-description">
-                                <p>Nada (<code>void</code>).</p>
-
+                                
                             </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initUsuarios"></a>
+                    <span class="name">
+                        <span ><b>initUsuarios</b></span>
+                        <a href="#initUsuarios"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>initUsuarios()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="51"
+                                    class="link-to-prism">src/app/core/auth.service.ts:51</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Inicializa los usuarios desde JSON remoto (GitHub Pages)
+solo si no existen usuarios en localStorage.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -477,23 +602,16 @@ y actualiza el estado observable.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="94"
-                                    class="link-to-prism">src/app/core/auth.service.ts:94</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="103"
+                                    class="link-to-prism">src/app/core/auth.service.ts:103</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Intenta autenticar al usuario con correo y clave.</p>
-<ul>
-<li><code>{ ok: true, usuario }</code> si las credenciales son correctas.</li>
-<li><code>{ ok: false, mensaje }</code> si las credenciales son inválidas o hay un error.</li>
-</ul>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-ts">const res = this.auth.login(correo, clave);
-if (!res.ok) {
-  this.errorMensaje = res.mensaje;
-}</code></pre></div></div>
+                        <div class="io-description"><p>Autentica a un usuario con correo y clave.</p>
+</div>
 
                             <div class="io-description">
                                 <b>Parameters :</b>
@@ -548,10 +666,7 @@ if (!res.ok) {
 
                         </div>
                             <div class="io-description">
-                                <ul>
-<li><code>{ ok: true, usuario }</code> si las credenciales son correctas.</li>
-<li><code>{ ok: false, mensaje }</code> si las credenciales son inválidas o hay un error.</li>
-</ul>
+                                <p>Resultado de autenticación con éxito o error.</p>
 
                             </div>
                 </td>
@@ -578,25 +693,21 @@ if (!res.ok) {
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="119"
-                                    class="link-to-prism">src/app/core/auth.service.ts:119</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="118"
+                                    class="link-to-prism">src/app/core/auth.service.ts:118</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Úsalo desde botones de &quot;Cerrar sesión&quot; o guards cuando invalida sesión.</p>
+                        <div class="io-description"><p>Cierra la sesión actual.</p>
 </div>
 
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                         </div>
-                            <div class="io-description">
-                                <p>Nada (<code>void</code>). // Compodoc debería reconocer esto, si no, usa</p>
-
-                            </div>
                 </td>
             </tr>
         </tbody>
@@ -632,14 +743,14 @@ if (!res.ok) {
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/core/auth.service.ts:26</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/core/auth.service.ts:28</a></div>
                         </td>
                     </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Fuente de verdad para el usuario actualmente autenticado.
-Emite <code>null</code> si no hay sesión activa.</p>
+                    <div class="io-description"><p>Fuente observable del usuario autenticado actual.
+Emite un objeto Usuario o <code>null</code> si no hay sesión.</p>
 </div>
                 </td>
             </tr>
@@ -670,14 +781,13 @@ Emite <code>null</code> si no hay sesión activa.</p>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/core/auth.service.ts:32</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/core/auth.service.ts:33</a></div>
                         </td>
                     </tr>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Observable que permite a los componentes suscribirse
-a los cambios de sesión del usuario.</p>
+                    <div class="io-description"><p>Observable para escuchar cambios en la sesión del usuario.</p>
 </div>
                 </td>
             </tr>
@@ -695,61 +805,81 @@ import { BehaviorSubject } from &#x27;rxjs&#x27;;
 import { Usuario } from &#x27;./auth&#x27;;
 import { AuthRepository } from &#x27;./auth.repository&#x27;;
 import { AuthErrorService } from &#x27;./auth-error.service&#x27;;
+import { JsonService } from &#x27;../services/json&#x27;;
 
 /**
- * Tipo de resultado devuelto por AuthService.login
+ * Resultado devuelto por el método &#x60;login()&#x60; de &#x60;AuthService&#x60;.
+ *
+ * - &#x60;ok: true&#x60; → Login exitoso, contiene el usuario autenticado.
+ * - &#x60;ok: false&#x60; → Fallo de login, contiene mensaje de error.
+ *
+ * @typedef {Object} LoginResultado
+ * @type {{ ok: true, usuario: Usuario } | { ok: false, mensaje: string }}
  */
 export type LoginResultado &#x3D; { ok: true; usuario: Usuario } | { ok: false; mensaje: string };
-
 /**
- * Servicio de alto nivel para autenticación de usuarios.
- * Gestiona el estado de sesión en memoria y en &#x60;localStorage&#x60;.
- * @usageNotes
- * - Inyéctalo en guards y componentes que necesiten saber quién está logueado.
- * - Usa &#x60;usuarioActual$&#x60; para reaccionar a cambios de sesión.
+ * Servicio de autenticación de usuarios.
+ * Maneja login, logout, estado de sesión y carga inicial desde GitHub Pages.
  */
-
 @Injectable({ providedIn: &#x27;root&#x27; })
 export class AuthService {
   /**
-   * Fuente de verdad para el usuario actualmente autenticado.
-   * Emite &#x60;null&#x60; si no hay sesión activa.
+   * Fuente observable del usuario autenticado actual.
+   * Emite un objeto Usuario o &#x60;null&#x60; si no hay sesión.
    */
   private usuarioActual &#x3D; new BehaviorSubject&lt;Usuario | null&gt;(null);
 
   /**
-   * Observable que permite a los componentes suscribirse
-   * a los cambios de sesión del usuario.
+   * Observable para escuchar cambios en la sesión del usuario.
    */
   usuarioActual$ &#x3D; this.usuarioActual.asObservable();
 
   /**
-   * Inicializa el servicio cargando el usuario persistido (si existe).
-   * @param repo Repositorio de usuarios (acceso a almacenamiento).
-   * @param err Servicio de mensajes de error para autenticación.
+   * Constructor del servicio.
+   * @param repo Repositorio de usuarios en localStorage.
+   * @param err Servicio de mensajes de error.
+   * @param jsonService Servicio para cargar usuarios remotos desde JSON.
    */
-  constructor(private repo: AuthRepository, private err: AuthErrorService) {
-    this.cargarUsuarioActual();
+  constructor(
+    private repo: AuthRepository,
+    private err: AuthErrorService,
+    private jsonService: JsonService
+  ) {}
+
+  /**
+   * Inicializa los usuarios desde JSON remoto (GitHub Pages)
+   * solo si no existen usuarios en localStorage.
+   */
+  initUsuarios(): void {
+    if (this.repo.hayUsuarios()) {
+      this.cargarUsuarioActual();
+      return;
+    }
+
+    this.jsonService.getUsuariosRemotos().subscribe({
+      next: (usuarios) &#x3D;&gt; {
+        this.repo.guardarUsuarios(usuarios);
+        this.cargarUsuarioActual();
+      },
+      error: () &#x3D;&gt; {
+        console.error(&#x27;Error cargando usuarios remotos&#x27;);
+      },
+    });
   }
 
   /**
-   * Carga el usuario actual desde &#x60;localStorage&#x60; y actualiza el &#x60;BehaviorSubject&#x60;.
-   * @returns Nada (&#x60;void&#x60;).
-   * @usageNotes
-   * Normalmente solo se invoca desde el constructor.
+   * Carga el usuario actual desde localStorage y actualiza el estado.
    */
-  private cargarUsuarioActual() {
+  private cargarUsuarioActual(): void {
     const raw &#x3D; localStorage.getItem(&#x27;usuarioActual&#x27;);
     this.usuarioActual.next(raw ? JSON.parse(raw) : null);
   }
 
   /**
-   * Persiste o limpia la sesión de usuario en &#x60;localStorage&#x60;
-   * y actualiza el estado observable.
+   * Guarda o limpia la sesión de usuario en localStorage.
    * @param u Usuario autenticado o &#x60;null&#x60; para cerrar sesión.
-   * @returns Nada (&#x60;void&#x60;).
    */
-  private guardarSesion(u: Usuario | null) {
+  private guardarSesion(u: Usuario | null): void {
     if (u) {
       localStorage.setItem(&#x27;usuarioActual&#x27;, JSON.stringify(u));
     } else {
@@ -760,59 +890,46 @@ export class AuthService {
 
   /**
    * Devuelve el usuario actualmente autenticado.
-   * @returns El usuario actual o &#x60;null&#x60; si no hay sesión.
-   * @usageNotes
-   * Para observar cambios en tiempo real, usa mejor &#x60;usuarioActual$&#x60;.
+   * @returns Usuario autenticado o &#x60;null&#x60; si no hay sesión.
    */
   getUsuarioActual(): Usuario | null {
     return this.usuarioActual.value;
   }
 
   /**
-   * Intenta autenticar al usuario con correo y clave.
+   * Autentica a un usuario con correo y clave.
    * @param correo Correo electrónico del usuario.
    * @param clave Contraseña en texto plano.
-   * @returns
-   * - &#x60;{ ok: true, usuario }&#x60; si las credenciales son correctas.
-   * - &#x60;{ ok: false, mensaje }&#x60; si las credenciales son inválidas o hay un error.
-   * @usageNotes
-   * &#x60;&#x60;&#x60;ts
-   * const res &#x3D; this.auth.login(correo, clave);
-   * if (!res.ok) {
-   *   this.errorMensaje &#x3D; res.mensaje;
-   * }
-   * &#x60;&#x60;&#x60;
+   * @returns Resultado de autenticación con éxito o error.
    */
   login(correo: string, clave: string): LoginResultado {
     try {
-      const email &#x3D; correo.trim();
-      const pass &#x3D; clave.trim();
-
-      const usuario &#x3D; this.repo.login(email, pass);
-
-      if (!usuario) {
-        return { ok: false, mensaje: this.err.credencialesInvalidas() };
-      }
-
+      const usuario &#x3D; this.repo.login(correo.trim(), clave.trim());
+      if (!usuario) return { ok: false, mensaje: this.err.credencialesInvalidas() };
       this.guardarSesion(usuario);
       return { ok: true, usuario };
     } catch (error) {
-      console.error(&#x27;Error en AuthService.login():&#x27;, error);
+      console.error(&#x27;Error en login:&#x27;, error);
       return { ok: false, mensaje: this.err.errorInesperado() };
     }
   }
 
   /**
-   * @description Cierra la sesión del usuario actual y limpia la información persistida.
-   * @returns Nada (&#x60;void&#x60;). // Compodoc debería reconocer esto, si no, usa @returns {void}
-   * @usageNotes
-   * Úsalo desde botones de &quot;Cerrar sesión&quot; o guards cuando invalida sesión.
+   * Cierra la sesión actual.
    */
-  logout() {
+  logout(): void {
     this.guardarSesion(null);
   }
-}
-</code></pre>
+
+  /**
+   * Elimina al usuario actual del sistema.
+   * @param correo Correo del usuario a eliminar.
+   * @returns &#x60;true&#x60; si fue eliminado, &#x60;false&#x60; si no existía.
+   */
+  eliminarUsuario(correo: string): boolean {
+    return this.repo.eliminarUsuario(correo);
+  }
+}</code></pre>
     </div>
 
 </div>

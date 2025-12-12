@@ -297,7 +297,7 @@ y mostrar las ventas por categoría cargadas desde un JSON externo publicado en 
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(fb: FormBuilder, adminSrv: <a href="../injectables/AdminService.html" target="_self">AdminService</a>, jsonSrv: <a href="../injectables/Json.html" target="_self">Json</a>)</code>
+<code>constructor(fb: FormBuilder, adminSrv: <a href="../injectables/AdminService.html" target="_self">AdminService</a>, jsonSrv: <a href="../injectables/JsonService.html" target="_self">JsonService</a>)</code>
                     </td>
                 </tr>
                         <tr>
@@ -358,7 +358,7 @@ y mostrar las ventas por categoría cargadas desde un JSON externo publicado en 
                                                         <td>jsonSrv</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/Json.html" target="_self" >Json</a></code>
+                                                                        <code><a href="../injectables/JsonService.html" target="_self" >JsonService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -858,7 +858,7 @@ y mostrar las ventas por categoría cargadas desde un JSON externo publicado en 
 import { CommonModule } from &#x27;@angular/common&#x27;;
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from &#x27;@angular/forms&#x27;;
 import { AdminService, UsuarioAdmin } from &#x27;./admin.service&#x27;;
-import { Json } from &#x27;../../services/json&#x27;;
+import { JsonService } from &#x27;../../services/json&#x27;;
 
 /**
  *
@@ -929,7 +929,7 @@ export class AdminComponent implements OnInit {
    * @param adminSrv Servicio que gestiona lógica de usuarios.
    * @param jsonSrv Servicio para obtener datos JSON externos.
    */
-  constructor(private fb: FormBuilder, private adminSrv: AdminService, private jsonSrv: Json) {}
+  constructor(private fb: FormBuilder, private adminSrv: AdminService, private jsonSrv: JsonService) {}
 
   /**
    * Inicializa formulario, carga usuarios y ventas desde servicios correspondientes.

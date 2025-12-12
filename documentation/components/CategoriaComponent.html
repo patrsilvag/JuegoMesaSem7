@@ -289,7 +289,7 @@ desde archivos JSON locales, y los filtra dinámicamente según el <code>slug</c
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(route: ActivatedRoute, cart: <a href="../injectables/Cart.html" target="_self">Cart</a>, jsonSrv: <a href="../injectables/Json.html" target="_self">Json</a>)</code>
+<code>constructor(route: ActivatedRoute, cart: <a href="../injectables/Cart.html" target="_self">Cart</a>, jsonSrv: <a href="../injectables/JsonService.html" target="_self">JsonService</a>)</code>
                     </td>
                 </tr>
                         <tr>
@@ -350,7 +350,7 @@ desde archivos JSON locales, y los filtra dinámicamente según el <code>slug</c
                                                         <td>jsonSrv</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/Json.html" target="_self" >Json</a></code>
+                                                                        <code><a href="../injectables/JsonService.html" target="_self" >JsonService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -737,7 +737,7 @@ Ejemplo: &#39;estrategia&#39;, &#39;infantiles&#39;.</p>
 import { ActivatedRoute, RouterLink } from &#x27;@angular/router&#x27;;
 import { CommonModule } from &#x27;@angular/common&#x27;;
 import { Cart } from &#x27;../../core/cart&#x27;;
-import { Json } from &#x27;../../services/json&#x27;;
+import { JsonService } from &#x27;../../services/json&#x27;;
 
 /**
  * @description
@@ -796,7 +796,7 @@ export class CategoriaComponent implements OnInit {
    * @param cart Servicio de carrito para agregar productos.
    * @param jsonSrv Servicio para consumir archivos JSON locales.
    */
-  constructor(private route: ActivatedRoute, private cart: Cart, private jsonSrv: Json) {}
+  constructor(private route: ActivatedRoute, private cart: Cart, private jsonSrv: JsonService) {}
 
   /**
    * Inicializa el componente:

@@ -273,7 +273,7 @@ Obtiene el tipo de cambio desde una API externa usando el servicio <code>Json</c
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(jsonService: <a href="../injectables/Json.html" target="_self">Json</a>)</code>
+<code>constructor(jsonService: <a href="../injectables/JsonService.html" target="_self">JsonService</a>)</code>
                     </td>
                 </tr>
                         <tr>
@@ -302,7 +302,7 @@ Obtiene el tipo de cambio desde una API externa usando el servicio <code>Json</c
                                                         <td>jsonService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/Json.html" target="_self" >Json</a></code>
+                                                                        <code><a href="../injectables/JsonService.html" target="_self" >JsonService</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -428,7 +428,7 @@ Es <code>null</code> mientras no se haya cargado o si ocurre un error.</p>
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
 import { CommonModule } from &#x27;@angular/common&#x27;;
-import { Json } from &#x27;../../services/json&#x27;;
+import { JsonService } from &#x27;../../services/json&#x27;;
 
 /**
  * 
@@ -472,7 +472,7 @@ export class FooterComponent implements OnInit {
    *
    * @param jsonService Servicio inyectado que maneja la llamada HTTP a la API real.
    */
-  constructor(private jsonService: Json) {}
+  constructor(private jsonService: JsonService) {}
   /**
    * Inicializa el componente y solicita el tipo de cambio desde la API externa.
    * El valor se guarda en &#x60;valorDolar&#x60;. Si ocurre un error, se asigna &#x60;null&#x60;.

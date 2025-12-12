@@ -6,10 +6,11 @@ import { ToastComponent } from './shared/toast/toast';
 import { AuthService } from './core/auth.service';
 
 /**
- * @description Componente raíz de la aplicación. Orquesta el layout principal
+ * Componente raíz de la aplicación. Orquesta el layout principal
  * (navbar, contenido de rutas y footer).
  * @usageNotes
  * Se declara una sola vez como root component en `main.ts`.
+ * Se encarga también de inicializar los datos base, como los usuarios simulados.
  */
 @Component({
   selector: 'app-root',
@@ -18,8 +19,20 @@ import { AuthService } from './core/auth.service';
   templateUrl: './app.html',
 })
 export class AppComponent {
+  /**
+   * Servicio de autenticación global, inyectado mediante `inject()`.
+   * Se utiliza para inicializar el sistema de usuarios simulados desde GitHub Pages
+   * y sincronizar con localStorage si es necesario.
+   */
   private authService = inject(AuthService);
 
+  /**
+   * Constructor del componente.
+   *
+   * ⚠ IMPORTANTE:
+   * - Llama a `initUsuarios()` para cargar datos remotos si aún no existen usuarios locales.
+   * - Esto asegura que el sistema simulado tenga un usuario admin cargado al iniciar.
+   */
   constructor() {
     this.authService.initUsuarios();
   }

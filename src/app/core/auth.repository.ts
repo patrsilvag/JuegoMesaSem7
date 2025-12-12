@@ -4,22 +4,32 @@ import { Usuario } from './auth';
 
 
 /**
-* 
-* Repositorio de usuarios que encapsula el acceso a localStorage.
-* Se encarga de todas las operaciones de lectura, escritura y actualización
-* de la lista de usuarios persistidos en el navegador.
-*
-* @usageNotes
-* - No usar localStorage directamente desde otros servicios o componentes.
-* - Se debe acceder a través de este repositorio.
-*/
+* Repositorio de usuarios que encapsula el acceso a `localStorage`.
+ * Se encarga de todas las operaciones CRUD sobre la entidad `Usuario`
+ * dentro del navegador.
+ *
+ * @usageNotes
+ * - No acceder directamente a `localStorage` desde componentes.
+ * - Todos los servicios de dominio deben usar este repositorio.
+ * - Está preparado para evitar errores en entornos SSR.
+ */
 @Injectable({ providedIn: 'root' })
 export class AuthRepository {
   /**
    * Indica si el código corre en entorno navegador.
+   * Se utiliza para prevenir accesos a `localStorage` fuera del browser
    */
   private isBrowser: boolean;
 
+  /**
+   * Constructor del repositorio.
+   *
+   * @param platformId Token de Angular que indica la plataforma actual.
+   *
+   * @usageNotes
+   * - Detecta si la aplicación se ejecuta en navegador.
+   * - No ejecuta lógica de negocio ni inicialización de datos.
+   */
   constructor(@Inject(PLATFORM_ID) platformId: any) {
     this.isBrowser = isPlatformBrowser(platformId);
   }
@@ -27,6 +37,10 @@ export class AuthRepository {
   /**
    * Lista todos los usuarios desde localStorage.
    * @returns Arreglo de usuarios.
+   *
+   * @remarks
+   * Método privado usado internamente por el repositorio.
+   * Devuelve un arreglo vacío si no está en entorno navegador.
    */
   private listarUsuariosPrivado(): Usuario[] {
     if (!this.isBrowser) return [];
@@ -34,33 +48,56 @@ export class AuthRepository {
   }
 
   /**
-   * Persiste los usuarios en localStorage.
-   * @param lista Lista completa de usuarios.
+   * Persiste la lista completa de usuarios en `localStorage`.
+   *
+   * @param lista Lista completa de usuarios a guardar.
+   *
+   * @remarks
+   * Método privado. Toda persistencia debe pasar por aquí.
    */
   private guardarUsuariosPrivado(lista: Usuario[]): void {
     if (!this.isBrowser) return;
     localStorage.setItem('usuarios', JSON.stringify(lista));
   }
 
-  /** @inheritdoc */
+  /**
+   * Devuelve todos los usuarios almacenados.
+   *
+   * @returns Arreglo de usuarios persistidos.
+   */
   listarUsuarios(): Usuario[] {
     return this.listarUsuariosPrivado();
   }
 
-  /** @inheritdoc */
+  /**
+   * Guarda una lista completa de usuarios.
+   *
+   * @param lista Lista de usuarios a persistir.
+   *
+   * @usageNotes
+   * Usado principalmente para inicialización desde JSON remoto.
+   */
   guardarUsuarios(lista: Usuario[]): void {
     this.guardarUsuariosPrivado(lista);
   }
 
   /**
-   * Indica si hay usuarios almacenados en localStorage.
-   * @returns `true` si hay usuarios, `false` si no.
+   * Indica si existen usuarios registrados en el sistema.
+   *
+   * @returns `true` si hay usuarios en almacenamiento,
+   * `false` si está vacío.
    */
   hayUsuarios(): boolean {
     return this.listarUsuarios().length > 0;
   }
 
-  /** @inheritdoc */
+  /**
+   * Registra un nuevo usuario en el sistema.
+   *
+   * @param user Usuario a registrar.
+   * @returns `true` si el usuario fue registrado correctamente,
+   * `false` si ya existía un usuario con el mismo correo.
+   */
   registrar(user: Usuario): boolean {
     const lista = this.listarUsuariosPrivado();
     if (lista.some((u) => u.correo === user.correo)) return false;
@@ -69,14 +106,26 @@ export class AuthRepository {
     return true;
   }
 
-  /** @inheritdoc */
+  /**
+   * Autentica un usuario mediante correo y contraseña.
+   *
+   * @param correo Correo electrónico del usuario.
+   * @param clave Contraseña en texto plano.
+   * @returns El usuario autenticado o `null` si las credenciales no son válidas.
+   */
   login(correo: string, clave: string): Usuario | null {
     return (
       this.listarUsuariosPrivado().find((u) => u.correo === correo && u.clave === clave) ?? null
     );
   }
 
-  /** @inheritdoc */
+  /**
+   * Actualiza los datos de un usuario existente.
+   *
+   * @param data Usuario con los datos actualizados.
+   * @returns `true` si el usuario fue actualizado,
+   * `false` si no se encontró.
+   */
   actualizar(data: Usuario): boolean {
     const lista = this.listarUsuariosPrivado();
     const index = lista.findIndex((u) => u.correo === data.correo);
@@ -86,7 +135,14 @@ export class AuthRepository {
     return true;
   }
 
-  /** @inheritdoc */
+  /**
+   * Cambia la contraseña de un usuario.
+   *
+   * @param correo Correo del usuario.
+   * @param nueva Nueva contraseña.
+   * @returns `true` si la contraseña fue actualizada,
+   * `false` si el usuario no existe.
+   */
   cambiarClave(correo: string, nueva: string): boolean {
     const lista = this.listarUsuariosPrivado();
     const index = lista.findIndex((u) => u.correo === correo);
@@ -96,7 +152,14 @@ export class AuthRepository {
     return true;
   }
 
-  /** @inheritdoc */
+  /**
+   * Actualiza el estado de un usuario (`active` / `inactive`).
+   *
+   * @param correo Correo del usuario.
+   * @param estado Nuevo estado a asignar.
+   * @returns `true` si el estado fue actualizado,
+   * `false` si el usuario no existe.
+   */
   actualizarEstado(correo: string, estado: 'active' | 'inactive'): boolean {
     const lista = this.listarUsuariosPrivado();
     const index = lista.findIndex((u) => u.correo === correo);
@@ -107,9 +170,15 @@ export class AuthRepository {
   }
 
   /**
-   * Elimina un usuario por correo desde el almacenamiento.
+   * Elimina un usuario del sistema por su correo electrónico.
+   *
    * @param correo Correo del usuario a eliminar.
-   * @returns `true` si el usuario fue eliminado; `false` si no existía.
+   * @returns `true` si el usuario fue eliminado correctamente,
+   * `false` si no existía.
+   *
+   * @usageNotes
+   * - No cierra sesión automáticamente.
+   * - La lógica de logout debe manejarse desde `AuthService`.
    */
   eliminarUsuario(correo: string): boolean {
     const lista = this.listarUsuarios();

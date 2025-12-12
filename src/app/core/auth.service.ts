@@ -5,27 +5,39 @@ import { AuthRepository } from './auth.repository';
 import { AuthErrorService } from './auth-error.service';
 import { JsonService } from '../services/json';
 
-
 /**
-* @typedef LoginResultado
-* Resultado devuelto por el método `login()` de `AuthService`.
-*/
+ * Resultado devuelto por el método `login()` de `AuthService`.
+ *
+ * - `ok: true` → Login exitoso, contiene el usuario autenticado.
+ * - `ok: false` → Fallo de login, contiene mensaje de error.
+ *
+ * @typedef {Object} LoginResultado
+ * @type {{ ok: true, usuario: Usuario } | { ok: false, mensaje: string }}
+ */
 export type LoginResultado = { ok: true; usuario: Usuario } | { ok: false; mensaje: string };
-
-
 /**
-* @description
-* Servicio de autenticación de usuarios.
-* Maneja login, logout, estado de sesión y carga inicial desde GitHub Pages.
-*/
+ * Servicio de autenticación de usuarios.
+ * Maneja login, logout, estado de sesión y carga inicial desde GitHub Pages.
+ */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  /** @description Fuente observable del usuario autenticado actual */
+  /**
+   * Fuente observable del usuario autenticado actual.
+   * Emite un objeto Usuario o `null` si no hay sesión.
+   */
   private usuarioActual = new BehaviorSubject<Usuario | null>(null);
 
-  /** @description Stream público del usuario autenticado */
+  /**
+   * Observable para escuchar cambios en la sesión del usuario.
+   */
   usuarioActual$ = this.usuarioActual.asObservable();
 
+  /**
+   * Constructor del servicio.
+   * @param repo Repositorio de usuarios en localStorage.
+   * @param err Servicio de mensajes de error.
+   * @param jsonService Servicio para cargar usuarios remotos desde JSON.
+   */
   constructor(
     private repo: AuthRepository,
     private err: AuthErrorService,
@@ -33,8 +45,8 @@ export class AuthService {
   ) {}
 
   /**
-   * @description Inicializa los usuarios desde JSON remoto (GitHub Pages)
-   * si no existen previamente en localStorage.
+   * Inicializa los usuarios desde JSON remoto (GitHub Pages)
+   * solo si no existen usuarios en localStorage.
    */
   initUsuarios(): void {
     if (this.repo.hayUsuarios()) {
@@ -53,13 +65,18 @@ export class AuthService {
     });
   }
 
-  /** @description Carga la sesión activa desde localStorage. */
+  /**
+   * Carga el usuario actual desde localStorage y actualiza el estado.
+   */
   private cargarUsuarioActual(): void {
     const raw = localStorage.getItem('usuarioActual');
     this.usuarioActual.next(raw ? JSON.parse(raw) : null);
   }
 
-  /** @description Persiste o elimina la sesión en localStorage. */
+  /**
+   * Guarda o limpia la sesión de usuario en localStorage.
+   * @param u Usuario autenticado o `null` para cerrar sesión.
+   */
   private guardarSesion(u: Usuario | null): void {
     if (u) {
       localStorage.setItem('usuarioActual', JSON.stringify(u));
@@ -69,14 +86,19 @@ export class AuthService {
     this.usuarioActual.next(u);
   }
 
-  /** @description Devuelve el usuario actual. */
+  /**
+   * Devuelve el usuario actualmente autenticado.
+   * @returns Usuario autenticado o `null` si no hay sesión.
+   */
   getUsuarioActual(): Usuario | null {
     return this.usuarioActual.value;
   }
 
   /**
-   * @description Autentica a un usuario por correo y clave.
-   * @returns Resultado del intento de login.
+   * Autentica a un usuario con correo y clave.
+   * @param correo Correo electrónico del usuario.
+   * @param clave Contraseña en texto plano.
+   * @returns Resultado de autenticación con éxito o error.
    */
   login(correo: string, clave: string): LoginResultado {
     try {
@@ -90,13 +112,15 @@ export class AuthService {
     }
   }
 
-  /** @description Cierra la sesión del usuario actual. */
+  /**
+   * Cierra la sesión actual.
+   */
   logout(): void {
     this.guardarSesion(null);
   }
 
   /**
-   * @description Elimina el usuario actual del sistema (por correo).
+   * Elimina al usuario actual del sistema.
    * @param correo Correo del usuario a eliminar.
    * @returns `true` si fue eliminado, `false` si no existía.
    */
