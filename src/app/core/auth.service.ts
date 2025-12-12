@@ -94,4 +94,13 @@ export class AuthService {
   logout(): void {
     this.guardarSesion(null);
   }
+
+  /**
+   * @description Elimina el usuario actual del sistema (por correo).
+   * @param correo Correo del usuario a eliminar.
+   * @returns `true` si fue eliminado, `false` si no existía.
+   */
+  eliminarUsuario(correo: string): boolean {
+    return this.repo.eliminarUsuario(correo);
+  }
 }

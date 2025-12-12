@@ -14,6 +14,8 @@ import { AuthService } from '../../core/auth.service';
 import { AuthErrorService } from '../../core/auth-error.service';
 import { NotificationService } from '../../core/notification.service'; // <-- NUEVA IMPORTACIÓN
 import { Usuario } from '../../core/auth';
+import { Router } from '@angular/router';
+
 /**
  * Página de perfil de usuario. Permite editar datos personales y cambiar la contraseña del usuario actualmente autenticado.
  * @usageNotes
@@ -74,7 +76,8 @@ export class PerfilComponent implements OnInit {
     private userSrv: UserService,
     private authSrv: AuthService,
     private err: AuthErrorService,
-    private notifSrv: NotificationService // <-- SERVICIO INYECTADO
+    private notifSrv: NotificationService,
+    private router: Router
   ) {}
 
   /**
@@ -238,5 +241,24 @@ export class PerfilComponent implements OnInit {
     // Éxito
     this.formClave.reset();
     this.notifSrv.showSuccess('Contraseña actualizada con éxito.'); // <-- REEMPLAZO
+  }
+
+  eliminarCuenta(): void {
+    const confirmar = confirm(
+      '¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.'
+    );
+    if (!confirmar) return;
+
+    const usuario = this.authSrv.getUsuarioActual();
+    if (!usuario) return;
+
+    const eliminado = this.authSrv.eliminarUsuario(usuario.correo);
+    if (eliminado) {
+      this.authSrv.logout();
+      this.notifSrv.showSuccess('Tu cuenta ha sido eliminada correctamente.');
+      this.router.navigate(['/']); // ⬅️ REDIRECCIÓN AL INICIO
+    } else {
+      this.notifSrv.showError('No se pudo eliminar el usuario. Intenta nuevamente.');
+    }
   }
 }

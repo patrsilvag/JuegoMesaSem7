@@ -2,7 +2,7 @@
   <h2 class="form-title">Mi Perfil</h2>
 
   <!-- ==========================
-       DATOS PERSONALES
+      DATOS PERSONALES
   =========================== -->
   <!-- ✅ *ngIf en el MISMO form que usa [formGroup] -->
   <form *ngIf="formDatos" [formGroup]="formDatos" (ngSubmit)="guardarDatos()" novalidate>
@@ -64,13 +64,18 @@
       </div>
     </div>
 
-    <button type="submit" class="btn-primary mt-3">Guardar cambios</button>
+    <div class="form-actions">
+      <button type="submit" class="btn-primary mt-3">Guardar cambios</button>
+      <button type="button" class="btn-danger mt-3" (click)="eliminarCuenta()">
+        Eliminar cuenta
+      </button>
+    </div>
   </form>
 
   <hr class="my-4" />
 
   <!-- ==========================
-       CAMBIAR CONTRASEÑA
+  CAMBIAR CONTRASEÑA
   =========================== -->
   <h3 class="form-title" style="font-size: 1.3rem">Cambiar contraseña</h3>
 

@@ -105,4 +105,21 @@ export class AuthRepository {
     this.guardarUsuariosPrivado(lista);
     return true;
   }
+
+  /**
+   * Elimina un usuario por correo desde el almacenamiento.
+   * @param correo Correo del usuario a eliminar.
+   * @returns `true` si el usuario fue eliminado; `false` si no existía.
+   */
+  eliminarUsuario(correo: string): boolean {
+    const lista = this.listarUsuarios();
+    const nuevaLista = lista.filter((u) => u.correo !== correo);
+    const fueEliminado = lista.length !== nuevaLista.length;
+
+    if (fueEliminado) {
+      this.guardarUsuarios(nuevaLista);
+    }
+
+    return fueEliminado;
+  }
 }

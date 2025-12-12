@@ -83,6 +83,7 @@
   }
 }
 
+
 // ===============================
 // PASSWORD + OJO
 // ===============================
@@ -144,4 +145,32 @@ hr {
   margin: 1.5rem 0; /* Reducir el espacio alrededor del separador */
   border-color: #ddd;
 }
+}
+
+.form-actions {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 1.2rem;
+
+  // MOBILE FIRST: botones uno debajo del otro
+  grid-template-columns: 1fr;
+
+  @media (min-width: 600px) {
+    // En pantallas medianas o mayores: botones uno al lado del otro
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.form-actions .btn-danger {
+  background: #d9534f;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: .65rem;
+  transition: 0.2s;
+
+  &:hover {
+    background: #c9302c;
+  }
 }
