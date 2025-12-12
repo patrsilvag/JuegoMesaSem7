@@ -2,128 +2,63 @@ import { Injectable } from '@angular/core';
 import { Usuario } from './auth';
 import { AuthRepository } from './auth.repository';
 import { AuthService } from './auth.service';
+
+
 /**
- * @description Servicio de dominio para operaciones sobre usuarios
- * (registro, actualización de perfil y cambio de contraseña) utilizando
- * `AuthRepository` como fuente de datos y un caché en memoria cargado desde `localStorage`.
- * @usageNotes
- * Inyéctalo en componentes que necesiten manipular datos de usuario
- * fuera del flujo de login (por ejemplo, formularios de registro, perfil o cambio de contraseña).
- * Evita acceder directamente a `localStorage`; usa este servicio o `AuthService`.
- */
+* @description
+* Servicio de dominio para manipulación de usuarios (registro, edición, etc.).
+* Funciona sobre la base del repositorio de usuarios y el servicio de sesión.
+*/
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  // 1. CACHE EN MEMORIA: Se carga una sola vez
-  /**
-   * @description Caché en memoria de todos los usuarios registrados,
-   * cargado inicialmente desde `localStorage`.
-   */
+  /** @description Lista de usuarios en caché cargada desde localStorage. */
   private usuariosLista: Usuario[] = JSON.parse(localStorage.getItem('usuarios') ?? '[]');
 
-  /**
-   * @description Inyecta el repositorio de usuarios y el servicio de autenticación
-   * para poder delegar operaciones de persistencia y actualización de sesión.
-   * @param repo Repositorio de usuarios que encapsula el acceso a `localStorage`.
-   * @param authSrv Servicio de autenticación usado para sincronizar la sesión
-   *                cuando se actualiza el perfil o la contraseña.
-   */
   constructor(private repo: AuthRepository, private authSrv: AuthService) {}
 
   /**
-   * @description Registra un nuevo usuario en el sistema a través del repositorio
-   * y, si la operación tiene éxito, sincroniza también el caché en memoria.
-   * @param data Objeto `Usuario` con todos los datos que se van a persistir.
-   * @returns `true` si el usuario se registró correctamente;
-   * `false` si ya existía un usuario con el mismo correo u ocurrió un error en el repositorio.
-   * @usageNotes
-   * Pensado para ser llamado desde el formulario de registro.
-   * Este método solo registra; no inicia sesión automáticamente.
-   * Para iniciar sesión después del registro, usa `AuthService.login`.
+   * @description Registra un nuevo usuario si no existe previamente.
+   * @returns `true` si fue exitoso, `false` si ya existía.
    */
-
-  // ACTUALIZACIÓN: Debe sincronizar el CACHÉ
   registrarUsuario(data: Usuario): boolean {
     const ok = this.repo.registrar(data);
-    if (ok) {
-      // Si el registro fue exitoso, agregamos el nuevo usuario al caché
-      this.usuariosLista.push(data);
-    }
+    if (ok) this.usuariosLista.push(data);
     return ok;
   }
 
   /**
-   * @description Actualiza los datos de perfil de un usuario existente en el repositorio
-   * y, si la actualización es exitosa, también refresca la sesión actual en `AuthService`.
-   * @param data Objeto `Usuario` con los datos actualizados que se desean persistir.
-   * @returns `true` si se actualizó un usuario existente; `false` si no se encontró el usuario
-   * o la actualización falló en el repositorio.
-   * @usageNotes
-   * Úsalo desde formularios de edición de perfil.
-   * Asume que `data` contiene un usuario válido y coherente con el ya almacenado.
+   * @description Actualiza el perfil del usuario actual y sincroniza sesión.
    */
   actualizarPerfil(data: Usuario): boolean {
     const ok = this.repo.actualizar(data);
-    if (ok) {
-      this.authSrv['guardarSesion'](data);
-    }
+    if (ok) this.authSrv['guardarSesion'](data);
     return ok;
   }
 
   /**
-   * @description Cambia la contraseña de un usuario en el repositorio
-   * y sincroniza la nueva contraseña en el caché en memoria.
-   * @param correo Correo del usuario cuya contraseña se va a actualizar.
-   * @param nueva Nueva contraseña en texto plano que se almacenará.
-   * @returns `true` si la contraseña se actualizó correctamente;
-   * `false` si no se encontró el usuario o la operación falló.
-   * @usageNotes
-   * Normalmente se combina con validaciones en el formulario:
-   * - `validarClaveActual` para comprobar la clave actual.
-   * - Un validador de coincidencia para la repetición de la nueva clave.
+   * @description Cambia la contraseña de un usuario y sincroniza el caché.
    */
-  // ACTUALIZACIÓN: Debe sincronizar el CACHÉ
   cambiarClave(correo: string, nueva: string): boolean {
     const ok = this.repo.cambiarClave(correo, nueva);
     if (ok) {
-      // Si el cambio de clave fue exitoso, actualizamos la clave en el caché
       const user = this.usuariosLista.find((u) => u.correo === correo);
-      if (user) {
-        user.clave = nueva;
-      }
+      if (user) user.clave = nueva;
     }
     return ok;
   }
 
   /**
-   * @description Verifica que la contraseña proporcionada coincida con la que
-   * tiene el usuario en el caché de memoria.
-   * @param correo Correo del usuario cuya contraseña se quiere validar.
-   * @param clave Contraseña actual introducida por el usuario.
-   * @returns `true` si la contraseña coincide con la almacenada;
-   * `false` si no coincide o no existe un usuario con ese correo.
-   * @usageNotes
-   * Úsalo en formularios de "cambiar contraseña" para validar la clave actual
-   * antes de permitir el cambio.
+   * @description Valida que la contraseña actual coincida con la ingresada.
    */
-  // REFACTORIZADO: Usa el caché en memoria
   validarClaveActual(correo: string, clave: string): boolean {
-    // Usa this.usuariosLista en lugar de leer localStorage
-    const user = this.usuariosLista.find((u: Usuario) => u.correo === correo);
+    const user = this.usuariosLista.find((u) => u.correo === correo);
     return user?.clave === clave;
   }
 
   /**
-   * @description Busca un usuario en el caché en memoria por su correo electrónico.
-   * @param correo Correo electrónico del usuario que se quiere localizar.
-   * @returns El objeto `Usuario` si se encuentra en el caché; `null` si no existe.
-   * @usageNotes
-   * Método pensado para lecturas rápidas desde memoria.
-   * Si el caché no está sincronizado con el almacenamiento persistente,
-   * el resultado puede no reflejar el último estado guardado.
+   * @description Busca un usuario en caché por correo.
    */
-  // REFACTORIZADO: Usa el caché en memoria
   buscarPorCorreo(correo: string): Usuario | null {
-    // Usa this.usuariosLista en lugar de leer localStorage
-    return this.usuariosLista.find((u: Usuario) => u.correo === correo) ?? null;
+    return this.usuariosLista.find((u) => u.correo === correo) ?? null;
   }
 }

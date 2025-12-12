@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Usuario } from '../core/auth';
 
 /**
  * @description
@@ -18,7 +19,7 @@ import { Observable } from 'rxjs';
  *   usando `provideHttpClient()` en `main.ts`.
  */
 @Injectable({ providedIn: 'root' })
-export class Json {
+export class JsonService {
   /**
    * Inyecta el cliente HTTP de Angular para realizar peticiones GET.
    * @param http Cliente HTTP provisto por Angular.
@@ -70,5 +71,9 @@ export class Json {
    */
   getProductos(): Observable<any[]> {
     return this.http.get<any[]>('assets/data/productos.json');
+  }
+
+  getUsuariosRemotos(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>('https://patrsilvag.github.io/api-usuarios/usuarios.json');
   }
 }

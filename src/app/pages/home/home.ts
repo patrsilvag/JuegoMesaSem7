@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Json } from '../../services/json';
+import { JsonService } from '../../services/json';
 /**
  * Página de inicio. Muestra el listado de categorías disponibles
  * y enlaza a las rutas de detalle de categoría.
@@ -27,7 +27,7 @@ export class HomeComponent {
    * Inyecta el servicio JSON para cargar datos de assets.
    * @param jsonSrv Servicio de acceso a archivos JSON locales.
    */
-  constructor(private jsonSrv: Json) {}
+  constructor(private jsonSrv: JsonService) {}
 
   /**
    * Carga las categorías desde el archivo `categorias.json`.

@@ -3,61 +3,64 @@ import { BehaviorSubject } from 'rxjs';
 import { Usuario } from './auth';
 import { AuthRepository } from './auth.repository';
 import { AuthErrorService } from './auth-error.service';
+import { JsonService } from '../services/json';
+
 
 /**
- * Tipo de resultado devuelto por AuthService.login
- */
+* @typedef LoginResultado
+* Resultado devuelto por el método `login()` de `AuthService`.
+*/
 export type LoginResultado = { ok: true; usuario: Usuario } | { ok: false; mensaje: string };
 
-/**
- * Servicio de alto nivel para autenticación de usuarios.
- * Gestiona el estado de sesión en memoria y en `localStorage`.
- * @usageNotes
- * - Inyéctalo en guards y componentes que necesiten saber quién está logueado.
- * - Usa `usuarioActual$` para reaccionar a cambios de sesión.
- */
 
+/**
+* @description
+* Servicio de autenticación de usuarios.
+* Maneja login, logout, estado de sesión y carga inicial desde GitHub Pages.
+*/
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  /**
-   * Fuente de verdad para el usuario actualmente autenticado.
-   * Emite `null` si no hay sesión activa.
-   */
+  /** @description Fuente observable del usuario autenticado actual */
   private usuarioActual = new BehaviorSubject<Usuario | null>(null);
 
-  /**
-   * Observable que permite a los componentes suscribirse
-   * a los cambios de sesión del usuario.
-   */
+  /** @description Stream público del usuario autenticado */
   usuarioActual$ = this.usuarioActual.asObservable();
 
-  /**
-   * Inicializa el servicio cargando el usuario persistido (si existe).
-   * @param repo Repositorio de usuarios (acceso a almacenamiento).
-   * @param err Servicio de mensajes de error para autenticación.
-   */
-  constructor(private repo: AuthRepository, private err: AuthErrorService) {
-    this.cargarUsuarioActual();
-  }
+  constructor(
+    private repo: AuthRepository,
+    private err: AuthErrorService,
+    private jsonService: JsonService
+  ) {}
 
   /**
-   * Carga el usuario actual desde `localStorage` y actualiza el `BehaviorSubject`.
-   * @returns Nada (`void`).
-   * @usageNotes
-   * Normalmente solo se invoca desde el constructor.
+   * @description Inicializa los usuarios desde JSON remoto (GitHub Pages)
+   * si no existen previamente en localStorage.
    */
-  private cargarUsuarioActual() {
+  initUsuarios(): void {
+    if (this.repo.hayUsuarios()) {
+      this.cargarUsuarioActual();
+      return;
+    }
+
+    this.jsonService.getUsuariosRemotos().subscribe({
+      next: (usuarios) => {
+        this.repo.guardarUsuarios(usuarios);
+        this.cargarUsuarioActual();
+      },
+      error: () => {
+        console.error('Error cargando usuarios remotos');
+      },
+    });
+  }
+
+  /** @description Carga la sesión activa desde localStorage. */
+  private cargarUsuarioActual(): void {
     const raw = localStorage.getItem('usuarioActual');
     this.usuarioActual.next(raw ? JSON.parse(raw) : null);
   }
 
-  /**
-   * Persiste o limpia la sesión de usuario en `localStorage`
-   * y actualiza el estado observable.
-   * @param u Usuario autenticado o `null` para cerrar sesión.
-   * @returns Nada (`void`).
-   */
-  private guardarSesion(u: Usuario | null) {
+  /** @description Persiste o elimina la sesión en localStorage. */
+  private guardarSesion(u: Usuario | null): void {
     if (u) {
       localStorage.setItem('usuarioActual', JSON.stringify(u));
     } else {
@@ -66,57 +69,29 @@ export class AuthService {
     this.usuarioActual.next(u);
   }
 
-  /**
-   * Devuelve el usuario actualmente autenticado.
-   * @returns El usuario actual o `null` si no hay sesión.
-   * @usageNotes
-   * Para observar cambios en tiempo real, usa mejor `usuarioActual$`.
-   */
+  /** @description Devuelve el usuario actual. */
   getUsuarioActual(): Usuario | null {
     return this.usuarioActual.value;
   }
 
   /**
-   * Intenta autenticar al usuario con correo y clave.
-   * @param correo Correo electrónico del usuario.
-   * @param clave Contraseña en texto plano.
-   * @returns
-   * - `{ ok: true, usuario }` si las credenciales son correctas.
-   * - `{ ok: false, mensaje }` si las credenciales son inválidas o hay un error.
-   * @usageNotes
-   * ```ts
-   * const res = this.auth.login(correo, clave);
-   * if (!res.ok) {
-   *   this.errorMensaje = res.mensaje;
-   * }
-   * ```
+   * @description Autentica a un usuario por correo y clave.
+   * @returns Resultado del intento de login.
    */
   login(correo: string, clave: string): LoginResultado {
     try {
-      const email = correo.trim();
-      const pass = clave.trim();
-
-      const usuario = this.repo.login(email, pass);
-
-      if (!usuario) {
-        return { ok: false, mensaje: this.err.credencialesInvalidas() };
-      }
-
+      const usuario = this.repo.login(correo.trim(), clave.trim());
+      if (!usuario) return { ok: false, mensaje: this.err.credencialesInvalidas() };
       this.guardarSesion(usuario);
       return { ok: true, usuario };
     } catch (error) {
-      console.error('Error en AuthService.login():', error);
+      console.error('Error en login:', error);
       return { ok: false, mensaje: this.err.errorInesperado() };
     }
   }
 
-  /**
-   * @description Cierra la sesión del usuario actual y limpia la información persistida.
-   * @returns Nada (`void`). // Compodoc debería reconocer esto, si no, usa @returns {void}
-   * @usageNotes
-   * Úsalo desde botones de "Cerrar sesión" o guards cuando invalida sesión.
-   */
-  logout() {
+  /** @description Cierra la sesión del usuario actual. */
+  logout(): void {
     this.guardarSesion(null);
   }
 }

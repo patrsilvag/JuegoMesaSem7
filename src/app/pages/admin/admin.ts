@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AdminService, UsuarioAdmin } from './admin.service';
-import { Json } from '../../services/json';
+import { JsonService } from '../../services/json';
 
 /**
  *
@@ -73,7 +73,7 @@ export class AdminComponent implements OnInit {
    * @param adminSrv Servicio que gestiona lógica de usuarios.
    * @param jsonSrv Servicio para obtener datos JSON externos.
    */
-  constructor(private fb: FormBuilder, private adminSrv: AdminService, private jsonSrv: Json) {}
+  constructor(private fb: FormBuilder, private adminSrv: AdminService, private jsonSrv: JsonService) {}
 
   /**
    * Inicializa formulario, carga usuarios y ventas desde servicios correspondientes.

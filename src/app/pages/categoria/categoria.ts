@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Cart } from '../../core/cart';
-import { Json } from '../../services/json';
+import { JsonService } from '../../services/json';
 
 /**
  * @description
@@ -61,7 +61,7 @@ export class CategoriaComponent implements OnInit {
    * @param cart Servicio de carrito para agregar productos.
    * @param jsonSrv Servicio para consumir archivos JSON locales.
    */
-  constructor(private route: ActivatedRoute, private cart: Cart, private jsonSrv: Json) {}
+  constructor(private route: ActivatedRoute, private cart: Cart, private jsonSrv: JsonService) {}
 
   /**
    * Inicializa el componente:

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Json } from '../../services/json';
+import { JsonService } from '../../services/json';
 
 /**
  * 
@@ -44,7 +44,7 @@ export class FooterComponent implements OnInit {
    *
    * @param jsonService Servicio inyectado que maneja la llamada HTTP a la API real.
    */
-  constructor(private jsonService: Json) {}
+  constructor(private jsonService: JsonService) {}
   /**
    * Inicializa el componente y solicita el tipo de cambio desde la API externa.
    * El valor se guarda en `valorDolar`. Si ocurre un error, se asigna `null`.
