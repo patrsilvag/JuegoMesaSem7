@@ -40,6 +40,8 @@ export class FooterComponent implements OnInit {
    */
   valorDolar: number | null = null;
 
+  isLoading: boolean = true; // Estado de carga
+
   /**
    * Crea una instancia del componente e inyecta el servicio `Json`.
    *
@@ -56,11 +58,16 @@ export class FooterComponent implements OnInit {
     this.jsonService.getCambioDolar().subscribe({
       next: (data: ExchangeRateResponse | null) => {
         // Acceso correcto usando corchetes
-        this.valorDolar = data?.rates?.['CLP'] ?? null;
+        setTimeout(() => {
+          // ⚠️ Solo para ver el spinner por unos segundos
+          this.valorDolar = data?.rates?.['CLP'] ?? null;
+        }, 2000); // 2 segundos de demora artificial
+        this.isLoading = false; // Datos cargados, ocultamos el loading
       },
       error: (err: any) => {
         console.error('Error al obtener tipo de cambio', err);
         this.valorDolar = null;
+        this.isLoading = false; // Datos cargados, ocultamos el loading
       },
     });
   }

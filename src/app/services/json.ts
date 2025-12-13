@@ -24,15 +24,7 @@ export class JsonService {
    * Obtiene tipo de cambio USD → CLP desde API externa.
    * @returns Observable con el objeto de tasas de cambio o `null` en caso de error.
    */
-  // getCambioDolar(): Observable<any> {
-  //   return this.http.get<any>('https://api.exchangerate-api.com/v4/latest/USD').pipe(
-  //     catchError((error) => {
-  //       this.notifSrv.showError('No se pudo obtener el tipo de cambio.');
-  //       console.error('Error en getCambioDolar()', error);
-  //       return of(null);
-  //     })
-  //   );
-  // }
+  
   getCambioDolar(): Observable<ExchangeRateResponse | null> {
     return this.http
       .get<ExchangeRateResponse>('https://api.exchangerate-api.com/v4/latest/USD')

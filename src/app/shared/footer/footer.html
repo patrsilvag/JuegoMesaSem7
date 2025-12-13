@@ -3,12 +3,25 @@
   role="contentinfo"
   aria-label="Pie de página del sitio"
 >
-  <p class="mb-0">© 2025 Juegos de Mesa Cuatro Esquinas. Todos los derechos reservados.</p>
-  <p class="mt-2" *ngIf="valorDolar !== null; else cargando">
-    Tipo de cambio USD → CLP: {{ valorDolar }}
+  <p class="mb-0">
+    © 2025 Juegos de Mesa Cuatro Esquinas. Todos los derechos reservados.
   </p>
 
-  <ng-template #cargando>
-    <p class="mt-2">Cargando tipo de cambio...</p>
-  </ng-template>
+  <div class="mt-2" *ngIf="valorDolar !== null; else cargando">
+    <strong>Tipo de cambio USD → CLP:</strong> {{ valorDolar }}
+  </div>
+
+  <!-- <ng-template #cargando>
+    <div class="mt-2 d-flex justify-content-center align-items-center flex-column">
+      <span class="spinner-border spinner-border-sm mb-1" role="status" aria-hidden="true"></span>
+      <p class="mt-2 cargando">Cargando tipo de cambio...</p>
+    </div>
+  </ng-template> -->
+
+<ng-template #cargando>
+  <p class="mt-2 d-inline-flex align-items-center loading-text">
+    <span class="spinner" aria-hidden="true"></span>
+    &nbsp;Cargando tipo de cambio...
+  </p>
+</ng-template>
 </footer>
