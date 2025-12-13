@@ -24,8 +24,8 @@ describe('JsonService', () => {
     TestBed.configureTestingModule({
       providers: [
         JsonService,
-        provideHttpClient(), // ✅ Reemplazo moderno
-        provideHttpClientTesting(), // ✅ Testing HTTP moderno
+        provideHttpClient(), //  Reemplazo moderno
+        provideHttpClientTesting(), //  Testing HTTP moderno
         { provide: ToastComponent, useClass: MockToast },
       ],
     });

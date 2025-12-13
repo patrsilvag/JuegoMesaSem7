@@ -243,6 +243,15 @@ export class PerfilComponent implements OnInit {
     this.notifSrv.showSuccess('Contraseña actualizada con éxito.'); // <-- REEMPLAZO
   }
 
+  /**
+   * Solicita confirmación para eliminar la cuenta del usuario actual.
+   * Si el usuario confirma:
+   * 1. Elimina el usuario a través del `AuthService`.
+   * 2. Cierra la sesión (`logout`).
+   * 3. Muestra una notificación de éxito o error.
+   * 4. Redirige al inicio ('/') en caso de éxito.
+   * * @returns Nada (`void`).
+   */
   eliminarCuenta(): void {
     const confirmar = confirm(
       '¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.'
@@ -256,7 +265,7 @@ export class PerfilComponent implements OnInit {
     if (eliminado) {
       this.authSrv.logout();
       this.notifSrv.showSuccess('Tu cuenta ha sido eliminada correctamente.');
-      this.router.navigate(['/']); // ⬅️ REDIRECCIÓN AL INICIO
+      this.router.navigate(['/']); //  REDIRECCIÓN AL INICIO
     } else {
       this.notifSrv.showError('No se pudo eliminar el usuario. Intenta nuevamente.');
     }

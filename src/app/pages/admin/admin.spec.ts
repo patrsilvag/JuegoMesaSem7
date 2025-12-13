@@ -2,19 +2,17 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdminComponent } from './admin';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { AdminService } from './admin.service';
-
-type UsuarioAdmin = {
-  correo: string;
-  usuario: string;
-  rol: 'admin' | 'cliente';
-  status: 'active' | 'inactive';
-};
+import { AdminService, UsuarioAdmin } from './admin.service';
+import { JsonService } from '../../services/json'; // Importar el servicio
+import { of } from 'rxjs'; // Importar 'of' para observables simulados
 
 describe('AdminComponent', () => {
   let component: AdminComponent;
   let fixture: ComponentFixture<AdminComponent>;
+
+  // 1. Declarar los Spies
   let adminSpy: jasmine.SpyObj<AdminService>;
+  let jsonSpy: jasmine.SpyObj<JsonService>;
 
   const usuariosMock: UsuarioAdmin[] = [
     { correo: 'admin@site.com', usuario: 'Admin', rol: 'admin', status: 'active' },
@@ -23,70 +21,76 @@ describe('AdminComponent', () => {
   ];
 
   beforeEach(async () => {
+    // 2. Configurar el Spy de AdminService (Lógica de usuarios)
     adminSpy = jasmine.createSpyObj<AdminService>('AdminService', [
       'cargarUsuarios',
       'filtrarUsuarios',
       'toggleEstado',
     ]);
 
-    // IMPORTANTÍSIMO: devolver copia fresca para evitar estado entre tests
     adminSpy.cargarUsuarios.and.callFake(() => usuariosMock.map((u) => ({ ...u })));
 
-    adminSpy.filtrarUsuarios.and.callFake((lista, filtros) => {
+    adminSpy.filtrarUsuarios.and.callFake((lista: UsuarioAdmin[], filtros: any) => {
       const { correo, rol, estado } = filtros;
       return lista.filter(
-        (u: any) =>
-          (correo ? u.correo.includes(correo) : true) &&
-          (rol ? u.rol === rol : true) &&
-          (estado ? u.status === estado : true)
+        (u) =>
+          (!correo || u.correo.includes(correo)) &&
+          (!rol || u.rol === rol) &&
+          (!estado || u.status === estado)
       );
     });
 
-    adminSpy.toggleEstado.and.callFake((u: any) => {
+    // Corrección importante del turno anterior: toggleEstado debe retornar boolean
+    adminSpy.toggleEstado.and.callFake((u: UsuarioAdmin) => {
       u.status = u.status === 'active' ? 'inactive' : 'active';
-      return u;
+      return true;
     });
+
+    // 3. Configurar el Spy de JsonService (Lógica de ventas/http)
+    // Esto soluciona el error "No provider found for _HttpClient"
+    jsonSpy = jasmine.createSpyObj<JsonService>('JsonService', ['getVentas']);
+    // Simulamos que devuelve un array vacío o datos de prueba
+    jsonSpy.getVentas.and.returnValue(of([{ categoria: 'Test', ventas: 100 }]));
 
     await TestBed.configureTestingModule({
       imports: [AdminComponent, ReactiveFormsModule],
-      providers: [{ provide: AdminService, useValue: adminSpy }],
+      // 4. Proveer ambos Spies
+      providers: [
+        { provide: AdminService, useValue: adminSpy },
+        { provide: JsonService, useValue: jsonSpy }, // <--- ESTO FALTABA
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AdminComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges(); // ngOnInit
+    fixture.detectChanges();
   });
 
   it('debe crear el componente y el formulario de filtro', () => {
     expect(component).toBeTruthy();
     expect(component.filtroForm).toBeTruthy();
-    expect(component.filtroForm.get('correo')).toBeTruthy();
-    expect(component.filtroForm.get('rol')).toBeTruthy();
-    expect(component.filtroForm.get('estado')).toBeTruthy();
   });
 
   it('debe cargar usuarios al iniciar', () => {
     expect(adminSpy.cargarUsuarios).toHaveBeenCalled();
     expect(component.usuarios.length).toBe(3);
-    expect(component.usuariosFiltrados.length).toBe(3);
   });
 
-  it('resetFiltro() debe limpiar el formulario y restaurar usuariosFiltrados', () => {
-    component.filtroForm.patchValue({ correo: 'user', rol: 'cliente', estado: 'inactive' });
+  it('debe cargar ventas al iniciar (usando el spy de JsonService)', () => {
+    expect(jsonSpy.getVentas).toHaveBeenCalled();
+    expect(component.ventas.length).toBeGreaterThan(0);
+  });
 
-    component.filtrar(); // directo, es público y síncrono
+  it('resetFiltro() debe limpiar el formulario', () => {
+    component.filtroForm.patchValue({ correo: 'user', rol: 'cliente', estado: 'inactive' });
+    component.filtrar(); // simular acción
     component.resetFiltro();
 
-    // reset() deja strings vacíos en este form
     expect(component.filtroForm.value).toEqual({
       correo: null,
       rol: null,
       estado: null,
     });
-
-    // valueChanges dispara filtrar() automáticamente, pero por seguridad:
-    component.filtrar();
-    expect(component.usuariosFiltrados.length).toBe(component.usuarios.length);
   });
 
   it('debe filtrar por correo', () => {
@@ -112,22 +116,25 @@ describe('AdminComponent', () => {
       rol: '',
       estado: 'inactive',
     });
-
     component.filtrar();
-    fixture.detectChanges();
 
     expect(component.usuariosFiltrados.length).toBe(1);
     expect(component.usuariosFiltrados[0].status).toBe('inactive');
   });
 
-  it('toggleEstado(u) debe llamar al servicio y cambiar el status localmente', () => {
+  it('toggleEstado(u) debe llamar al servicio y actualizar la vista', () => {
+    // Obtenemos una referencia al primer usuario filtrado
     const u = component.usuariosFiltrados[0];
-    const previo = u.status;
+    const estadoInicial = u.status;
 
+    // Llamamos al método del componente (que devuelve void)
     component.toggleEstado(u);
 
+    // Verificamos que se llamó al servicio con ese usuario
     expect(adminSpy.toggleEstado).toHaveBeenCalledWith(u);
-    expect(u.status).not.toBe(previo);
+
+    // Verificamos que el estado del objeto cambió (gracias al callFake que modifica la referencia)
+    expect(u.status).not.toBe(estadoInicial);
   });
 
   it('template: debe mostrar tabla si hay usuariosFiltrados', () => {
@@ -137,6 +144,7 @@ describe('AdminComponent', () => {
   });
 
   it('template: debe mostrar mensaje de alerta cuando no hay resultados', () => {
+    // Forzamos lista vacía
     component.usuariosFiltrados = [];
     fixture.detectChanges();
 

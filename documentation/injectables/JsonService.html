@@ -141,22 +141,17 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Servicio centralizado para el consumo de datos JSON en la aplicación.
-Permite obtener:</p>
+                <p>Servicio para consumo de datos JSON remotos y locales.</p>
 <ul>
-<li><p>JSON local desde <code>assets/data/</code> (categorías y productos).</p>
+<li><p>Ventas desde GitHub Pages</p>
 </li>
-<li><p>JSON externo publicado en GitHub Pages (ventas).</p>
+<li><p>Productos y categorías desde <code>assets/</code></p>
 </li>
-<li><p>API real externa (tipo de cambio USD → CLP).</p>
+<li><p>Tipo de cambio desde API pública</p>
 </li>
-<li><p>Este servicio es <code>providedIn: &#39;root&#39;</code>, por lo que Angular crea una única instancia global.</p>
+<li><p>Utiliza <code>HttpClient</code> para realizar peticiones HTTP.</p>
 </li>
-<li><p>Todos los métodos retornan <code>Observable</code>, por lo que deben consumirse con <code>.subscribe()</code>
-o mediante pipes RxJS.</p>
-</li>
-<li><p>Requiere que <code>HttpClient</code> esté provisto en aplicaciones standalone
-usando <code>provideHttpClient()</code> en <code>main.ts</code>.</p>
+<li><p>Utiliza <code>catchError</code> para manejar errores y mostrar notificaciones de error.</p>
 </li>
 </ul>
 
@@ -210,18 +205,18 @@ usando <code>provideHttpClient()</code> en <code>main.ts</code>.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(http: HttpClient)</code>
+<code>constructor(http: HttpClient, notifSrv: <a href="../injectables/NotificationService.html" target="_self">NotificationService</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/services/json.ts:22</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/services/json.ts:24</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Inyecta el cliente HTTP de Angular para realizar peticiones GET.</p>
+                            <div class="io-description"><p>Crea una instancia del servicio <code>JsonService</code> e inyecta dependencias.</p>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -247,7 +242,23 @@ usando <code>provideHttpClient()</code> en <code>main.ts</code>.</p>
                                                     </td>
                                                     
                                                         <td>
-                                                                <p>Cliente HTTP provisto por Angular.</p>
+                                                                <p>Servicio de <code>HttpClient</code> para hacer peticiones HTTP.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>notifSrv</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/NotificationService.html" target="_self" >NotificationService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Servicio de notificación para mostrar errores.</p>
 
                                                         </td>
                                                 </tr>
@@ -285,27 +296,24 @@ usando <code>provideHttpClient()</code> en <code>main.ts</code>.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="37"
-                                    class="link-to-prism">src/app/services/json.ts:37</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="39"
+                                    class="link-to-prism">src/app/services/json.ts:39</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Obtiene el tipo de cambio actual desde una API real externa.
-API: <a href="https://api.exchangerate-api.com/v4/latest/USD">https://api.exchangerate-api.com/v4/latest/USD</a></p>
-<p>Observable con la respuesta completa del endpoint.
-La conversión a CLP se obtiene desde <code>data.rates.CLP</code>.</p>
+                        <div class="io-description"><p>Obtiene el tipo de cambio de USD a CLP desde una API externa.
+Si hay un error, muestra un mensaje de error y retorna <code>null</code>.</p>
 </div>
 
                         <div class="io-description">
-                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+                            <b>Returns : </b>        <code><a href="../interfaces/ExchangeRateResponse.html" target="_self" >Observable&lt;ExchangeRateResponse | null&gt;</a></code>
 
                         </div>
                             <div class="io-description">
-                                <p>Observable con la respuesta completa del endpoint.
-La conversión a CLP se obtiene desde <code>data.rates.CLP</code>.</p>
+                                <p>Observable que emite el objeto de tasas de cambio o <code>null</code> si ocurre un error.</p>
 
                             </div>
                 </td>
@@ -332,27 +340,24 @@ La conversión a CLP se obtiene desde <code>data.rates.CLP</code>.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="61"
-                                    class="link-to-prism">src/app/services/json.ts:61</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="72"
+                                    class="link-to-prism">src/app/services/json.ts:72</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Obtiene el catálogo de categorías desde JSON local
-ubicado en <code>src/assets/data/categorias.json</code>.</p>
-<p>Observable con un objeto cuyas claves son los slugs
-y valores contienen título/subtítulo.</p>
+                        <div class="io-description"><p>Obtiene el catálogo de categorías desde un archivo JSON local.
+Si ocurre un error, muestra un mensaje de error y retorna un objeto vacío.</p>
 </div>
 
                         <div class="io-description">
-                            <b>Returns : </b>    <code>Observable&lt;any&gt;</code>
+                            <b>Returns : </b>        <code><a href="../interfaces/Categoria.html" target="_self" >Observable&lt;Record&lt;string, Categoria&gt;&gt;</a></code>
 
                         </div>
                             <div class="io-description">
-                                <p>Observable con un objeto cuyas claves son los slugs
-y valores contienen título/subtítulo.</p>
+                                <p>Observable que emite un objeto de categorías o un objeto vacío en caso de error.</p>
 
                             </div>
                 </td>
@@ -379,25 +384,24 @@ y valores contienen título/subtítulo.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="72"
-                                    class="link-to-prism">src/app/services/json.ts:72</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="88"
+                                    class="link-to-prism">src/app/services/json.ts:88</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Obtiene el catálogo completo de productos desde JSON local
-ubicado en <code>src/assets/data/productos.json</code>.</p>
-<p>Observable con un arreglo de productos.</p>
+                        <div class="io-description"><p>Obtiene el catálogo de productos desde un archivo JSON local.
+Si ocurre un error, muestra un mensaje de error y retorna un arreglo vacío.</p>
 </div>
 
                         <div class="io-description">
-                            <b>Returns : </b>    <code>Observable&lt;any[]&gt;</code>
+                            <b>Returns : </b>        <code><a href="../interfaces/Producto.html" target="_self" >Observable&lt;Producto[]&gt;</a></code>
 
                         </div>
                             <div class="io-description">
-                                <p>Observable con un arreglo de productos.</p>
+                                <p>Observable que emite un arreglo de productos o un arreglo vacío en caso de error.</p>
 
                             </div>
                 </td>
@@ -424,19 +428,26 @@ ubicado en <code>src/assets/data/productos.json</code>.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="76"
-                                    class="link-to-prism">src/app/services/json.ts:76</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="104"
+                                    class="link-to-prism">src/app/services/json.ts:104</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Obtiene la lista de usuarios desde GitHub Pages.
+Si ocurre un error, muestra un mensaje de error y retorna un arreglo vacío.</p>
+</div>
 
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="../interfaces/Usuario.html" target="_self" >Observable&lt;Usuario[]&gt;</a></code>
 
                         </div>
+                            <div class="io-description">
+                                <p>Observable que emite un arreglo de usuarios o un arreglo vacío en caso de error.</p>
+
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -461,27 +472,24 @@ ubicado en <code>src/assets/data/productos.json</code>.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="49"
-                                    class="link-to-prism">src/app/services/json.ts:49</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="56"
+                                    class="link-to-prism">src/app/services/json.ts:56</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                        <div class="io-description"><p>Obtiene las ventas por categoría desde un JSON externo
-publicado en GitHub Pages.</p>
-<p>Observable con un arreglo de objetos del tipo:
-<code>{ categoria: string, ventas: number }</code>.</p>
+                        <div class="io-description"><p>Obtiene los datos de ventas desde un archivo JSON remoto en GitHub Pages.
+Si ocurre un error, muestra un mensaje de error y retorna un arreglo vacío.</p>
 </div>
 
                         <div class="io-description">
-                            <b>Returns : </b>    <code>Observable&lt;any[]&gt;</code>
+                            <b>Returns : </b>        <code><a href="../interfaces/Venta.html" target="_self" >Observable&lt;Venta[]&gt;</a></code>
 
                         </div>
                             <div class="io-description">
-                                <p>Observable con un arreglo de objetos del tipo:
-<code>{ categoria: string, ventas: number }</code>.</p>
+                                <p>Observable que emite un arreglo de ventas o un arreglo vacío en caso de error.</p>
 
                             </div>
                 </td>
@@ -496,81 +504,115 @@ publicado en GitHub Pages.</p>
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient } from &#x27;@angular/common/http&#x27;;
 import { Injectable } from &#x27;@angular/core&#x27;;
-import { Observable } from &#x27;rxjs&#x27;;
+import { Observable, of } from &#x27;rxjs&#x27;;
+import { catchError } from &#x27;rxjs/operators&#x27;;
 import { Usuario } from &#x27;../core/auth&#x27;;
+import { NotificationService } from &#x27;../core/notification.service&#x27;;
+import { Categoria } from &#x27;../models/categoria&#x27;;
+import { Producto } from &#x27;../models/producto&#x27;;
+import { Venta } from &#x27;../models/ventas&#x27;;
+import { ExchangeRateResponse } from &#x27;../models/exchange-rate&#x27;;
+
 
 /**
- * @description
- * Servicio centralizado para el consumo de datos JSON en la aplicación.
- * Permite obtener:
- * - JSON local desde &#x60;assets/data/&#x60; (categorías y productos).
- * - JSON externo publicado en GitHub Pages (ventas).
- * - API real externa (tipo de cambio USD → CLP).
+ * Servicio para consumo de datos JSON remotos y locales.
+ * - Ventas desde GitHub Pages
+ * - Productos y categorías desde &#x60;assets/&#x60;
+ * - Tipo de cambio desde API pública
  *
  * @usageNotes
- * - Este servicio es &#x60;providedIn: &#x27;root&#x27;&#x60;, por lo que Angular crea una única instancia global.
- * - Todos los métodos retornan &#x60;Observable&#x60;, por lo que deben consumirse con &#x60;.subscribe()&#x60;
- *   o mediante pipes RxJS.
- * - Requiere que &#x60;HttpClient&#x60; esté provisto en aplicaciones standalone
- *   usando &#x60;provideHttpClient()&#x60; en &#x60;main.ts&#x60;.
+ * - Utiliza &#x60;HttpClient&#x60; para realizar peticiones HTTP.
+ * - Utiliza &#x60;catchError&#x60; para manejar errores y mostrar notificaciones de error.
  */
 @Injectable({ providedIn: &#x27;root&#x27; })
 export class JsonService {
   /**
-   * Inyecta el cliente HTTP de Angular para realizar peticiones GET.
-   * @param http Cliente HTTP provisto por Angular.
+   * Crea una instancia del servicio &#x60;JsonService&#x60; e inyecta dependencias.
+   * @param http Servicio de &#x60;HttpClient&#x60; para hacer peticiones HTTP.
+   * @param notifSrv Servicio de notificación para mostrar errores.
    */
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private notifSrv: NotificationService) {}
 
   /**
-   * Obtiene el tipo de cambio actual desde una API real externa.
-   * API: https://api.exchangerate-api.com/v4/latest/USD
+   * Obtiene el tipo de cambio de USD a CLP desde una API externa.
+   * Si hay un error, muestra un mensaje de error y retorna &#x60;null&#x60;.
    *
-   * @returns {Observable&lt;any&gt;}
-   * Observable con la respuesta completa del endpoint.
-   * La conversión a CLP se obtiene desde &#x60;data.rates.CLP&#x60;.
+   * @returns Observable que emite el objeto de tasas de cambio o &#x60;null&#x60; si ocurre un error.
    */
-  getCambioDolar(): Observable&lt;any&gt; {
-    return this.http.get&lt;any&gt;(&#x27;https://api.exchangerate-api.com/v4/latest/USD&#x27;);
+
+  getCambioDolar(): Observable&lt;ExchangeRateResponse | null&gt; {
+    return this.http
+      .get&lt;ExchangeRateResponse&gt;(&#x27;https://api.exchangerate-api.com/v4/latest/USD&#x27;)
+      .pipe(
+        catchError((error) &#x3D;&gt; {
+          this.notifSrv.showError(&#x27;No se pudo obtener el tipo de cambio.&#x27;);
+          console.error(&#x27;Error en getCambioDolar()&#x27;, error);
+          return of(null);
+        })
+      );
+  }
+  /**
+   * Obtiene los datos de ventas desde un archivo JSON remoto en GitHub Pages.
+   * Si ocurre un error, muestra un mensaje de error y retorna un arreglo vacío.
+   *
+   * @returns Observable que emite un arreglo de ventas o un arreglo vacío en caso de error.
+   */
+  getVentas(): Observable&lt;Venta[]&gt; {
+    return this.http.get&lt;Venta[]&gt;(&#x27;https://patrsilvag.github.io/api-ventas/ventas.json&#x27;).pipe(
+      catchError((error) &#x3D;&gt; {
+        this.notifSrv.showError(&#x27;Error al cargar las ventas.&#x27;);
+        console.error(&#x27;Error en getVentas()&#x27;, error);
+        return of([]);
+      })
+    );
   }
 
   /**
-   * Obtiene las ventas por categoría desde un JSON externo
-   * publicado en GitHub Pages.
+   * Obtiene el catálogo de categorías desde un archivo JSON local.
+   * Si ocurre un error, muestra un mensaje de error y retorna un objeto vacío.
    *
-   * @returns {Observable&lt;any[]&gt;}
-   * Observable con un arreglo de objetos del tipo:
-   * &#x60;{ categoria: string, ventas: number }&#x60;.
+   * @returns Observable que emite un objeto de categorías o un objeto vacío en caso de error.
    */
-  getVentas(): Observable&lt;any[]&gt; {
-    return this.http.get&lt;any[]&gt;(&#x27;https://patrsilvag.github.io/api-ventas/ventas.json&#x27;);
+  getCategorias(): Observable&lt;Record&lt;string, Categoria&gt;&gt; {
+    return this.http.get&lt;Record&lt;string, Categoria&gt;&gt;(&#x27;assets/data/categorias.json&#x27;).pipe(
+      catchError((error) &#x3D;&gt; {
+        this.notifSrv.showError(&#x27;No se pudo cargar el listado de categorías.&#x27;);
+        console.error(&#x27;Error en getCategorias()&#x27;, error);
+        return of({});
+      })
+    );
   }
 
   /**
-   * Obtiene el catálogo de categorías desde JSON local
-   * ubicado en &#x60;src/assets/data/categorias.json&#x60;.
+   * Obtiene el catálogo de productos desde un archivo JSON local.
+   * Si ocurre un error, muestra un mensaje de error y retorna un arreglo vacío.
    *
-   * @returns {Observable&lt;any&gt;}
-   * Observable con un objeto cuyas claves son los slugs
-   * y valores contienen título/subtítulo.
+   * @returns Observable que emite un arreglo de productos o un arreglo vacío en caso de error.
    */
-  getCategorias(): Observable&lt;any&gt; {
-    return this.http.get(&#x27;assets/data/categorias.json&#x27;);
+  getProductos(): Observable&lt;Producto[]&gt; {
+    return this.http.get&lt;Producto[]&gt;(&#x27;assets/data/productos.json&#x27;).pipe(
+      catchError((error) &#x3D;&gt; {
+        this.notifSrv.showError(&#x27;Error al cargar los productos.&#x27;);
+        console.error(&#x27;Error en getProductos()&#x27;, error);
+        return of([]);
+      })
+    );
   }
 
   /**
-   * Obtiene el catálogo completo de productos desde JSON local
-   * ubicado en &#x60;src/assets/data/productos.json&#x60;.
+   * Obtiene la lista de usuarios desde GitHub Pages.
+   * Si ocurre un error, muestra un mensaje de error y retorna un arreglo vacío.
    *
-   * @returns {Observable&lt;any[]&gt;}
-   * Observable con un arreglo de productos.
+   * @returns Observable que emite un arreglo de usuarios o un arreglo vacío en caso de error.
    */
-  getProductos(): Observable&lt;any[]&gt; {
-    return this.http.get&lt;any[]&gt;(&#x27;assets/data/productos.json&#x27;);
-  }
-
   getUsuariosRemotos(): Observable&lt;Usuario[]&gt; {
-    return this.http.get&lt;Usuario[]&gt;(&#x27;https://patrsilvag.github.io/api-usuarios/usuarios.json&#x27;);
+    return this.http.get&lt;Usuario[]&gt;(&#x27;https://patrsilvag.github.io/api-usuarios/usuarios.json&#x27;).pipe(
+      catchError((error) &#x3D;&gt; {
+        this.notifSrv.showError(&#x27;No se pudo cargar la lista de usuarios.&#x27;);
+        console.error(&#x27;Error en getUsuariosRemotos()&#x27;, error);
+        return of([]);
+      })
+    );
   }
 }
 </code></pre>

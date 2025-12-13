@@ -220,6 +220,8 @@ Funciona sobre la base del repositorio de usuarios y el servicio de sesión.</p>
 
                 <tr>
                     <td class="col-md-4">
+                            <div class="io-description"><p>Inicializa el servicio inyectando las dependencias necesarias.</p>
+</div>
                             <div>
                                     <b>Parameters :</b>
                                     <table class="params">
@@ -228,6 +230,7 @@ Funciona sobre la base del repositorio de usuarios y el servicio de sesión.</p>
                                                 <td>Name</td>
                                                     <td>Type</td>
                                                 <td>Optional</td>
+                                                    <td>Description</td>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -242,6 +245,10 @@ Funciona sobre la base del repositorio de usuarios y el servicio de sesión.</p>
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>Repositorio encargado de la persistencia de datos (localStorage).</p>
+
+                                                        </td>
                                                 </tr>
                                                 <tr>
                                                         <td>authSrv</td>
@@ -254,6 +261,10 @@ Funciona sobre la base del repositorio de usuarios y el servicio de sesión.</p>
                                                             No
                                                     </td>
                                                     
+                                                        <td>
+                                                                <p>Servicio de autenticación para sincronizar la sesión actual.</p>
+
+                                                        </td>
                                                 </tr>
                                         </tbody>
                                     </table>
@@ -289,8 +300,8 @@ Funciona sobre la base del repositorio de usuarios y el servicio de sesión.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="31"
-                                    class="link-to-prism">src/app/core/user.service.ts:31</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="36"
+                                    class="link-to-prism">src/app/core/user.service.ts:36</a></div>
                         </td>
                     </tr>
 
@@ -358,8 +369,8 @@ Funciona sobre la base del repositorio de usuarios y el servicio de sesión.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="60"
-                                    class="link-to-prism">src/app/core/user.service.ts:60</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="65"
+                                    class="link-to-prism">src/app/core/user.service.ts:65</a></div>
                         </td>
                     </tr>
 
@@ -427,8 +438,8 @@ Funciona sobre la base del repositorio de usuarios y el servicio de sesión.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="40"
-                                    class="link-to-prism">src/app/core/user.service.ts:40</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/app/core/user.service.ts:45</a></div>
                         </td>
                     </tr>
 
@@ -508,8 +519,8 @@ Funciona sobre la base del repositorio de usuarios y el servicio de sesión.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="22"
-                                    class="link-to-prism">src/app/core/user.service.ts:22</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="27"
+                                    class="link-to-prism">src/app/core/user.service.ts:27</a></div>
                         </td>
                     </tr>
 
@@ -578,8 +589,8 @@ Funciona sobre la base del repositorio de usuarios y el servicio de sesión.</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="52"
-                                    class="link-to-prism">src/app/core/user.service.ts:52</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="57"
+                                    class="link-to-prism">src/app/core/user.service.ts:57</a></div>
                         </td>
                     </tr>
 
@@ -704,6 +715,11 @@ export class UserService {
   /**   Lista de usuarios en caché cargada desde localStorage. */
   private usuariosLista: Usuario[] &#x3D; JSON.parse(localStorage.getItem(&#x27;usuarios&#x27;) ?? &#x27;[]&#x27;);
 
+  /**
+   * Inicializa el servicio inyectando las dependencias necesarias.
+   * @param repo Repositorio encargado de la persistencia de datos (localStorage).
+   * @param authSrv Servicio de autenticación para sincronizar la sesión actual.
+   */
   constructor(private repo: AuthRepository, private authSrv: AuthService) {}
 
   /**

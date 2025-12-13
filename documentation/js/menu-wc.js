@@ -146,16 +146,31 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/CartItem.html" data-type="entity-link" >CartItem</a>
                             </li>
                             <li class="link">
+                                <a href="interfaces/Categoria.html" data-type="entity-link" >Categoria</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/ExchangeRateResponse.html" data-type="entity-link" >ExchangeRateResponse</a>
+                            </li>
+                            <li class="link">
                                 <a href="interfaces/FiltroAdmin.html" data-type="entity-link" >FiltroAdmin</a>
                             </li>
                             <li class="link">
+                                <a href="interfaces/HomeCategoria.html" data-type="entity-link" >HomeCategoria</a>
+                            </li>
+                            <li class="link">
                                 <a href="interfaces/Notification.html" data-type="entity-link" >Notification</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/Producto.html" data-type="entity-link" >Producto</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/Usuario.html" data-type="entity-link" >Usuario</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/UsuarioAdmin.html" data-type="entity-link" >UsuarioAdmin</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/Venta.html" data-type="entity-link" >Venta</a>
                             </li>
                         </ul>
                     </li>

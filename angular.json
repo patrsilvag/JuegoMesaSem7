@@ -67,8 +67,7 @@
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [{ "glob": "**/*", "input": "public" }],
-            "styles": ["src/styles.scss"],
-            "include": []
+            "styles": ["src/styles.scss"]
           }
         }
       }

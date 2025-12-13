@@ -15,16 +15,27 @@ import { ExchangeRateResponse } from '../models/exchange-rate';
  * - Ventas desde GitHub Pages
  * - Productos y categorías desde `assets/`
  * - Tipo de cambio desde API pública
+ *
+ * @usageNotes
+ * - Utiliza `HttpClient` para realizar peticiones HTTP.
+ * - Utiliza `catchError` para manejar errores y mostrar notificaciones de error.
  */
 @Injectable({ providedIn: 'root' })
 export class JsonService {
+  /**
+   * Crea una instancia del servicio `JsonService` e inyecta dependencias.
+   * @param http Servicio de `HttpClient` para hacer peticiones HTTP.
+   * @param notifSrv Servicio de notificación para mostrar errores.
+   */
   constructor(private http: HttpClient, private notifSrv: NotificationService) {}
 
   /**
-   * Obtiene tipo de cambio USD → CLP desde API externa.
-   * @returns Observable con el objeto de tasas de cambio o `null` en caso de error.
+   * Obtiene el tipo de cambio de USD a CLP desde una API externa.
+   * Si hay un error, muestra un mensaje de error y retorna `null`.
+   *
+   * @returns Observable que emite el objeto de tasas de cambio o `null` si ocurre un error.
    */
-  
+
   getCambioDolar(): Observable<ExchangeRateResponse | null> {
     return this.http
       .get<ExchangeRateResponse>('https://api.exchangerate-api.com/v4/latest/USD')
@@ -37,8 +48,10 @@ export class JsonService {
       );
   }
   /**
-   * Obtiene datos de ventas desde GitHub Pages.
-   * @returns Observable con un arreglo de ventas o vacío si falla.
+   * Obtiene los datos de ventas desde un archivo JSON remoto en GitHub Pages.
+   * Si ocurre un error, muestra un mensaje de error y retorna un arreglo vacío.
+   *
+   * @returns Observable que emite un arreglo de ventas o un arreglo vacío en caso de error.
    */
   getVentas(): Observable<Venta[]> {
     return this.http.get<Venta[]>('https://patrsilvag.github.io/api-ventas/ventas.json').pipe(
@@ -51,8 +64,10 @@ export class JsonService {
   }
 
   /**
-   * Obtiene catálogo de categorías desde JSON local.
-   * @returns Observable con un objeto de categorías.
+   * Obtiene el catálogo de categorías desde un archivo JSON local.
+   * Si ocurre un error, muestra un mensaje de error y retorna un objeto vacío.
+   *
+   * @returns Observable que emite un objeto de categorías o un objeto vacío en caso de error.
    */
   getCategorias(): Observable<Record<string, Categoria>> {
     return this.http.get<Record<string, Categoria>>('assets/data/categorias.json').pipe(
@@ -65,8 +80,10 @@ export class JsonService {
   }
 
   /**
-   * Obtiene catálogo de productos desde JSON local.
-   * @returns Observable con un arreglo de productos o vacío si falla.
+   * Obtiene el catálogo de productos desde un archivo JSON local.
+   * Si ocurre un error, muestra un mensaje de error y retorna un arreglo vacío.
+   *
+   * @returns Observable que emite un arreglo de productos o un arreglo vacío en caso de error.
    */
   getProductos(): Observable<Producto[]> {
     return this.http.get<Producto[]>('assets/data/productos.json').pipe(
@@ -79,8 +96,10 @@ export class JsonService {
   }
 
   /**
-   * Obtiene lista de usuarios desde GitHub Pages.
-   * @returns Observable con arreglo de usuarios o vacío si falla.
+   * Obtiene la lista de usuarios desde GitHub Pages.
+   * Si ocurre un error, muestra un mensaje de error y retorna un arreglo vacío.
+   *
+   * @returns Observable que emite un arreglo de usuarios o un arreglo vacío en caso de error.
    */
   getUsuariosRemotos(): Observable<Usuario[]> {
     return this.http.get<Usuario[]>('https://patrsilvag.github.io/api-usuarios/usuarios.json').pipe(

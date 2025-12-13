@@ -527,19 +527,35 @@ Flujo:</p>
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="246"
-                                    class="link-to-prism">src/app/pages/perfil/perfil.ts:246</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="255"
+                                    class="link-to-prism">src/app/pages/perfil/perfil.ts:255</a></div>
                         </td>
                     </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                        <div class="io-description"><p>Solicita confirmación para eliminar la cuenta del usuario actual.
+Si el usuario confirma:</p>
+<ol>
+<li>Elimina el usuario a través del <code>AuthService</code>.</li>
+<li>Cierra la sesión (<code>logout</code>).</li>
+<li>Muestra una notificación de éxito o error.</li>
+<li>Redirige al inicio (&#39;/&#39;) en caso de éxito.</li>
+</ol>
+<ul>
+<li>@returns Nada (<code>void</code>).</li>
+</ul>
+</div>
 
                         <div class="io-description">
                             <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                         </div>
+                            <div class="io-description">
+                                <p>Nada (<code>void</code>).</p>
+
+                            </div>
                 </td>
             </tr>
         </tbody>
@@ -1302,6 +1318,15 @@ export class PerfilComponent implements OnInit {
     this.notifSrv.showSuccess(&#x27;Contraseña actualizada con éxito.&#x27;); // &lt;-- REEMPLAZO
   }
 
+  /**
+   * Solicita confirmación para eliminar la cuenta del usuario actual.
+   * Si el usuario confirma:
+   * 1. Elimina el usuario a través del &#x60;AuthService&#x60;.
+   * 2. Cierra la sesión (&#x60;logout&#x60;).
+   * 3. Muestra una notificación de éxito o error.
+   * 4. Redirige al inicio (&#x27;/&#x27;) en caso de éxito.
+   * * @returns Nada (&#x60;void&#x60;).
+   */
   eliminarCuenta(): void {
     const confirmar &#x3D; confirm(
       &#x27;¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.&#x27;
@@ -1315,7 +1340,7 @@ export class PerfilComponent implements OnInit {
     if (eliminado) {
       this.authSrv.logout();
       this.notifSrv.showSuccess(&#x27;Tu cuenta ha sido eliminada correctamente.&#x27;);
-      this.router.navigate([&#x27;/&#x27;]); // ⬅️ REDIRECCIÓN AL INICIO
+      this.router.navigate([&#x27;/&#x27;]); //  REDIRECCIÓN AL INICIO
     } else {
       this.notifSrv.showError(&#x27;No se pudo eliminar el usuario. Intenta nuevamente.&#x27;);
     }

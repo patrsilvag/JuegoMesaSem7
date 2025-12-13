@@ -261,7 +261,7 @@ al menos <code>nombre</code>, <code>slug</code> (usado en <code>/categorias/:slu
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/pages/home/home.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/pages/home/home.ts:28</a></div>
                             </td>
                         </tr>
 
@@ -335,8 +335,8 @@ al menos <code>nombre</code>, <code>slug</code> (usado en <code>/categorias/:slu
 
                     <tr>
                         <td class="col-md-4">
-                            <div class="io-line">Defined in <a href="" data-line="36"
-                                    class="link-to-prism">src/app/pages/home/home.ts:36</a></div>
+                            <div class="io-line">Defined in <a href="" data-line="40"
+                                    class="link-to-prism">src/app/pages/home/home.ts:40</a></div>
                         </td>
                     </tr>
 
@@ -376,7 +376,7 @@ al menos <code>nombre</code>, <code>slug</code> (usado en <code>/categorias/:slu
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>any[]</code>
+                        <i>Type : </i>    <code>HomeCategoria[]</code>
 
                     </td>
                 </tr>
@@ -387,7 +387,7 @@ al menos <code>nombre</code>, <code>slug</code> (usado en <code>/categorias/:slu
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/pages/home/home.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/pages/home/home.ts:28</a></div>
                         </td>
                     </tr>
 
@@ -410,6 +410,9 @@ necesarios para construir las tarjetas de navegación.</p>
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
 import { RouterLink } from &#x27;@angular/router&#x27;;
 import { JsonService } from &#x27;../../services/json&#x27;;
+import { HomeCategoria } from &#x27;../../models/home-categoria&#x27;;
+
+
 /**
  * Página de inicio. Muestra el listado de categorías disponibles
  * y enlaza a las rutas de detalle de categoría.
@@ -430,7 +433,8 @@ export class HomeComponent {
    * necesarios para construir las tarjetas de navegación.
    * @type {{ nombre: string, slug: string, imagen: string }[]}
    */
-  categorias: any[] &#x3D; [];
+  //categorias: any[] &#x3D; [];
+  categorias: HomeCategoria[] &#x3D; [];
 
   /**
    * Inyecta el servicio JSON para cargar datos de assets.

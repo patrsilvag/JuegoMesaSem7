@@ -13,6 +13,11 @@ export class UserService {
   /**   Lista de usuarios en caché cargada desde localStorage. */
   private usuariosLista: Usuario[] = JSON.parse(localStorage.getItem('usuarios') ?? '[]');
 
+  /**
+   * Inicializa el servicio inyectando las dependencias necesarias.
+   * @param repo Repositorio encargado de la persistencia de datos (localStorage).
+   * @param authSrv Servicio de autenticación para sincronizar la sesión actual.
+   */
   constructor(private repo: AuthRepository, private authSrv: AuthService) {}
 
   /**

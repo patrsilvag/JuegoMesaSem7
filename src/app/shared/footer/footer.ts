@@ -40,6 +40,9 @@ export class FooterComponent implements OnInit {
    */
   valorDolar: number | null = null;
 
+  /**
+   * Variable que permite  indentificar si se termino de cargar para el manejo visual de loading
+  */
   isLoading: boolean = true; // Estado de carga
 
   /**
