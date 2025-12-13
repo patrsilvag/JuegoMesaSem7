@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { JsonService } from '../../services/json';
+import { HomeCategoria } from '../../models/home-categoria';
+
+
 /**
  * Página de inicio. Muestra el listado de categorías disponibles
  * y enlaza a las rutas de detalle de categoría.
@@ -21,7 +24,8 @@ export class HomeComponent {
    * necesarios para construir las tarjetas de navegación.
    * @type {{ nombre: string, slug: string, imagen: string }[]}
    */
-  categorias: any[] = [];
+  //categorias: any[] = [];
+  categorias: HomeCategoria[] = [];
 
   /**
    * Inyecta el servicio JSON para cargar datos de assets.

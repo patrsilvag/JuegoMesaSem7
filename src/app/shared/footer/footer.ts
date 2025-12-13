@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { JsonService } from '../../services/json';
+import { ExchangeRateResponse } from '../../models/exchange-rate';
 
 /**
  * 
@@ -53,10 +54,11 @@ export class FooterComponent implements OnInit {
    */
   ngOnInit(): void {
     this.jsonService.getCambioDolar().subscribe({
-      next: (data) => {
-        this.valorDolar = data?.rates?.CLP ?? null;
+      next: (data: ExchangeRateResponse | null) => {
+        // Acceso correcto usando corchetes
+        this.valorDolar = data?.rates?.['CLP'] ?? null;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error al obtener tipo de cambio', err);
         this.valorDolar = null;
       },

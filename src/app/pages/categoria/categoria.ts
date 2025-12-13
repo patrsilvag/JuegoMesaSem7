@@ -3,6 +3,9 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Cart } from '../../core/cart';
 import { JsonService } from '../../services/json';
+import { Categoria } from '../../models/categoria';
+import { Producto } from '../../models/producto';
+
 
 /**
  * @description
@@ -34,26 +37,30 @@ export class CategoriaComponent implements OnInit {
    * Metadatos de todas las categorías, cargados desde `categorias.json`.
    * @type {{ [key: string]: { titulo: string, subtitulo: string } }}
    */
-  categoriasData: any = {};
+  // categoriasData: any = {};
+  categoriasData: { [key: string]: Categoria } = {};
 
   /**
    * Lista completa de productos, cargada desde `productos.json`.
    * @type {any[]}
    */
-  productos: any[] = [];
+  //productos: any[] = [];
+  productos: Producto[] = [];
 
   /**
    * Categoría actualmente activa según `slug`. Es `null` si no coincide con `categoriasData`.
    * @type {{ titulo: string, subtitulo: string } | null}
    */
-  categoriaActual: any = null;
+  //categoriaActual: any = null;
+  categoriaActual: Categoria | null = null;
 
   /**
    * Lista de productos que pertenecen a la categoría actual.
    * Se limita a 3 productos como máximo.
    * @type {any[]}
    */
-  productosFiltrados: any[] = [];
+  // productosFiltrados: any[] = [];
+  productosFiltrados: Producto[] = [];
 
   /**
    * Inyecta dependencias necesarias.
@@ -111,7 +118,7 @@ export class CategoriaComponent implements OnInit {
    * @param p Producto a agregar al carrito.
    * @returns {void}
    */
-  agregarProducto(p: any): void {
+  agregarProducto(p: Producto): void {
     this.cart.agregar({
       id: p.id,
       nombre: p.nombre,
