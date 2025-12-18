@@ -1,0 +1,30 @@
+
+Librerías adicionales utilizadas en el desarrollo del FrontEnd:
+
+1. Bootstrap 5.3.8
+   - Framework CSS para diseño responsive.
+   - Instalación: npm install bootstrap
+   - Uso: aplicado en estilos, componentes, grillas y navegación responsive.
+
+2. Compodoc
+   - Generador de documentación para proyectos Angular.
+   - Instalación: npm install --save-dev @compodoc/compodoc
+   - Uso: se ejecutó con el comando npx compodoc -p tsconfig.json -s
+   - Carpeta generada: /documentation
+
+3. Jasmine y Karma
+   - Frameworks de pruebas unitarias utilizados por defecto en Angular.
+   - Se utilizaron para validar componentes, servicios y lógica del proyecto.
+   - Ejecución: ng test
+
+---
+
+Breve descripción del proyecto:
+
+“Juegos de Mesa – Cuatro Esquinas” es una aplicación web desarrollada en Angular que simula una tienda virtual para la exploración y compra de juegos de mesa. Los usuarios pueden registrarse, iniciar sesión, explorar productos por categoría, añadirlos al carrito y gestionar su perfil. El sistema incluye roles diferenciados (cliente y administrador), validaciones de formularios, lógica de negocio encapsulada en servicios y diseño completamente responsivo. El administrador puede acceder a un panel protegido por roles para gestionar usuarios y productos. La aplicación sigue una arquitectura modular y está preparada para despliegue con SSR.
+
+---
+
+Documentación generada:
+
+Se utilizó la herramienta Compodoc para generar documentación técnica del proyecto. La documentación incluye vistas de componentes, módulos, servicios y estructura general de la aplicación. Está disponible localmente en la carpeta /documentation/index.html.
